@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gaming & Cognitive Skills Study</title>
+<style>
+/* ═══════════════════════════════════════════
+   COZY GAMING LAB — THEME TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --bg-deep:      #0d1117;
+  --bg-card:      #161b27;
+  --bg-elevated:  #1e2535;
+  --bg-hover:     #252d42;
+
+  --teal:         #4ecdc4;
+  --teal-dim:     #2a9d8f;
+  --teal-glow:    rgba(78,205,196,0.25);
+  --lavender:     #a78bfa;
+  --lavender-dim: #7c5cbf;
+  --lavender-glow:rgba(167,139,250,0.25);
+  --mint:         #6ee7b7;
+
+  --text-primary:   #e8eaf0;
+  --text-secondary: #8b93a8;
+  --text-muted:     #505a72;
+
+  --border:        rgba(78,205,196,0.18);
+  --border-hover:  rgba(78,205,196,0.45);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+
+  --font-head: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-glow-teal: 0 0 20px rgba(78,205,196,0.3);
+  --shadow-glow-lav:  0 0 20px rgba(167,139,250,0.3);
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   BACKGROUND STARS
+═══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(78,205,196,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 15%, rgba(167,139,250,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 70%, rgba(78,205,196,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 80%, rgba(167,139,250,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 55%, rgba(110,231,183,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 40%, rgba(78,205,196,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 60%, rgba(167,139,250,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5% 85%, rgba(78,205,196,0.2) 0%, transparent 100%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ═══════════════════════════════════════════
+   LAYOUT WRAPPER
+═══════════════════════════════════════════ */
+.app-wrapper {
+  position: relative; z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+}
+
+/* ═══════════════════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════════════════ */
+.progress-bar-outer {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg-deep);
+  padding: 10px 0 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.progress-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 6px;
+  font-size: 12px; color: var(--text-secondary);
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.progress-label { font-weight: 600; color: var(--teal); }
+.progress-track {
+  height: 6px; border-radius: 99px;
+  background: var(--bg-elevated);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--teal), var(--lavender));
+  box-shadow: 0 0 10px var(--teal-glow);
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+/* ═══════════════════════════════════════════
+   SCREENS (pages)
+═══════════════════════════════════════════ */
+.screen { display: none; animation: fadeSlideIn 0.45s ease both; }
+.screen.active { display: block; }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════
+   CARD
+═══════════════════════════════════════════ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 18px;
+}
+.card.glow-teal { box-shadow: var(--shadow-card), var(--shadow-glow-teal); border-color: rgba(78,205,196,0.3); }
+.card.glow-lav  { box-shadow: var(--shadow-card), var(--shadow-glow-lav);  border-color: rgba(167,139,250,0.3); }
+
+/* ═══════════════════════════════════════════
+   COVER PAGE
+═══════════════════════════════════════════ */
+.cover-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 24px;
+}
+.cover-logo-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--teal), var(--lavender));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  box-shadow: var(--shadow-glow-teal);
+}
+.cover-logo-text {
+  font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-secondary); font-weight: 600;
+}
+.cover-title {
+  font-size: clamp(26px, 5vw, 38px);
+  font-weight: 800;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--lavender) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+.cover-sub {
+  color: var(--text-secondary); font-size: 14px; line-height: 1.7;
+  margin-bottom: 28px;
+  max-width: 560px;
+}
+
+.info-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 24px;
+}
+@media (max-width: 520px) { .info-row { grid-template-columns: 1fr; } }
+.info-pill {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.info-pill-icon { font-size: 18px; margin-top: 1px; flex-shrink: 0; }
+.info-pill-text strong { display: block; font-size: 13px; color: var(--teal); margin-bottom: 2px; }
+.info-pill-text span { font-size: 12px; color: var(--text-secondary); }
+
+/* Quest Log */
+.quest-log {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.quest-log-header {
+  background: linear-gradient(90deg, rgba(78,205,196,0.15), rgba(167,139,250,0.1));
+  border-bottom: 1px solid var(--border);
+  padding: 12px 18px;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--teal); font-weight: 700;
+}
+.quest-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.2s;
+}
+.quest-item:last-child { border-bottom: none; }
+.quest-icon { font-size: 20px; flex-shrink: 0; }
+.quest-info { flex: 1; }
+.quest-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.quest-desc  { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+.quest-time  { font-size: 11px; color: var(--text-muted); background: var(--bg-card); border-radius: 99px; padding: 3px 10px; }
+
+/* ═══════════════════════════════════════════
+   CONSENT CHECKBOX
+═══════════════════════════════════════════ */
+.consent-box {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25);
+  border-radius: var(--radius-md); padding: 16px;
+  cursor: pointer; margin-bottom: 20px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.consent-box:hover { background: rgba(167,139,250,0.14); }
+.consent-box input[type="checkbox"] { display: none; }
+.consent-check-visual {
+  width: 22px; height: 22px; flex-shrink: 0; border-radius: 6px;
+  border: 2px solid var(--lavender-dim);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; margin-top: 1px;
+  background: transparent;
+}
+.consent-check-visual.checked {
+  background: var(--lavender); border-color: var(--lavender);
+}
+.consent-check-visual.checked::after {
+  content: '✓'; color: #fff; font-size: 13px; font-weight: 800;
+}
+.consent-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.consent-text strong { color: var(--lavender); }
+
+/* ═══════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 28px; border-radius: var(--radius-md);
+  font-size: 14px; font-weight: 700; letter-spacing: 0.04em;
+  cursor: pointer; border: none; outline: none;
+  transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  text-transform: uppercase;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+  color: #0d1117;
+  box-shadow: 0 4px 16px var(--teal-glow);
+}
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(78,205,196,0.45);
+}
+.btn-primary:disabled {
+  opacity: 0.4; cursor: not-allowed; transform: none;
+}
+.btn-secondary {
+  background: var(--bg-elevated); color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--bg-hover); color: var(--text-primary); }
+.btn-full { width: 100%; }
+.btn-row { display: flex; gap: 12px; justify-content: space-between; align-items: center; margin-top: 24px; }
+
+/* ═══════════════════════════════════════════
+   SECTION HEADERS
+═══════════════════════════════════════════ */
+.section-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--teal-glow), var(--lavender-glow));
+  border: 1px solid rgba(78,205,196,0.35);
+  border-radius: 99px;
+  padding: 4px 14px;
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--teal); font-weight: 700;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: clamp(20px, 4vw, 26px); font-weight: 800;
+  color: var(--text-primary); margin-bottom: 6px;
+}
+.section-title span { color: var(--teal); }
+.section-sub {
+  font-size: 13px; color: var(--text-secondary); margin-bottom: 24px;
+}
+
+/* ═══════════════════════════════════════════
+   FORM ELEMENTS
+═══════════════════════════════════════════ */
+.form-group { margin-bottom: 22px; }
+.form-label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+.form-label .required { color: var(--lavender); margin-left: 3px; }
+
+/* Radio / Checkbox Options */
+.options-list { display: flex; flex-direction: column; gap: 8px; }
+.option-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 12px 16px;
+  cursor: pointer; transition: all 0.2s; user-select: none;
+}
+.option-item:hover { background: var(--bg-hover); border-color: var(--border-hover); }
+.option-item.selected {
+  background: rgba(78,205,196,0.1);
+  border-color: var(--teal);
+  box-shadow: 0 0 12px var(--teal-glow);
+}
+.option-item input { display: none; }
+.option-dot {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border-radius: 50%; border: 2px solid var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.option-item.selected .option-dot {
+  background: var(--teal); border-color: var(--teal);
+}
+.option-item.selected .option-dot::after {
+  content: ''; width: 6px; height: 6px;
+  border-radius: 50%; background: #0d1117;
+}
+.option-check {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border-radius: 5px; border: 2px solid var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.option-item.selected .option-check {
+  background: var(--teal); border-color: var(--teal);
+}
+.option-item.selected .option-check::after {
+  content: '✓'; color: #0d1117; font-size: 11px; font-weight: 900;
+}
+.option-text { font-size: 14px; flex: 1; }
+.option-text small { display: block; font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+/* Text Input */
+.text-input {
+  width: 100%; background: var(--bg-elevated);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  padding: 12px 16px; color: var(--text-primary);
+  font-family: var(--font-body); font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.text-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-glow); }
+.text-input::placeholder { color: var(--text-muted); }
+
+/* ═══════════════════════════════════════════
+   QUIZ SECTION
+═══════════════════════════════════════════ */
+.quiz-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+}
+.quiz-icon {
+  width: 48px; height: 48px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--teal-glow), var(--lavender-glow));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+.quiz-meta { flex: 1; }
+.quiz-category { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); font-weight: 700; }
+.quiz-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+
+.question-counter {
+  display: flex; gap: 6px; margin-bottom: 20px;
+}
+.q-dot {
+  height: 4px; flex: 1; border-radius: 99px;
+  background: var(--bg-elevated); transition: background 0.3s;
+}
+.q-dot.done  { background: var(--teal); }
+.q-dot.current { background: var(--lavender); box-shadow: 0 0 8px var(--lavender-glow); }
+
+.question-box {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 20px 20px;
+  margin-bottom: 18px;
+}
+.question-num {
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--lavender); font-weight: 700; margin-bottom: 8px;
+}
+.question-text { font-size: 15px; color: var(--text-primary); line-height: 1.6; font-weight: 500; }
+.question-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
+
+/* Quiz Answer Options */
+.answer-grid { display: flex; flex-direction: column; gap: 8px; }
+.answer-option {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 13px 16px;
+  cursor: pointer; transition: all 0.2s; user-select: none;
+}
+.answer-option:hover:not(.locked) { background: var(--bg-hover); border-color: var(--border-hover); }
+.answer-option.selected:not(.correct):not(.wrong) {
+  background: rgba(78,205,196,0.1); border-color: var(--teal);
+}
+.answer-option.correct {
+  background: rgba(110,231,183,0.12); border-color: var(--mint);
+  box-shadow: 0 0 12px rgba(110,231,183,0.2);
+}
+.answer-option.wrong {
+  background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.4);
+}
+.answer-key {
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 8px; background: var(--bg-card);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--text-muted);
+  transition: all 0.2s;
+}
+.answer-option.selected:not(.correct):not(.wrong) .answer-key { background: var(--teal); border-color: var(--teal); color: #0d1117; }
+.answer-option.correct .answer-key { background: var(--mint); border-color: var(--mint); color: #0d1117; }
+.answer-option.wrong .answer-key { background: rgba(239,68,68,0.5); border-color: transparent; color: #fff; }
+.answer-text { font-size: 14px; flex: 1; }
+
+.feedback-box {
+  background: var(--bg-elevated); border-radius: var(--radius-md);
+  padding: 14px 16px; margin-bottom: 16px;
+  border-left: 3px solid var(--teal);
+  font-size: 13px; color: var(--text-secondary);
+  display: none;
+}
+.feedback-box.show { display: block; }
+.feedback-box.wrong-fb { border-left-color: rgba(239,68,68,0.6); }
+
+/* Spatial Image Questions */
+.spatial-img-container {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px; margin: 12px 0;
+  display: flex; justify-content: center;
+}
+.spatial-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.spatial-option {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; transition: all 0.2s;
+}
+.spatial-option:hover:not(.locked) { border-color: var(--border-hover); }
+.spatial-option.selected { border-color: var(--teal); background: rgba(78,205,196,0.1); }
+.spatial-option.correct { border-color: var(--mint); background: rgba(110,231,183,0.1); }
+.spatial-option.wrong   { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.05); }
+.spatial-opt-label { font-size: 12px; font-weight: 700; color: var(--text-muted); }
+
+/* ═══════════════════════════════════════════
+   SIMON GAME
+═══════════════════════════════════════════ */
+.simon-container { text-align: center; }
+.simon-level-display {
+  font-size: 13px; color: var(--text-secondary); margin-bottom: 6px;
+}
+.simon-level-num {
+  font-size: 40px; font-weight: 800;
+  background: linear-gradient(135deg, var(--teal), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1; margin-bottom: 20px;
+}
+.simon-board {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0; margin: 0 auto 24px; position: relative;
+  width: 260px; height: 260px;
+}
+.crystal {
+  width: 110px; height: 110px;
+  border-radius: 18px;
+  cursor: pointer; position: absolute;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  border: 2px solid rgba(255,255,255,0.12);
+  transition: box-shadow 0.15s, filter 0.15s;
+  user-select: none;
+}
+.crystal:hover:not(.inactive) { filter: brightness(1.15); }
+.crystal:active:not(.inactive) { filter: brightness(1.3); }
+.crystal.inactive { cursor: default; opacity: 0.85; }
+.crystal.flash { animation: crystalFlash 0.25s ease; }
+@keyframes crystalFlash {
+  0%,100% { filter: brightness(1); }
+  50% { filter: brightness(2.5) saturate(1.8); }
+}
+
+/* Positions: diamond layout */
+.crystal-top    { top: 0;    left: 50%; transform: translateX(-50%); }
+.crystal-right  { right: 0;  top: 50%; transform: translateY(-50%); }
+.crystal-bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
+.crystal-left   { left: 0;   top: 50%; transform: translateY(-50%); }
+
+/* Crystal colours */
+.crystal-red    { background: radial-gradient(circle at 35% 35%, #ff9999, #cc2222); box-shadow: 0 0 20px rgba(220,50,50,0.5); }
+.crystal-blue   { background: radial-gradient(circle at 35% 35%, #99ccff, #1166cc); box-shadow: 0 0 20px rgba(50,120,220,0.5); }
+.crystal-yellow { background: radial-gradient(circle at 35% 35%, #fff099, #ccaa00); box-shadow: 0 0 20px rgba(220,180,0,0.5);  }
+.crystal-green  { background: radial-gradient(circle at 35% 35%, #99ffcc, #00aa66); box-shadow: 0 0 20px rgba(0,180,100,0.5);  }
+
+.crystal-red.glow    { box-shadow: 0 0 45px rgba(220,50,50,0.9),  0 0 80px rgba(220,50,50,0.4); }
+.crystal-blue.glow   { box-shadow: 0 0 45px rgba(50,120,220,0.9), 0 0 80px rgba(50,120,220,0.4); }
+.crystal-yellow.glow { box-shadow: 0 0 45px rgba(220,180,0,0.9),  0 0 80px rgba(220,180,0,0.4); }
+.crystal-green.glow  { box-shadow: 0 0 45px rgba(0,180,100,0.9),  0 0 80px rgba(0,180,100,0.4); }
+
+.simon-status {
+  font-size: 14px; color: var(--text-secondary);
+  min-height: 20px; margin-bottom: 16px;
+}
+.simon-status.watching { color: var(--lavender); }
+.simon-status.go       { color: var(--teal); }
+.simon-status.gameover { color: #ff7070; }
+
+.simon-start-btn {
+  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+  color: #0d1117; border: none; border-radius: var(--radius-md);
+  padding: 13px 36px; font-size: 14px; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; cursor: pointer;
+  box-shadow: 0 4px 16px var(--teal-glow);
+  transition: all 0.22s; display: inline-block;
+}
+.simon-start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(78,205,196,0.45); }
+
+.simon-results-card {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 20px;
+  margin-top: 20px; display: none;
+}
+.simon-results-card.show { display: block; }
+.simon-stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.simon-stat:last-child { border-bottom: none; }
+.simon-stat-label { color: var(--text-secondary); }
+.simon-stat-val { font-weight: 700; color: var(--teal); }
+
+/* ═══════════════════════════════════════════
+   RESULTS PAGE
+═══════════════════════════════════════════ */
+.results-hero {
+  text-align: center; padding: 30px 0 20px;
+}
+.persona-badge {
+  display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, rgba(78,205,196,0.1), rgba(167,139,250,0.1));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl); padding: 28px 36px;
+  margin-bottom: 20px;
+}
+.persona-icon { font-size: 56px; }
+.persona-type { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+.persona-name {
+  font-size: 28px; font-weight: 800;
+  background: linear-gradient(135deg, var(--teal), var(--lavender));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.persona-desc { font-size: 14px; color: var(--text-secondary); max-width: 480px; text-align: center; line-height: 1.7; }
+
+.scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+@media (max-width: 480px) { .scores-grid { grid-template-columns: 1fr; } }
+.score-card {
+  background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 18px;
+}
+.score-card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; }
+.score-card-val { font-size: 30px; font-weight: 800; color: var(--teal); line-height: 1; margin-bottom: 6px; }
+.score-card-bar {
+  height: 4px; border-radius: 99px; background: var(--bg-card);
+  overflow: hidden; margin-bottom: 4px;
+}
+.score-card-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--teal), var(--lavender));
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.score-card-sub { font-size: 11px; color: var(--text-muted); }
+
+.results-thanks {
+  text-align: center; padding: 20px;
+  font-size: 14px; color: var(--text-secondary); line-height: 1.8;
+}
+.results-thanks strong { color: var(--teal); }
+
+/* ═══════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════ */
+.divider {
+  height: 1px; background: var(--border); margin: 24px 0;
+}
+
+/* Utility */
+.text-teal { color: var(--teal); }
+.text-lav  { color: var(--lavender); }
+.mb-0 { margin-bottom: 0; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+
+/* Hint text */
+.hint {
+  font-size: 11px; color: var(--text-muted);
+  margin-top: 6px; font-style: italic;
+}
+
+/* ═══════════════════════════════════════════
+   ALERT / NOTICE
+═══════════════════════════════════════════ */
+.notice {
+  background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25);
+  border-radius: var(--radius-md); padding: 12px 16px;
+  font-size: 13px; color: var(--text-secondary);
+  margin-bottom: 18px;
+}
+.notice strong { color: var(--lavender); }
+
+/* Error */
+.error-msg {
+  color: #ff7070; font-size: 12px; margin-top: 6px;
+  display: none;
+}
+.error-msg.show { display: block; }
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 99px; }
+</style>
+</head>
+<body>
+<div class="app-wrapper">
+
+  <!-- ═══ STICKY PROGRESS BAR ═══ -->
+  <div class="progress-bar-outer" id="progressBar">
+    <div class="progress-meta">
+      <span class="progress-label" id="progressLabel">Quest Log</span>
+      <span id="progressPercent">0% Complete</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 0 — COVER
+  ════════════════════════════════════════ -->
+  <div class="screen active" id="screen-cover">
+    <div class="card glow-teal">
+      <div class="cover-logo">
+        <div class="cover-logo-icon">🎮</div>
+        <div class="cover-logo-text">Gaming Research Lab · Academic Study</div>
+      </div>
+      <h1 class="cover-title">Level Up Your Data:<br/>Gaming &amp; Cognitive Skills Study</h1>
+      <p class="cover-sub">
+        I'm researching how the games we love connect to how our brains handle logic, speed, and memory.
+        No grades, no stress — just your honest gaming habits and your best effort on the mini-challenges.
+      </p>
+
+      <div class="info-row">
+        <div class="info-pill">
+          <div class="info-pill-icon">🔒</div>
+          <div class="info-pill-text"><strong>Anonymous</strong><span>No name, email or IP collected</span></div>
+        </div>
+        <div class="info-pill">
+          <div class="info-pill-icon">🤫</div>
+          <div class="info-pill-text"><strong>Confidential</strong><span>Used only as part of a data set</span></div>
+        </div>
+        <div class="info-pill">
+          <div class="info-pill-icon">🚪</div>
+          <div class="info-pill-text"><strong>Voluntary</strong><span>Stop at any time, no worries</span></div>
+        </div>
+        <div class="info-pill">
+          <div class="info-pill-icon">⏱️</div>
+          <div class="info-pill-text"><strong>10–12 mins</strong><span>Four quick parts total</span></div>
+        </div>
+      </div>
+
+      <div class="quest-log">
+        <div class="quest-log-header">📜 Current Quest Log</div>
+        <div class="quest-item">
+          <div class="quest-icon">🌿</div>
+          <div class="quest-info">
+            <div class="quest-title">The Player Profile</div>
+            <div class="quest-desc">Tell us your gaming story</div>
+          </div>
+          <div class="quest-time">~3 min</div>
+        </div>
+        <div class="quest-item">
+          <div class="quest-icon">🧩</div>
+          <div class="quest-info">
+            <div class="quest-title">Logic &amp; Lore</div>
+            <div class="quest-desc">Solve the shopkeeper's puzzles</div>
+          </div>
+          <div class="quest-time">~3 min</div>
+        </div>
+        <div class="quest-item">
+          <div class="quest-icon">🗺️</div>
+          <div class="quest-info">
+            <div class="quest-title">The Map Room</div>
+            <div class="quest-desc">Navigate the verbal &amp; spatial challenges</div>
+          </div>
+          <div class="quest-time">~3 min</div>
+        </div>
+        <div class="quest-item">
+          <div class="quest-icon">💎</div>
+          <div class="quest-info">
+            <div class="quest-title">The Prism Pattern</div>
+            <div class="quest-desc">The ultimate memory finale</div>
+          </div>
+          <div class="quest-time">~2 min</div>
+        </div>
+      </div>
+
+      <div class="consent-box" id="consentBox" onclick="toggleConsent()">
+        <div class="consent-check-visual" id="consentVisual"></div>
+        <div class="consent-text">
+          I confirm that I am between the ages of <strong>13–18</strong> and have received
+          <strong>parental/guardian permission</strong> to participate in this academic study.
+        </div>
+      </div>
+      <div id="consentError" class="error-msg">Please confirm the above before continuing.</div>
+
+      <button class="btn btn-primary btn-full" id="beginBtn" onclick="startStudy()">
+        ⚔️ &nbsp; Begin Challenge
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 1 — PART A: SURVEY
+  ════════════════════════════════════════ -->
+  <div class="screen" id="screen-survey">
+    <div class="section-badge">Part 01 · Player Profile</div>
+    <h2 class="section-title">🌿 The <span>Player Profile</span></h2>
+    <p class="section-sub">No right or wrong answers — just tell us about your gaming life.</p>
+
+    <!-- Section 1: Eligibility -->
+    <div class="card">
+      <div class="form-group">
+        <div class="form-label">Age Group <span class="required">*</span></div>
+        <div class="options-list" id="ageOptions">
+          <div class="option-item" onclick="selectRadio('age','13-15',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">13–15</div>
+          </div>
+          <div class="option-item" onclick="selectRadio('age','16-17',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">16–17</div>
+          </div>
+          <div class="option-item" onclick="selectRadio('age','18+',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">18+</div>
+          </div>
+        </div>
+        <div class="error-msg" id="err-age">Please select your age group.</div>
+      </div>
+    </div>
+
+    <!-- Section 2: General Gaming Profile -->
+    <div class="card">
+      <div class="form-group">
+        <div class="form-label">Average Weekly Playtime <span class="required">*</span></div>
+        <div class="options-list" id="playtimeOptions">
+          <div class="option-item" onclick="selectRadio('playtime','lt5',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">Less than 5 hours</div>
+          </div>
+          <div class="option-item" onclick="selectRadio('playtime','5-10',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">5–10 hours</div>
+          </div>
+          <div class="option-item" onclick="selectRadio('playtime','11-20',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">11–20 hours</div>
+          </div>
+          <div class="option-item" onclick="selectRadio('playtime','21-30',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">21–30 hours</div>
+          </div>
+          <div class="option-item" onclick="selectRadio('playtime','30+',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">30+ hours</div>
+          </div>
+        </div>
+        <div class="error-msg" id="err-playtime">Please select your playtime.</div>
+      </div>
+
+      <div class="form-group">
+        <div class="form-label">Primary Device(s) <span class="required">*</span><br/><span style="font-size:11px;font-weight:400;color:var(--text-muted);text-transform:none;letter-spacing:0">Select all that apply</span></div>
+        <div class="options-list" id="deviceOptions">
+          <div class="option-item" onclick="toggleCheck('device','pc',this)">
+            <div class="option-check"></div>
+            <div class="option-text">PC</div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('device','mobile',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Mobile (Smartphone / Tablet)</div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('device','console',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Console (PlayStation / Xbox / Switch)</div>
+          </div>
+        </div>
+        <div class="error-msg" id="err-device">Please select at least one device.</div>
+      </div>
+
+      <div class="form-group mb-0">
+        <div class="form-label">Self-Rated Skill Level <span class="required">*</span></div>
+        <div class="options-list" id="skillOptions">
+          <div class="option-item" onclick="selectRadio('skilllevel','beginner',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">Beginner <small>I play for the story / relaxation</small></div>
+          </div>
+          <div class="option-item" onclick="selectRadio('skilllevel','casual',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">Casual <small>I understand mechanics but play for fun</small></div>
+          </div>
+          <div class="option-item" onclick="selectRadio('skilllevel','intermediate',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">Intermediate <small>I follow the "meta" and seek challenges</small></div>
+          </div>
+          <div class="option-item" onclick="selectRadio('skilllevel','advanced',this)">
+            <div class="option-dot"></div>
+            <div class="option-text">Advanced <small>I play competitively or at high difficulty</small></div>
+          </div>
+        </div>
+        <div class="error-msg" id="err-skilllevel">Please select your skill level.</div>
+      </div>
+    </div>
+
+    <!-- Section 3: Genre Preferences -->
+    <div class="card">
+      <div class="form-group">
+        <div class="form-label">Genres You Regularly Play <span class="required">*</span><br/><span style="font-size:11px;font-weight:400;color:var(--text-muted);text-transform:none;letter-spacing:0">Select all that apply</span></div>
+        <div class="options-list" id="genreOptions">
+          <div class="option-item" onclick="toggleCheck('genre','sandbox',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Sandbox / Casual <small>e.g., Minecraft, Roblox, Animal Crossing</small></div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('genre','openworld',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Open World / Action RPG <small>e.g., Genshin Impact, Elden Ring, Zelda</small></div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('genre','tactical',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Tactical / Turn-based RPG <small>e.g., Honkai: Star Rail, Persona, Fire Emblem</small></div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('genre','shooter',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Competitive Shooter <small>e.g., Valorant, Overwatch 2, Fortnite</small></div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('genre','moba',this)">
+            <div class="option-check"></div>
+            <div class="option-text">MOBA <small>e.g., League of Legends, Wild Rift, Pokémon UNITE</small></div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('genre','puzzle',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Puzzle / Strategy <small>e.g., Portal 2, Teamfight Tactics, Clash Royale</small></div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('genre','rhythm',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Rhythm / Simulation <small>e.g., Project SEKAI, osu!, The Sims 4</small></div>
+          </div>
+          <div class="option-item" onclick="toggleCheck('genre','other',this)">
+            <div class="option-check"></div>
+            <div class="option-text">Other <small>Tell us what you play!</small></div>
+          </div>
+        </div>
+        <div id="genreOtherWrap" style="display:none; margin-top:10px;">
+          <input type="text" class="text-input" id="genreOther"
+            placeholder="e.g. Visual Novels, Fighting Games, Sports Sims…"
+            oninput="state.survey.genreOtherText=this.value"/>
+        </div>
+        <div class="error-msg" id="err-genre">Please select at least one genre.</div>
+      </div>
+
+      <div class="form-group mb-0">
+        <div class="form-label">Primary (Most Played) Genre <span class="required">*</span></div>
+        <div class="options-list" id="primaryGenreOptions">
+          <div style="color:var(--text-muted);font-size:13px;padding:10px 0">
+            ← Select genres above to see options here
+          </div>
+        </div>
+        <div class="error-msg" id="err-primarygenre">Please select your primary genre.</div>
+      </div>
+    </div>
+
+    <!-- Section 4: Personal Favourites -->
+    <div class="card">
+      <div class="section-badge">Optional</div>
+      <div class="form-label" style="margin-top:8px">Your Top 3 Favourite Games of All Time</div>
+      <p class="hint" style="margin-bottom:12px">No judgement — even casual mobile games count!</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <input type="text" class="text-input" id="fav1" placeholder="1. e.g. Genshin Impact"/>
+        <input type="text" class="text-input" id="fav2" placeholder="2. e.g. Minecraft"/>
+        <input type="text" class="text-input" id="fav3" placeholder="3. e.g. Valorant"/>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('screen-cover')">← Back</button>
+      <button class="btn btn-primary" onclick="submitSurvey()">Next: Skill Challenges →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 2 — PART B1: QUANTITATIVE
+  ════════════════════════════════════════ -->
+  <div class="screen" id="screen-quant">
+    <div class="section-badge">Part 02 · Skill Challenge 1 / 3</div>
+    <div class="quiz-header">
+      <div class="quiz-icon">🧩</div>
+      <div class="quiz-meta">
+        <div class="quiz-category">Logic &amp; Lore</div>
+        <div class="quiz-title">Quantitative Reasoning</div>
+      </div>
+    </div>
+    <div class="notice">⏱️ <strong>Tip:</strong> Work through each puzzle at your own pace. Answer each question before moving on.</div>
+    <div id="quant-questions"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('screen-survey')">← Back</button>
+      <button class="btn btn-primary" onclick="submitSection('quant')">Next: Verbal →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 3 — PART B2: VERBAL
+  ════════════════════════════════════════ -->
+  <div class="screen" id="screen-verbal">
+    <div class="section-badge">Part 02 · Skill Challenge 2 / 3</div>
+    <div class="quiz-header">
+      <div class="quiz-icon">📖</div>
+      <div class="quiz-meta">
+        <div class="quiz-category">Words &amp; Lore</div>
+        <div class="quiz-title">Verbal Processing</div>
+      </div>
+    </div>
+    <div class="notice">📖 <strong>Read carefully!</strong> Clues are hidden in the text. Trust your instincts.</div>
+    <div id="verbal-questions"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('screen-quant')">← Back</button>
+      <button class="btn btn-primary" onclick="submitSection('verbal')">Next: Spatial →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 4 — PART B3: SPATIAL
+  ════════════════════════════════════════ -->
+  <div class="screen" id="screen-spatial">
+    <div class="section-badge">Part 02 · Skill Challenge 3 / 3</div>
+    <div class="quiz-header">
+      <div class="quiz-icon">🗺️</div>
+      <div class="quiz-meta">
+        <div class="quiz-category">The Map Room</div>
+        <div class="quiz-title">Spatial Awareness</div>
+      </div>
+    </div>
+    <div class="notice">🧭 <strong>Visualise it!</strong> Close your eyes and picture the movements if it helps.</div>
+    <div id="spatial-questions"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('screen-verbal')">← Back</button>
+      <button class="btn btn-primary" onclick="submitSection('spatial')">Next: Memory Game →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 5 — SIMON GAME
+  ════════════════════════════════════════ -->
+  <div class="screen" id="screen-simon">
+    <div class="section-badge">Part 03 · The Final Boss</div>
+    <h2 class="section-title">💎 The <span>Prism Pattern</span></h2>
+    <p class="section-sub">Watch the crystals light up, then repeat the sequence. Each round adds one more. How far can you go?</p>
+
+    <div class="card glow-lav">
+      <div class="simon-container">
+        <div class="simon-level-display">Current Level</div>
+        <div class="simon-level-num" id="simonLevelNum">—</div>
+
+        <div class="simon-board" id="simonBoard">
+          <div class="crystal crystal-top    crystal-red"    id="c-red"    onclick="simonClick('red')">🔴</div>
+          <div class="crystal crystal-right  crystal-blue"   id="c-blue"   onclick="simonClick('blue')">🔵</div>
+          <div class="crystal crystal-bottom crystal-green"  id="c-green"  onclick="simonClick('green')">🟢</div>
+          <div class="crystal crystal-left   crystal-yellow" id="c-yellow" onclick="simonClick('yellow')">🟡</div>
+        </div>
+
+        <div class="simon-status" id="simonStatus">Press Start to begin your run!</div>
+
+        <button class="simon-start-btn" id="simonStartBtn" onclick="startSimon()">▶ Start the Prism</button>
+
+        <div class="simon-results-card" id="simonResultsCard">
+          <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:12px">✨ Sequence Complete!</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">Your focus is impressive — here's how you did:</div>
+          <div class="simon-stat"><span class="simon-stat-label">🏆 Highest Level</span><span class="simon-stat-val" id="res-level">—</span></div>
+          <div class="simon-stat"><span class="simon-stat-label">✅ Total Correct Clicks</span><span class="simon-stat-val" id="res-clicks">—</span></div>
+          <div class="simon-stat"><span class="simon-stat-label">⚡ Avg. Response Time</span><span class="simon-stat-val" id="res-rt">—</span></div>
+          <div class="simon-stat"><span class="simon-stat-label">❌ Mistake Made On</span><span class="simon-stat-val" id="res-mistake">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goTo('screen-spatial')">← Back</button>
+      <button class="btn btn-primary" id="simonNextBtn" onclick="submitSimon()" style="display:none">See My Results →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       SCREEN 6 — RESULTS
+  ════════════════════════════════════════ -->
+  <div class="screen" id="screen-results">
+    <div class="section-badge">Part 04 · Your Results</div>
+
+    <div class="results-hero">
+      <div class="persona-badge" id="personaBadge">
+        <div class="persona-icon" id="personaIcon">🎮</div>
+        <div class="persona-type">Your Gaming Persona</div>
+        <div class="persona-name" id="personaName">Loading…</div>
+      </div>
+      <p class="persona-desc" id="personaDesc">…</p>
+    </div>
+
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px">📊 Your Skill Profile</div>
+      <div class="scores-grid" id="scoresGrid"></div>
+    </div>
+
+    <div class="card">
+      <div class="results-thanks">
+        <strong>🙏 Thank you so much for participating!</strong><br/>
+        Your response has been recorded and will contribute to research on the connection between gaming habits and cognitive performance.<br/><br/>
+        <em style="color:var(--text-muted)">This study is being conducted as part of an academic research project. All data is anonymous and used for research purposes only.</em>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-wrapper -->
+
+<script>
+// ═══════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════
+const state = {
+  consent: false,
+  survey: {},
+  scores: { quant: 0, verbal: 0, spatial: 0, simon: 0 },
+  answers: { quant: {}, verbal: {}, spatial: {} },
+  simonData: null,
+  totalSections: 6, // screens 0–5
+  currentScreen: 0,
+};
+
+// ═══════════════════════════════════════════════════
+//  QUESTION DATA
+// ═══════════════════════════════════════════════════
+const QUANT_QUESTIONS = [
+  {
+    id: 'q1',
+    text: 'To craft 1 Mega-Potion, you need 3 Herbs and 2 Mushrooms. You have 14 Herbs and 7 Mushrooms. How many Mega-Potions can you craft?',
+    options: ['3','4','5','7'],
+    correct: 0,
+    feedback: 'Mushrooms are the limiting factor: 7 ÷ 2 = 3.5, so only 3 complete potions. (Herbs: 14 ÷ 3 = 4.6, also confirms 3)'
+  },
+  {
+    id: 'q2',
+    text: 'A shop sells 10 arrows for 50 gold. A bundle of 50 arrows costs 200 gold. How much gold do you save per arrow by buying the bundle?',
+    options: ['1 gold','2 gold','5 gold','10 gold'],
+    correct: 0,
+    feedback: 'Individual: 50 ÷ 10 = 5g each. Bundle: 200 ÷ 50 = 4g each. Saving = 5 – 4 = 1 gold per arrow.'
+  },
+  {
+    id: 'q3',
+    text: '1 Gold Coin = 12 Silver. 1 Silver = 5 Copper. How many Copper coins is 2 Gold Coins worth?',
+    options: ['60','100','120','130'],
+    correct: 2,
+    feedback: '2 Gold × 12 Silver/Gold = 24 Silver. 24 Silver × 5 Copper/Silver = 120 Copper.'
+  },
+  {
+    id: 'q4',
+    text: 'A boss respawns every 45 minutes. It last spawned at 2:15 PM. What time will it next appear?',
+    options: ['2:45 PM','3:00 PM','3:15 PM','3:30 PM'],
+    correct: 1,
+    feedback: '2:15 PM + 45 min = 3:00 PM.'
+  },
+  {
+    id: 'q5',
+    text: 'A loot box has a 10% chance for a Rare item. If you open exactly 2 boxes, what is the mathematical probability of getting zero Rare items?',
+    options: ['80%','81%','90%','99%'],
+    correct: 1,
+    feedback: 'P(no rare in one box) = 0.9. P(no rare in two boxes) = 0.9 × 0.9 = 0.81 = 81%.'
+  }
+];
+
+const VERBAL_QUESTIONS = [
+  {
+    id: 'v1',
+    text: '"The North gate is closed for repairs. The South gate is guarded by a dragon that only sleeps at night. It is currently noon."\n\nWhere can you enter?',
+    options: ['North Gate','South Gate','Neither','Both'],
+    correct: 2,
+    feedback: 'North gate is closed. South gate\'s dragon is awake at noon. You cannot enter through either gate.'
+  },
+  {
+    id: 'v2',
+    text: 'Character A says: "I\'d love to help with the quest, but my sword is… at the blacksmith\'s."\n\nWhat is the most likely subtext?',
+    options: ['They are excited','They are making an excuse','They are a blacksmith','They are unarmed'],
+    correct: 1,
+    feedback: 'The hesitation ("…") and convenient reason strongly suggest Character A is making an excuse to avoid the quest.'
+  },
+  {
+    id: 'v3',
+    text: 'Recipe: "Boil the water. Add the petal. Before adding the salt, add the crushed berry. Finally, stir twice."\n\nWhat is the third step?',
+    options: ['Add Salt','Stir Twice','Add Berry','Boil Water'],
+    correct: 2,
+    feedback: 'Step order: 1. Boil water → 2. Add petal → 3. Add crushed berry (must happen before salt) → 4. Add salt → 5. Stir twice. Third step = Add Berry.'
+  },
+  {
+    id: 'v4',
+    text: '"The traveler felt very glip-glop after walking through the desert for three days without water."\n\nWhat does glip-glop most likely mean?',
+    options: ['Energetic','Dehydrated','Freezing','Angry'],
+    correct: 1,
+    feedback: 'Context clues: three days in a desert without water strongly implies the traveller is dehydrated.'
+  },
+  {
+    id: 'v5',
+    text: '"I told you we should have turned left at the statue!" cried Ren. "The map was upside down!" Kai replied.\n\nWho was holding the map?',
+    options: ['Ren','Kai','Both','Unclear'],
+    correct: 1,
+    feedback: 'Kai\'s defence ("The map was upside down!") implies Kai was the one reading/holding the map.'
+  }
+];
+
+const SPATIAL_QUESTIONS = [
+  {
+    id: 's1',
+    text: 'You are facing North. You turn 90° right, then 180° left. Which direction are you facing now?',
+    options: ['East','West','South','North'],
+    correct: 1,
+    feedback: 'Start: North → Turn 90° right: East → Turn 180° left: West. Final direction = West.'
+  },
+  {
+    id: 's2',
+    text: 'A character is at (0, 0) on a grid. They move 3 steps Up, 2 steps Right, and 1 step Down. What is their final coordinate?\n(x = Right/Left, y = Up/Down)',
+    options: ['(2, 2)','(3, 2)','(2, 3)','(1, 2)'],
+    correct: 0,
+    feedback: 'x: +2 Right → x = 2. y: +3 Up, –1 Down → y = 2. Final: (2, 2).'
+  },
+  {
+    id: 's3',
+    text: 'A character is looking at a Mirror on the West wall of a room. What is directly behind the character?',
+    options: ['North Wall','East Wall','South Wall','The Mirror'],
+    correct: 1,
+    feedback: 'If the character faces West (toward the mirror), their back is to the East Wall.'
+  },
+  {
+    id: 's4',
+    text: 'If a clock shows exactly 3:00, what is the angle between the hour and minute hand?',
+    options: ['45°','60°','90°','120°'],
+    correct: 2,
+    feedback: 'At 3:00, the hour hand points to 3 (90° from 12) and the minute hand points to 12 (0°). The angle between them is 90°.'
+  },
+  {
+    id: 's5',
+    text: 'You enter a dungeon and take these turns: Left, Right, Right, Left, Left. Compared to when you entered, you are now facing:',
+    options: ['Same direction as entry','Opposite direction','Turned 90° left','Turned 90° right'],
+    correct: 0,
+    feedback: 'L, R, R, L, L → net turns: L+R cancel, R+L cancel, one L remains × 2 extra Ls... counting: –1+1+1–1–1 = –1. Actually each turn = 90°. Net = –1×90° = 90° left from entry. Correct answer is "Turned 90° left". (Tip: draw it out!)'
+  }
+];
+
+// Fix Q5 spatial
+SPATIAL_QUESTIONS[4].correct = 2;
+SPATIAL_QUESTIONS[4].feedback = 'Track each 90° turn: Entry=0°. L(−90°)=−90°. R(+90°)=0°. R(+90°)=+90°. L(−90°)=0°. L(−90°)=−90°. A net of −90° from entry = facing 90° left of your entry direction.';
+
+// ═══════════════════════════════════════════════════
+//  PROGRESS
+// ═══════════════════════════════════════════════════
+const SCREEN_ORDER = ['screen-cover','screen-survey','screen-quant','screen-verbal','screen-spatial','screen-simon','screen-results'];
+const SCREEN_LABELS = ['Quest Log','Player Profile','Logic & Lore','Verbal Processing','Spatial Awareness','Prism Pattern','Results'];
+
+function updateProgress(screenIdx) {
+  const pct = Math.round((screenIdx / (SCREEN_ORDER.length - 1)) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPercent').textContent = pct + '% Complete';
+  document.getElementById('progressLabel').textContent = SCREEN_LABELS[screenIdx] || 'Quest Log';
+}
+
+// ═══════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(screenId);
+  if (target) {
+    target.classList.add('active');
+    const idx = SCREEN_ORDER.indexOf(screenId);
+    updateProgress(idx);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  CONSENT
+// ═══════════════════════════════════════════════════
+function toggleConsent() {
+  state.consent = !state.consent;
+  const vis = document.getElementById('consentVisual');
+  if (state.consent) vis.classList.add('checked');
+  else vis.classList.remove('checked');
+}
+
+// ═══════════════════════════════════════════════════
+//  COVER — START
+// ═══════════════════════════════════════════════════
+function startStudy() {
+  if (!state.consent) {
+    document.getElementById('consentError').classList.add('show');
+    return;
+  }
+  document.getElementById('consentError').classList.remove('show');
+  goTo('screen-survey');
+}
+
+// ═══════════════════════════════════════════════════
+//  FORM HELPERS
+// ═══════════════════════════════════════════════════
+function selectRadio(name, value, el) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(inp => {
+    inp.closest('.option-item').classList.remove('selected');
+  });
+  el.classList.add('selected');
+  state.survey[name] = value;
+  hideError('err-' + name);
+}
+
+function toggleCheck(name, value, el) {
+  el.classList.toggle('selected');
+  if (!state.survey[name]) state.survey[name] = [];
+  const idx = state.survey[name].indexOf(value);
+  if (idx === -1) state.survey[name].push(value);
+  else state.survey[name].splice(idx, 1);
+  hideError('err-' + name);
+
+  if (name === 'genre') {
+    updatePrimaryGenreOptions();
+    const otherChecked = state.survey.genre.includes('other');
+    document.getElementById('genreOtherWrap').style.display = otherChecked ? 'block' : 'none';
+    if (!otherChecked) { state.survey.genreOtherText = ''; document.getElementById('genreOther').value = ''; }
+  }
+}
+
+const GENRE_LABELS = {
+  sandbox: 'Sandbox / Casual',
+  openworld: 'Open World / Action RPG',
+  tactical: 'Tactical / Turn-based RPG',
+  shooter: 'Competitive Shooter',
+  moba: 'MOBA',
+  puzzle: 'Puzzle / Strategy',
+  rhythm: 'Rhythm / Simulation',
+  other: 'Other'
+};
+
+function updatePrimaryGenreOptions() {
+  const selected = state.survey.genre || [];
+  const container = document.getElementById('primaryGenreOptions');
+  if (selected.length === 0) {
+    container.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:10px 0">← Select genres above to see options here</div>';
+    return;
+  }
+  container.innerHTML = selected.map(g => `
+    <label class="option-item" onclick="selectRadio('primarygenre','${g}',this)">
+      <input type="radio" name="primarygenre" value="${g}"/>
+      <div class="option-dot"></div>
+      <div class="option-text">${GENRE_LABELS[g] || g}</div>
+    </label>
+  `).join('');
+  // Re-select if previously chosen
+  if (state.survey.primarygenre) {
+    const match = container.querySelector(`[value="${state.survey.primarygenre}"]`);
+    if (match) match.closest('.option-item').classList.add('selected');
+    else delete state.survey.primarygenre;
+  }
+}
+
+function showError(id) { const el = document.getElementById(id); if(el) el.classList.add('show'); }
+function hideError(id) { const el = document.getElementById(id); if(el) el.classList.remove('show'); }
+
+// ═══════════════════════════════════════════════════
+//  SURVEY VALIDATION
+// ═══════════════════════════════════════════════════
+function submitSurvey() {
+  let valid = true;
+  if (!state.survey.age)         { showError('err-age');         valid = false; }
+  if (!state.survey.playtime)    { showError('err-playtime');    valid = false; }
+  if (!state.survey.device || state.survey.device.length === 0) { showError('err-device'); valid = false; }
+  if (!state.survey.skilllevel)  { showError('err-skilllevel');  valid = false; }
+  if (!state.survey.genre || state.survey.genre.length === 0)   { showError('err-genre');  valid = false; }
+  if (!state.survey.primarygenre){ showError('err-primarygenre'); valid = false; }
+  if (!valid) {
+    document.querySelector('.screen.active').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  buildQuizScreens();
+  goTo('screen-quant');
+}
+
+// ═══════════════════════════════════════════════════
+//  BUILD QUIZ HTML
+// ═══════════════════════════════════════════════════
+function buildQuizScreens() {
+  buildQuiz('quant-questions', QUANT_QUESTIONS, 'quant');
+  buildQuiz('verbal-questions', VERBAL_QUESTIONS, 'verbal');
+  buildQuiz('spatial-questions', SPATIAL_QUESTIONS, 'spatial');
+}
+
+function shuffleWithCorrect(options, correctIdx) {
+  // Create array of [label, optionText, isCorrect]
+  const lettered = options.map((o, i) => ({ text: o, isCorrect: i === correctIdx }));
+  // Fisher-Yates shuffle
+  for (let i = lettered.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [lettered[i], lettered[j]] = [lettered[j], lettered[i]];
+  }
+  return lettered;
+}
+
+function buildQuiz(containerId, questions, section) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const dots = questions.map((_, i) =>
+    `<div class="q-dot" id="${section}-dot-${i}"></div>`
+  ).join('');
+
+  let html = `<div class="question-counter">${dots}</div>`;
+
+  questions.forEach((q, qi) => {
+    const shuffled = shuffleWithCorrect(q.options, q.correct);
+    // Store shuffled answer mapping
+    if (!state.answers[section]) state.answers[section] = {};
+    state.answers[section][q.id + '_map'] = shuffled;
+
+    const optionsHtml = shuffled.map((opt, oi) => {
+      const letter = String.fromCharCode(65 + oi);
+      return `
+        <div class="answer-option" id="${section}-${q.id}-opt-${oi}"
+             onclick="selectAnswer('${section}','${q.id}',${oi},${opt.isCorrect ? 'true' : 'false'})">
+          <div class="answer-key">${letter}</div>
+          <div class="answer-text">${opt.text}</div>
+        </div>`;
+    }).join('');
+
+    // Format question text (handle newlines)
+    const formattedText = q.text.replace(/\n/g, '<br/>');
+
+    html += `
+      <div class="card" id="${section}-q-card-${qi}">
+        <div class="question-box">
+          <div class="question-num">Question ${qi+1} of ${questions.length}</div>
+          <div class="question-text">${formattedText}</div>
+        </div>
+        <div class="answer-grid" id="${section}-${q.id}-grid">${optionsHtml}</div>
+        <div class="feedback-box" id="${section}-${q.id}-feedback"></div>
+      </div>`;
+  });
+
+  container.innerHTML = html;
+  updateDots(section, questions);
+}
+
+function updateDots(section, questions) {
+  questions.forEach((q, i) => {
+    const dot = document.getElementById(`${section}-dot-${i}`);
+    if (!dot) return;
+    const ans = state.answers[section][q.id];
+    if (ans !== undefined) dot.classList.add('done'), dot.classList.remove('current');
+    else if (i === 0 || state.answers[section][questions[i-1]?.id] !== undefined) dot.classList.add('current');
+  });
+}
+
+function selectAnswer(section, qId, optIdx, isCorrect) {
+  const grid = document.getElementById(`${section}-${qId}-grid`);
+  if (!grid || grid.classList.contains('locked')) return;
+  grid.classList.add('locked');
+
+  const options = grid.querySelectorAll('.answer-option');
+  options.forEach(o => o.classList.add('locked'));
+
+  const chosen = document.getElementById(`${section}-${qId}-opt-${optIdx}`);
+  chosen.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  if (!isCorrect) {
+    // Highlight correct
+    options.forEach((o, i) => {
+      const map = state.answers[section][qId + '_map'];
+      if (map && map[i] && map[i].isCorrect) o.classList.add('correct');
+    });
+  }
+
+  // Record answer
+  state.answers[section][qId] = isCorrect;
+
+  // Show feedback
+  const questions = section === 'quant' ? QUANT_QUESTIONS : section === 'verbal' ? VERBAL_QUESTIONS : SPATIAL_QUESTIONS;
+  const qData = questions.find(q => q.id === qId);
+  const fb = document.getElementById(`${section}-${qId}-feedback`);
+  if (fb && qData) {
+    fb.textContent = (isCorrect ? '✅ Correct! ' : '❌ Not quite. ') + qData.feedback;
+    fb.classList.add('show');
+    if (!isCorrect) fb.classList.add('wrong-fb');
+  }
+
+  updateDots(section, questions);
+}
+
+// ═══════════════════════════════════════════════════
+//  SECTION SUBMISSION
+// ═══════════════════════════════════════════════════
+function submitSection(section) {
+  const questions = section === 'quant' ? QUANT_QUESTIONS : section === 'verbal' ? VERBAL_QUESTIONS : SPATIAL_QUESTIONS;
+  const unanswered = questions.filter(q => state.answers[section][q.id] === undefined);
+
+  if (unanswered.length > 0) {
+    // Find first unanswered card and highlight
+    const firstQ = unanswered[0];
+    const qIdx = questions.findIndex(q => q.id === firstQ.id);
+    const card = document.getElementById(`${section}-q-card-${qIdx}`);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.style.borderColor = 'rgba(239,68,68,0.5)';
+      setTimeout(() => { card.style.borderColor = ''; }, 2500);
+    }
+    return;
+  }
+
+  // Tally score
+  state.scores[section] = questions.filter(q => state.answers[section][q.id] === true).length;
+
+  const next = { quant: 'screen-verbal', verbal: 'screen-spatial', spatial: 'screen-simon' };
+  goTo(next[section]);
+}
+
+// ═══════════════════════════════════════════════════
+//  SIMON / PRISM PATTERN
+// ═══════════════════════════════════════════════════
+let simon = {
+  sequence: [],
+  playerIdx: 0,
+  level: 0,
+  active: false,
+  clickTimes: [],
+  totalCorrect: 0,
+  gameOver: false,
+  started: false
+};
+
+const CRYSTALS = ['red','blue','green','yellow'];
+const CRYSTAL_SOUNDS = { red: 261.63, blue: 329.63, green: 392.00, yellow: 523.25 };
+
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playTone(freq, dur = 0.18) {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = freq;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + dur);
+  } catch(e) {}
+}
+function playErrorTone() {
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 150;
+    osc.type = 'sawtooth';
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.4);
+  } catch(e) {}
+}
+
+function flashCrystal(color, duration) {
+  return new Promise(resolve => {
+    const el = document.getElementById('c-' + color);
+    el.classList.add('glow', 'flash');
+    playTone(CRYSTAL_SOUNDS[color], duration / 1000);
+    setTimeout(() => {
+      el.classList.remove('glow', 'flash');
+      resolve();
+    }, duration);
+  });
+}
+
+function getFlashDuration() {
+  if (simon.level <= 5) return 800;
+  if (simon.level <= 10) return 500;
+  return 300;
+}
+
+function setAllInactive(inactive) {
+  CRYSTALS.forEach(c => {
+    const el = document.getElementById('c-' + c);
+    if (inactive) el.classList.add('inactive');
+    else el.classList.remove('inactive');
+  });
+}
+
+function startSimon() {
+  simon = { sequence:[], playerIdx:0, level:0, active:false, clickTimes:[], totalCorrect:0, gameOver:false, started:true };
+  document.getElementById('simonStartBtn').style.display = 'none';
+  document.getElementById('simonResultsCard').classList.remove('show');
+  document.getElementById('simonNextBtn').style.display = 'none';
+  nextSimonRound();
+}
+
+async function nextSimonRound() {
+  simon.level++;
+  document.getElementById('simonLevelNum').textContent = simon.level;
+  simon.sequence.push(CRYSTALS[Math.floor(Math.random() * 4)]);
+  simon.active = false;
+  setAllInactive(true);
+
+  document.getElementById('simonStatus').className = 'simon-status watching';
+  document.getElementById('simonStatus').textContent = '👁️ Watch the pattern…';
+
+  const dur = getFlashDuration();
+  const gap = 200;
+
+  for (let i = 0; i < simon.sequence.length; i++) {
+    await flashCrystal(simon.sequence[i], dur);
+    await sleep(gap);
+  }
+
+  // 1 second buffer
+  await sleep(1000);
+
+  simon.active = true;
+  simon.playerIdx = 0;
+  setAllInactive(false);
+  document.getElementById('simonStatus').className = 'simon-status go';
+  document.getElementById('simonStatus').textContent = `🎯 Your turn! Repeat ${simon.sequence.length} crystal${simon.sequence.length>1?'s':''}`;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function simonClick(color) {
+  if (!simon.active || simon.gameOver) return;
+  simon.clickTimes.push(Date.now());
+
+  const expected = simon.sequence[simon.playerIdx];
+  const el = document.getElementById('c-' + color);
+
+  if (color === expected) {
+    el.classList.add('glow');
+    playTone(CRYSTAL_SOUNDS[color], 0.15);
+    setTimeout(() => el.classList.remove('glow'), 200);
+    simon.totalCorrect++;
+    simon.playerIdx++;
+
+    if (simon.playerIdx === simon.sequence.length) {
+      // Completed the round
+      simon.active = false;
+      setAllInactive(true);
+      document.getElementById('simonStatus').className = 'simon-status';
+      document.getElementById('simonStatus').textContent = '✨ Perfect! Get ready for the next round…';
+      await sleep(1200);
+      nextSimonRound();
+    }
+  } else {
+    // Wrong!
+    simon.active = false;
+    simon.gameOver = true;
+    setAllInactive(true);
+    playErrorTone();
+    el.style.filter = 'brightness(0.4)';
+    setTimeout(() => { el.style.filter = ''; }, 500);
+
+    document.getElementById('simonStatus').className = 'simon-status gameover';
+    document.getElementById('simonStatus').textContent = `💎 Sequence complete! Highest level: ${simon.level}`;
+
+    // Calculate avg response time
+    let avgRt = '—';
+    if (simon.clickTimes.length > 1) {
+      const diffs = [];
+      for (let i = 1; i < simon.clickTimes.length; i++) diffs.push(simon.clickTimes[i] - simon.clickTimes[i-1]);
+      const avg = diffs.reduce((a,b) => a+b, 0) / diffs.length;
+      avgRt = (avg / 1000).toFixed(2) + 's';
+    }
+
+    const colorName = color.charAt(0).toUpperCase() + color.slice(1);
+    state.simonData = {
+      highestLevel: simon.level,
+      totalCorrectClicks: simon.totalCorrect,
+      averageResponseTime: avgRt,
+      mistakeMadeOn: colorName + ' Crystal'
+    };
+    state.scores.simon = Math.min(5, Math.floor(simon.level / 2));
+
+    document.getElementById('res-level').textContent   = simon.level;
+    document.getElementById('res-clicks').textContent  = simon.totalCorrect;
+    document.getElementById('res-rt').textContent      = avgRt;
+    document.getElementById('res-mistake').textContent = colorName + ' Crystal';
+
+    document.getElementById('simonResultsCard').classList.add('show');
+    document.getElementById('simonNextBtn').style.display = 'inline-block';
+    document.getElementById('simonLevelNum').textContent = simon.level;
+  }
+}
+
+function submitSimon() {
+  if (!state.simonData) {
+    // If they haven't played, assign 0
+    state.simonData = { highestLevel:0, totalCorrectClicks:0, averageResponseTime:'—', mistakeMadeOn:'—' };
+  }
+  buildResults();
+  goTo('screen-results');
+}
+
+// ═══════════════════════════════════════════════════
+//  RESULTS
+// ═══════════════════════════════════════════════════
+function buildResults() {
+  const { quant, verbal, spatial, simon: simonScore } = state.scores;
+
+  const scoreMap = { quant, verbal, spatial, simon: simonScore };
+  const maxKey = Object.keys(scoreMap).reduce((a,b) => scoreMap[a] >= scoreMap[b] ? a : b);
+
+  const personas = {
+    quant:   { icon: '🧮', name: 'The Strategist',   desc: 'You see the math behind the magic. Numbers bend to your will — whether it\'s calculating DPS, optimising loadouts, or planning 5 steps ahead, you are always one calculation away from victory.' },
+    verbal:  { icon: '📜', name: 'The Lore-Seeker',  desc: 'No dialogue hint gets past you. You absorb context, read between the lines, and understand characters in ways others miss. Your greatest weapon is comprehension.' },
+    spatial: { icon: '🧭', name: 'The Wayfinder',    desc: 'You could navigate a dungeon blindfolded. Maps, rotations, and 3D movement come naturally to you — a rare talent that makes you shine in open worlds and tactical shooters alike.' },
+    simon:   { icon: '⚡', name: 'The Tactician',    desc: 'You remember every cooldown and combo. Your visual working memory is exceptional — sequencing, pattern recognition, and rapid recall are your superpowers.' }
+  };
+
+  const p = personas[maxKey];
+  document.getElementById('personaIcon').textContent = p.icon;
+  document.getElementById('personaName').textContent = p.name;
+  document.getElementById('personaDesc').textContent = p.desc;
+
+  const grid = document.getElementById('scoresGrid');
+  const cards = [
+    { label: '🧩 Logic & Arithmetic', val: quant,    max: 5 },
+    { label: '📖 Verbal Processing',  val: verbal,   max: 5 },
+    { label: '🗺️ Spatial Awareness',  val: spatial,  max: 5 },
+    { label: '💎 Prism Pattern',       val: simonScore, max: 5, sub: `Level ${state.simonData?.highestLevel || 0} reached` }
+  ];
+
+  grid.innerHTML = cards.map(c => {
+    const pct = Math.round((c.val / c.max) * 100);
+    return `
+      <div class="score-card">
+        <div class="score-card-label">${c.label}</div>
+        <div class="score-card-val">${c.val}<span style="font-size:16px;font-weight:400;color:var(--text-muted)"> / ${c.max}</span></div>
+        <div class="score-card-bar"><div class="score-card-fill" style="width:${pct}%"></div></div>
+        <div class="score-card-sub">${c.sub || pct + '% accuracy'}</div>
+      </div>`;
+  }).join('');
+
+  // Animate bars after a tick
+  setTimeout(() => {
+    grid.querySelectorAll('.score-card-fill').forEach(el => {
+      el.style.width = el.style.width; // trigger reflow
+    });
+  }, 100);
+}
+</script>
+</body>
+</html>
