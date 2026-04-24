@@ -1262,7 +1262,11 @@ function goTo(screenId) {
     target.classList.add('active');
     const idx = SCREEN_ORDER.indexOf(screenId);
     updateProgress(idx);
+    
+    // The "Triple-Threat" Scroll Fix
     window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0; 
+    document.body.scrollTop = 0;
   }
 }
 
