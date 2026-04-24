@@ -1262,7 +1262,7 @@ function goTo(screenId) {
     target.classList.add('active');
     const idx = SCREEN_ORDER.indexOf(screenId);
     updateProgress(idx);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   }
 }
 
