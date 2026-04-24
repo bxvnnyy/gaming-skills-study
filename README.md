@@ -2,7 +2,7 @@
 
 An interactive research project exploring the relationship between video game habits and cognitive performance in logic, spatial reasoning, and memory.
 
-## 🚀 [Click Here to Participate in the Study](ttps://bxvnnyy.github.io/gaming-skills-study/)
+## 🚀 [Click Here to Participate in the Study](https://bxvnnyy.github.io/gaming-skills-study/)
 
 ### 📋 Project Overview
 This study is designed to gather data on how different gaming genres (e.g., FPS, RPG, Strategy) correlate with specific mental "quests" 
