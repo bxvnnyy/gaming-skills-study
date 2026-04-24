@@ -480,14 +480,16 @@ body::before {
   line-height: 1; margin-bottom: 20px;
 }
 .simon-board {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 0; margin: 0 auto 24px; position: relative;
-  width: 260px; height: 260px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 240px;
+  margin: 0 auto 24px;
 }
 .crystal {
   width: 110px; height: 110px;
   border-radius: 18px;
-  cursor: pointer; position: absolute;
+  cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 28px;
   border: 2px solid rgba(255,255,255,0.12);
@@ -502,12 +504,6 @@ body::before {
   0%,100% { filter: brightness(1); }
   50% { filter: brightness(2.5) saturate(1.8); }
 }
-
-/* Positions: diamond layout */
-.crystal-top    { top: 0;    left: 50%; transform: translateX(-50%); }
-.crystal-right  { right: 0;  top: 50%; transform: translateY(-50%); }
-.crystal-bottom { bottom: 0; left: 50%; transform: translateX(-50%); }
-.crystal-left   { left: 0;   top: 50%; transform: translateY(-50%); }
 
 /* Crystal colours */
 .crystal-red    { background: radial-gradient(circle at 35% 35%, #ff9999, #cc2222); box-shadow: 0 0 20px rgba(220,50,50,0.5); }
@@ -610,8 +606,15 @@ body::before {
 .mt-8 { margin-top: 8px; }
 .mt-16 { margin-top: 16px; }
 
-/* Hint text */
-.hint {
+/* Upload spinner */
+.upload-spinner {
+  width: 40px; height: 40px; margin: 0 auto;
+  border: 3px solid var(--bg-elevated);
+  border-top-color: var(--lavender);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
   font-size: 11px; color: var(--text-muted);
   margin-top: 6px; font-style: italic;
 }
@@ -820,7 +823,7 @@ body::before {
       </div>
 
       <div class="form-group mb-0">
-        <div class="form-label">Self-Rated Skill Level <span class="required">*</span></div>
+        <div class="form-label">What difficulty of games do you prefer? <span class="required">*</span></div>
         <div class="options-list" id="skillOptions">
           <div class="option-item" onclick="selectRadio('skilllevel','beginner',this)">
             <div class="option-dot"></div>
@@ -903,12 +906,19 @@ body::before {
     <!-- Section 4: Personal Favourites -->
     <div class="card">
       <div class="section-badge">Optional</div>
-      <div class="form-label" style="margin-top:8px">Your Top 3 Favourite Games of All Time</div>
-      <p class="hint" style="margin-bottom:12px">No judgement — even casual mobile games count!</p>
-      <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="form-label" style="margin-top:8px">🏆 Top 3 All-Time Favourite Games</div>
+      <p class="hint" style="margin-bottom:12px">The ones you'd put in a time capsule. No judgement!</p>
+      <div style="display:flex;flex-direction:column;gap:10px; margin-bottom:22px;">
         <input type="text" class="text-input" id="fav1" placeholder="1. e.g. Genshin Impact"/>
         <input type="text" class="text-input" id="fav2" placeholder="2. e.g. Minecraft"/>
         <input type="text" class="text-input" id="fav3" placeholder="3. e.g. Valorant"/>
+      </div>
+      <div class="form-label">🎮 Current Rotation</div>
+      <p class="hint" style="margin-bottom:12px">What are you actively playing right now?</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <input type="text" class="text-input" id="cur1" placeholder="1. e.g. Wuthering Waves"/>
+        <input type="text" class="text-input" id="cur2" placeholder="2. e.g. Honkai: Star Rail"/>
+        <input type="text" class="text-input" id="cur3" placeholder="3. e.g. Stardew Valley"/>
       </div>
     </div>
 
@@ -992,10 +1002,10 @@ body::before {
         <div class="simon-level-num" id="simonLevelNum">—</div>
 
         <div class="simon-board" id="simonBoard">
-          <div class="crystal crystal-top    crystal-red"    id="c-red"    onclick="simonClick('red')">🔴</div>
-          <div class="crystal crystal-right  crystal-blue"   id="c-blue"   onclick="simonClick('blue')">🔵</div>
-          <div class="crystal crystal-bottom crystal-green"  id="c-green"  onclick="simonClick('green')">🟢</div>
-          <div class="crystal crystal-left   crystal-yellow" id="c-yellow" onclick="simonClick('yellow')">🟡</div>
+          <div class="crystal crystal-red"    id="c-red"    onclick="simonClick('red')">🔴</div>
+          <div class="crystal crystal-blue"   id="c-blue"   onclick="simonClick('blue')">🔵</div>
+          <div class="crystal crystal-yellow" id="c-yellow" onclick="simonClick('yellow')">🟡</div>
+          <div class="crystal crystal-green"  id="c-green"  onclick="simonClick('green')">🟢</div>
         </div>
 
         <div class="simon-status" id="simonStatus">Press Start to begin your run!</div>
@@ -1025,27 +1035,71 @@ body::before {
   <div class="screen" id="screen-results">
     <div class="section-badge">Part 04 · Your Results</div>
 
-    <div class="results-hero">
-      <div class="persona-badge" id="personaBadge">
-        <div class="persona-icon" id="personaIcon">🎮</div>
-        <div class="persona-type">Your Gaming Persona</div>
-        <div class="persona-name" id="personaName">Loading…</div>
-      </div>
-      <p class="persona-desc" id="personaDesc">…</p>
-    </div>
-
-    <div class="card">
-      <div style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px">📊 Your Skill Profile</div>
-      <div class="scores-grid" id="scoresGrid"></div>
-    </div>
-
-    <div class="card">
-      <div class="results-thanks">
-        <strong>🙏 Thank you so much for participating!</strong><br/>
-        Your response has been recorded and will contribute to research on the connection between gaming habits and cognitive performance.<br/><br/>
-        <em style="color:var(--text-muted)">This study is being conducted as part of an academic research project. All data is anonymous and used for research purposes only.</em>
+    <!-- SAVING STATE (shown while fetch is in progress) -->
+    <div id="saving-state" style="display:none">
+      <div class="card glow-lav" style="text-align:center; padding: 48px 28px;">
+        <div style="font-size:48px; margin-bottom:16px;">🔮</div>
+        <div style="font-size:18px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Saving your quest data to the lab…</div>
+        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:28px;">Transmitting results to the research database. Please don't close the tab.</div>
+        <div class="upload-spinner"></div>
       </div>
     </div>
+
+    <!-- UPLOAD ERROR STATE -->
+    <div id="upload-error-state" style="display:none">
+      <div class="card" style="border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.06); margin-bottom:18px;">
+        <div style="font-size:20px; margin-bottom:10px;">⚠️ <span style="font-size:15px; font-weight:700; color:#ff7070;">Upload didn't reach the lab</span></div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.7; margin-bottom:16px;">
+          No worries! Download your results file below and email it to <strong style="color:#ff9999;">elianachan09@gmail.com</strong> — it only takes a second!
+        </div>
+        <button class="btn btn-primary btn-full" onclick="downloadResults()">
+          ⬇️ &nbsp;Download Results &amp; Email to elianachan09@gmail.com
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULTS CONTENT (hidden until submission resolves) -->
+    <div id="results-content" style="display:none">
+
+      <div class="results-hero">
+        <div class="persona-badge" id="personaBadge">
+          <div class="persona-icon" id="personaIcon">🎮</div>
+          <div class="persona-type">Your Gaming Persona</div>
+          <div class="persona-name" id="personaName">Loading…</div>
+        </div>
+        <p class="persona-desc" id="personaDesc">…</p>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px">📊 Your Skill Profile</div>
+        <div class="scores-grid" id="scoresGrid"></div>
+      </div>
+
+      <!-- Upload success badge -->
+      <div id="upload-success-badge" style="display:none; margin-bottom:18px;">
+        <div class="card" style="border-color:rgba(110,231,183,0.4); background:rgba(110,231,183,0.06); text-align:center; padding:14px 20px;">
+          <span style="font-size:13px; color:var(--mint);">✅ &nbsp;Results successfully saved to the research database!</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="results-thanks">
+          <strong>🙏 Thank you so much for participating!</strong><br/>
+          Your response has been recorded and will contribute to research on the connection between gaming habits and cognitive performance.<br/><br/>
+          <em style="color:var(--text-muted)">This study is being conducted as part of an academic research project. All data is anonymous and used for research purposes only.</em>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px; text-align:center;">
+          Want a copy of your results for your own records?
+        </div>
+        <button class="btn btn-secondary btn-full" onclick="downloadResults()" style="font-size:12px;">
+          ⬇️ &nbsp;Download My Results
+        </button>
+      </div>
+
+    </div><!-- /results-content -->
   </div>
 
 </div><!-- /app-wrapper -->
@@ -1238,8 +1292,9 @@ function startStudy() {
 //  FORM HELPERS
 // ═══════════════════════════════════════════════════
 function selectRadio(name, value, el) {
-  document.querySelectorAll(`[name="${name}"]`).forEach(inp => {
-    inp.closest('.option-item').classList.remove('selected');
+  // Deselect all siblings in the same options-list
+  el.closest('.options-list').querySelectorAll('.option-item').forEach(item => {
+    item.classList.remove('selected');
   });
   el.classList.add('selected');
   state.survey[name] = value;
@@ -1278,20 +1333,26 @@ function updatePrimaryGenreOptions() {
   const container = document.getElementById('primaryGenreOptions');
   if (selected.length === 0) {
     container.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:10px 0">← Select genres above to see options here</div>';
+    delete state.survey.primarygenre;
     return;
   }
   container.innerHTML = selected.map(g => `
-    <label class="option-item" onclick="selectRadio('primarygenre','${g}',this)">
-      <input type="radio" name="primarygenre" value="${g}"/>
+    <div class="option-item" onclick="selectRadio('primarygenre','${g}',this)">
       <div class="option-dot"></div>
       <div class="option-text">${GENRE_LABELS[g] || g}</div>
-    </label>
+    </div>
   `).join('');
-  // Re-select if previously chosen
+  // Re-select if previously chosen and still valid
+  if (state.survey.primarygenre && !selected.includes(state.survey.primarygenre)) {
+    delete state.survey.primarygenre;
+  }
   if (state.survey.primarygenre) {
-    const match = container.querySelector(`[value="${state.survey.primarygenre}"]`);
-    if (match) match.closest('.option-item').classList.add('selected');
-    else delete state.survey.primarygenre;
+    const items = container.querySelectorAll('.option-item');
+    items.forEach(item => {
+      if (item.getAttribute('onclick').includes(`'${state.survey.primarygenre}'`)) {
+        item.classList.add('selected');
+      }
+    });
   }
 }
 
@@ -1603,27 +1664,27 @@ async function simonClick(color) {
     document.getElementById('simonStatus').className = 'simon-status gameover';
     document.getElementById('simonStatus').textContent = `💎 Sequence complete! Highest level: ${simon.level}`;
 
-    // Calculate avg response time
-    let avgRt = '—';
+    // Calculate avg response time as raw float (seconds)
+    let avgRt = null;
     if (simon.clickTimes.length > 1) {
       const diffs = [];
       for (let i = 1; i < simon.clickTimes.length; i++) diffs.push(simon.clickTimes[i] - simon.clickTimes[i-1]);
       const avg = diffs.reduce((a,b) => a+b, 0) / diffs.length;
-      avgRt = (avg / 1000).toFixed(2) + 's';
+      avgRt = parseFloat((avg / 1000).toFixed(3));
     }
 
     const colorName = color.charAt(0).toUpperCase() + color.slice(1);
     state.simonData = {
       highestLevel: simon.level,
       totalCorrectClicks: simon.totalCorrect,
-      averageResponseTime: avgRt,
+      averageResponseTime_s: avgRt,
       mistakeMadeOn: colorName + ' Crystal'
     };
     state.scores.simon = Math.min(5, Math.floor(simon.level / 2));
 
     document.getElementById('res-level').textContent   = simon.level;
     document.getElementById('res-clicks').textContent  = simon.totalCorrect;
-    document.getElementById('res-rt').textContent      = avgRt;
+    document.getElementById('res-rt').textContent      = avgRt !== null ? avgRt + 's' : '—';
     document.getElementById('res-mistake').textContent = colorName + ' Crystal';
 
     document.getElementById('simonResultsCard').classList.add('show');
@@ -1634,11 +1695,148 @@ async function simonClick(color) {
 
 function submitSimon() {
   if (!state.simonData) {
-    // If they haven't played, assign 0
     state.simonData = { highestLevel:0, totalCorrectClicks:0, averageResponseTime:'—', mistakeMadeOn:'—' };
   }
   buildResults();
   goTo('screen-results');
+  submitToSheets();
+}
+
+// ═══════════════════════════════════════════════════
+//  BUILD PARTICIPANT DATA OBJECT
+// ═══════════════════════════════════════════════════
+function buildParticipantData() {
+  const timestamp = new Date().toISOString();
+  const { quant, verbal, spatial, simon: simonScore } = state.scores;
+
+  // Per-question answer log
+  const answerLog = {};
+  ['quant','verbal','spatial'].forEach(section => {
+    const questions = section === 'quant' ? QUANT_QUESTIONS : section === 'verbal' ? VERBAL_QUESTIONS : SPATIAL_QUESTIONS;
+    answerLog[section] = questions.map(q => ({
+      id: q.id,
+      correct: state.answers[section][q.id] === true
+    }));
+  });
+
+  return {
+    timestamp,
+    researchQuestion: 'To what extent are video game genres associated with players\' objectively measured performance in logic, spatial, and memory skills?',
+    survey: {
+      ageGroup:       state.survey.age        || '—',
+      weeklyPlaytime: state.survey.playtime   || '—',
+      devices:        (state.survey.device    || []).join(', '),
+      skillLevel:     state.survey.skilllevel || '—',
+      genres:         (state.survey.genre     || []).join(', '),
+      genreOther:     state.survey.genreOtherText || '',
+      primaryGenre:   state.survey.primarygenre   || '—',
+      favouriteGames: [
+        document.getElementById('fav1')?.value || '',
+        document.getElementById('fav2')?.value || '',
+        document.getElementById('fav3')?.value || ''
+      ].filter(Boolean).join(' | '),
+      currentRotation: [
+        document.getElementById('cur1')?.value || '',
+        document.getElementById('cur2')?.value || '',
+        document.getElementById('cur3')?.value || ''
+      ].filter(Boolean).join(' | ')
+    },
+    scores: {
+      quantitative: `${quant}/5`,
+      verbal:       `${verbal}/5`,
+      spatial:      `${spatial}/5`,
+      simonHighestLevel: state.simonData.highestLevel,
+      simonAvgResponseTime_s: state.simonData.averageResponseTime_s,
+      simonTotalCorrectClicks: state.simonData.totalCorrectClicks
+    },
+    simonDetails: state.simonData,
+    answerLog
+  };
+}
+
+// ═══════════════════════════════════════════════════
+//  GOOGLE SHEETS SUBMISSION
+// ═══════════════════════════════════════════════════
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwwUq0RIw3wsRVOucrTlXRchlJmZUc9LHMOJ7x3lIPvJOZKrXUdbZCe_b5RCWRcUIE9fQ/exec';
+
+async function submitToSheets() {
+  const savingEl      = document.getElementById('saving-state');
+  const errorEl       = document.getElementById('upload-error-state');
+  const contentEl     = document.getElementById('results-content');
+  const successBadge  = document.getElementById('upload-success-badge');
+
+  // Show loading, hide everything else
+  savingEl.style.display  = 'block';
+  errorEl.style.display   = 'none';
+  contentEl.style.display = 'none';
+
+  const participantData = buildParticipantData();
+
+  try {
+    const response = await fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Google Apps Script requires no-cors
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(participantData)
+    });
+
+    // no-cors means we can't read the response body, but if we got here without throwing it's a success
+    savingEl.style.display  = 'none';
+    contentEl.style.display = 'block';
+    successBadge.style.display = 'block';
+
+  } catch (err) {
+    console.error('Upload failed:', err);
+    savingEl.style.display = 'none';
+    errorEl.style.display  = 'block';
+    contentEl.style.display = 'block';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  DOWNLOAD & CLIPBOARD HELPERS
+// ═══════════════════════════════════════════════════
+function downloadResults() {
+  const data = buildParticipantData();
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'gaming_study_results.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function copyToClipboard(btnId) {
+  const data = buildParticipantData();
+  const json = JSON.stringify(data, null, 2);
+  navigator.clipboard.writeText(json).then(() => {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    const original = btn.innerHTML;
+    btn.innerHTML = '✅ &nbsp;Copied!';
+    btn.style.borderColor = 'var(--teal)';
+    btn.style.color = 'var(--teal)';
+    setTimeout(() => {
+      btn.innerHTML = original;
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 2500);
+  }).catch(() => {
+    // Fallback for browsers that block clipboard API
+    const ta = document.createElement('textarea');
+    ta.value = json;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById(btnId);
+    if (btn) { btn.innerHTML = '✅ &nbsp;Copied!'; setTimeout(() => { btn.innerHTML = '📋 &nbsp;Copy Data to Clipboard'; }, 2500); }
+  });
 }
 
 // ═══════════════════════════════════════════════════
@@ -1664,9 +1862,9 @@ function buildResults() {
 
   const grid = document.getElementById('scoresGrid');
   const cards = [
-    { label: '🧩 Logic & Arithmetic', val: quant,    max: 5 },
-    { label: '📖 Verbal Processing',  val: verbal,   max: 5 },
-    { label: '🗺️ Spatial Awareness',  val: spatial,  max: 5 },
+    { label: '🧩 Logic & Arithmetic', val: quant,      max: 5 },
+    { label: '📖 Verbal Processing',  val: verbal,     max: 5 },
+    { label: '🗺️ Spatial Awareness',  val: spatial,    max: 5 },
     { label: '💎 Prism Pattern',       val: simonScore, max: 5, sub: `Level ${state.simonData?.highestLevel || 0} reached` }
   ];
 
@@ -1676,17 +1874,18 @@ function buildResults() {
       <div class="score-card">
         <div class="score-card-label">${c.label}</div>
         <div class="score-card-val">${c.val}<span style="font-size:16px;font-weight:400;color:var(--text-muted)"> / ${c.max}</span></div>
-        <div class="score-card-bar"><div class="score-card-fill" style="width:${pct}%"></div></div>
+        <div class="score-card-bar"><div class="score-card-fill" style="width:0%"></div></div>
         <div class="score-card-sub">${c.sub || pct + '% accuracy'}</div>
       </div>`;
   }).join('');
 
-  // Animate bars after a tick
-  setTimeout(() => {
-    grid.querySelectorAll('.score-card-fill').forEach(el => {
-      el.style.width = el.style.width; // trigger reflow
+  // Animate bars in after a frame
+  requestAnimationFrame(() => {
+    grid.querySelectorAll('.score-card-fill').forEach((el, i) => {
+      const pct = Math.round((cards[i].val / cards[i].max) * 100);
+      setTimeout(() => { el.style.width = pct + '%'; }, i * 120);
     });
-  }, 100);
+  });
 }
 </script>
 </body>
