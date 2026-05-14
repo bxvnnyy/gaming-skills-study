@@ -92,4 +92,6 @@ The dataset will be used to explore correlations between gaming behaviour and co
 ## 👩‍💻 Credits
 Created by **Lili** for **_VCE Unit 3/4 Data Analytics_**
 
+_thanks to @Nekoniria for the assistance!_
+
 ---
