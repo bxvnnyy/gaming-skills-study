@@ -966,20 +966,38 @@ function buildData() {
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwT7FU1fIKU15dYJKu_uvVKBRW6Z3HnRlyJGSfGpLipG6xokdK15Iws7vPUeV0ISS4zvg/exec';
 
 async function uploadToSheets() {
+
   document.getElementById('saving-state').style.display = 'block';
   document.getElementById('results-content').style.display = 'none';
   document.getElementById('success-banner').style.display = 'none';
   document.getElementById('error-banner').style.display = 'none';
+
   try {
-    await fetch(SHEETS_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(buildData())
+
+    const response = await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(buildData())
     });
-    document.getElementById('saving-state').style.display = 'none';
-    document.getElementById('success-banner').style.display = 'block';
-    document.getElementById('results-content').style.display = 'block';
-  } catch(e) {
+
+    const result = await response.json();
+
+    if (result.result === "success") {
+
+      document.getElementById('saving-state').style.display = 'none';
+      document.getElementById('success-banner').style.display = 'block';
+      document.getElementById('results-content').style.display = 'block';
+
+    } else {
+      throw new Error('Upload failed');
+    }
+
+  } catch (e) {
+
+    console.error(e);
+
     document.getElementById('saving-state').style.display = 'none';
     document.getElementById('error-banner').style.display = 'block';
     document.getElementById('results-content').style.display = 'block';
