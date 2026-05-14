@@ -551,6 +551,26 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 </div><!-- /wrap -->
 
 <script>
+
+// This makes it so you can only do the survey once if you've already done it.
+const COMPLETED_KEY = "gamesense_completed";
+
+const ADMIN_BYPASS =
+  new URLSearchParams(window.location.search).get("admin") === "true";
+
+if (ADMIN_BYPASS) {
+  localStorage.removeItem(COMPLETED_KEY);
+}
+
+if (localStorage.getItem(COMPLETED_KEY) === "true" && !ADMIN_BYPASS) {
+  document.body.innerHTML = `
+    <div style="padding:40px;color:white;font-family:sans-serif;text-align:center;">
+      <h1>Survey Already Completed</h1>
+      <p>You have already submitted to this survey.</p>
+    </div>
+  `;
+}
+
 // ═══════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════
@@ -993,6 +1013,8 @@ async function uploadToSheets() {
     document.getElementById('saving-state').style.display = 'none';
     document.getElementById('success-banner').style.display = 'block';
     document.getElementById('results-content').style.display = 'block';
+
+    localStorage.setItem(COMPLETED_KEY, "true");
 
   } catch (e) {
 
