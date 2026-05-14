@@ -924,9 +924,22 @@ function buildData() {
   else if (verbalCorrect) persona = 'The Lore-Seeker';
   else if (spatialCorrect) persona = 'The Wayfinder';
 
+  const now = new Date();
+
+  const formattedTime =
+    String(now.getDate()).padStart(2, '0') + "-" +
+    String(now.getMonth() + 1).padStart(2, '0') + "-" +
+    now.getFullYear() + " " +
+    String(now.getHours()).padStart(2, '0') + ":" +
+    String(now.getMinutes()).padStart(2, '0') + ":" +
+    String(now.getSeconds()).padStart(2, '0');
+
+  const participantID = "P" + Date.now();
+
   return {
 
-    timestamp: new Date().toISOString(),
+    participant_id: participantID,
+    timestamp: formattedTime,
 
     age_group: survey.age,
     playtime: survey.playtime,
