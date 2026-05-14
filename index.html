@@ -974,25 +974,15 @@ async function uploadToSheets() {
 
   try {
 
-    const response = await fetch(SHEETS_URL, {
+    await fetch(SHEETS_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      mode: 'no-cors',
       body: JSON.stringify(buildData())
     });
 
-    const result = await response.json();
-
-    if (result.result === "success") {
-
-      document.getElementById('saving-state').style.display = 'none';
-      document.getElementById('success-banner').style.display = 'block';
-      document.getElementById('results-content').style.display = 'block';
-
-    } else {
-      throw new Error('Upload failed');
-    }
+    document.getElementById('saving-state').style.display = 'none';
+    document.getElementById('success-banner').style.display = 'block';
+    document.getElementById('results-content').style.display = 'block';
 
   } catch (e) {
 
