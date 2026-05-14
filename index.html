@@ -564,11 +564,16 @@ if (ADMIN_BYPASS) {
 
 if (localStorage.getItem(COMPLETED_KEY) === "true" && !ADMIN_BYPASS) {
   document.body.innerHTML = `
-    <div style="padding:40px;color:white;font-family:sans-serif;text-align:center;">
-      <h1>Survey Already Completed</h1>
-      <p>You have already submitted to this survey.</p>
+    <div class="locked-screen">
+      <div class="locked-card">
+        <h1>🎮 Quest Already Completed</h1>
+        <p>You’ve already submitted your results for this study.</p>
+        <p style="opacity:.7;font-size:.9rem;">
+          Thanks for participating!
+        </p>
+      </div>
     </div>
-  `;
+`;
 }
 
 // ═══════════════════════════════════════════════
