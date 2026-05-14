@@ -650,7 +650,7 @@ const VERBAL_QS = [
 
 const SPATIAL_QS = [
   { id:'s1', text:'You are facing North. You turn 90° right, then 180° left. Which direction are you facing now?', opts:['East','West','South','North'], correct:1, fb:'Start: North → 90° right = East → 180° left = West. Final direction: West.' },
-  { id:'s2', text:'If a square with a star in its top-left corner is reflected across a vertical center line, where will the star appear?', opts:['Top-left corner','Top-right corner','Bottom-left corner','Bottom-right corner'], correct:1, fb:'Reflecting over a vertical line swaps left and right. The top-left becomes top-right.' },
+  { id:'s2', text:'A square has a star in its top-left corner. It is reflected across a vertical line through its centre. Where is the star located?', opts:['Top-left corner','Top-right corner','Bottom-left corner','Bottom-right corner'], correct:1, fb:'Reflecting over a vertical line swaps left and right. The top-left becomes top-right.' },
   { id:'s3', text:'A character starts at coordinate (0, 0). They move 3 steps Up, 2 steps Right, and 1 step Down. What is the final coordinate?\n(x = Right/Left, y = Up/Down)', opts:['(2, 2)','(3, 2)','(2, 3)','(1, 2)'], correct:0, fb:'x: +2 Right → x=2. y: +3 Up −1 Down → y=2. Final: (2, 2).' }
 ];
 
@@ -939,14 +939,14 @@ function buildData() {
   return {
 
     participant_id: participantID,
-    timestamp: formattedTime,
+    timestamp: "'" + formattedTime,
 
-    age_group: survey.age,
-    playtime: survey.playtime,
-    primary_device: survey.device,
-    primary_genre: survey.genre,
-    genre_other: survey.genre_other || '',
-    fav_game: survey.fav_game || '',
+    age_group: document.getElementById('age')?.value || '',
+    playtime: document.getElementById('playtime')?.value || '',
+    primary_device: document.getElementById('device')?.value || '',
+    primary_genre: document.getElementById('genre')?.value || '',
+    genre_other: document.getElementById('genre_other')?.value || '',
+    fav_game: document.getElementById('fav_game')?.value || '',
 
     logic_score: scores.logic,
     verbal_score: scores.verbal,
