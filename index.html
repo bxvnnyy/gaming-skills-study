@@ -1,1893 +1,1005 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Gaming & Cognitive Skills Study</title>
+<title>GameSense: Gaming & Cognitive Skills Study</title>
 <style>
-/* ═══════════════════════════════════════════
-   COZY GAMING LAB — THEME TOKENS
-═══════════════════════════════════════════ */
 :root {
-  --bg-deep:      #0d1117;
-  --bg-card:      #161b27;
-  --bg-elevated:  #1e2535;
-  --bg-hover:     #252d42;
-
-  --teal:         #4ecdc4;
-  --teal-dim:     #2a9d8f;
-  --teal-glow:    rgba(78,205,196,0.25);
-  --lavender:     #a78bfa;
-  --lavender-dim: #7c5cbf;
-  --lavender-glow:rgba(167,139,250,0.25);
-  --mint:         #6ee7b7;
-
-  --text-primary:   #e8eaf0;
-  --text-secondary: #8b93a8;
-  --text-muted:     #505a72;
-
-  --border:        rgba(78,205,196,0.18);
-  --border-hover:  rgba(78,205,196,0.45);
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --radius-xl: 32px;
-
-  --font-head: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --font-body: 'Segoe UI', system-ui, -apple-system, sans-serif;
-
-  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
-  --shadow-glow-teal: 0 0 20px rgba(78,205,196,0.3);
-  --shadow-glow-lav:  0 0 20px rgba(167,139,250,0.3);
+  --bg:#0b0f1a; --bg-card:#131929; --bg-el:#1a2236; --bg-hover:#202a40;
+  --teal:#4ecdc4; --teal-dim:#2a9d8f; --teal-glow:rgba(78,205,196,.28);
+  --lav:#a78bfa; --lav-dim:#7c5cbf; --lav-glow:rgba(167,139,250,.25);
+  --mint:#6ee7b7; --gold:#fbbf24; --purple:#c084fc;
+  --text:#e8eaf0; --text2:#8b93a8; --text3:#505a72;
+  --border:rgba(78,205,196,.16); --border-h:rgba(78,205,196,.42);
+  --r-sm:8px; --r-md:14px; --r-lg:22px; --r-xl:32px;
+  --shadow:0 4px 24px rgba(0,0,0,.45);
+  --glow-t:0 0 22px rgba(78,205,196,.3); --glow-l:0 0 22px rgba(167,139,250,.3);
 }
-
-/* ═══════════════════════════════════════════
-   RESET & BASE
-═══════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg-deep);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.65;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ═══════════════════════════════════════════
-   BACKGROUND STARS
-═══════════════════════════════════════════ */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;
+  font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
-    radial-gradient(1px 1px at 15% 20%, rgba(78,205,196,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 15%, rgba(167,139,250,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 45% 70%, rgba(78,205,196,0.25) 0%, transparent 100%),
-    radial-gradient(1px 1px at 72% 80%, rgba(167,139,250,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 25% 55%, rgba(110,231,183,0.2) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 40%, rgba(78,205,196,0.15) 0%, transparent 100%),
-    radial-gradient(1px 1px at 90% 60%, rgba(167,139,250,0.15) 0%, transparent 100%),
-    radial-gradient(1px 1px at 5% 85%, rgba(78,205,196,0.2) 0%, transparent 100%);
-  pointer-events: none; z-index: 0;
-}
+    radial-gradient(1px 1px at 12% 18%,rgba(78,205,196,.35) 0%,transparent 100%),
+    radial-gradient(1px 1px at 83% 12%,rgba(167,139,250,.28) 0%,transparent 100%),
+    radial-gradient(1px 1px at 47% 68%,rgba(78,205,196,.2) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 82%,rgba(167,139,250,.18) 0%,transparent 100%),
+    radial-gradient(1px 1px at 28% 54%,rgba(110,231,183,.18) 0%,transparent 100%),
+    radial-gradient(1px 1px at 91% 55%,rgba(167,139,250,.14) 0%,transparent 100%),
+    radial-gradient(1px 1px at 6% 88%,rgba(78,205,196,.18) 0%,transparent 100%);}
+.wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:16px 16px 70px;}
 
-/* ═══════════════════════════════════════════
-   LAYOUT WRAPPER
-═══════════════════════════════════════════ */
-.app-wrapper {
-  position: relative; z-index: 1;
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 20px 16px 60px;
-}
+/* PROGRESS */
+.prog-outer{position:sticky;top:0;z-index:100;background:var(--bg);padding:10px 0 8px;
+  border-bottom:1px solid var(--border);margin-bottom:26px;}
+.prog-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);
+  letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;}
+.prog-label{font-weight:700;color:var(--teal);}
+.prog-track{height:6px;border-radius:99px;background:var(--bg-el);overflow:hidden;}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--lav));
+  box-shadow:0 0 10px var(--teal-glow);transition:width .55s cubic-bezier(.4,0,.2,1);width:0%;}
 
-/* ═══════════════════════════════════════════
-   PROGRESS BAR
-═══════════════════════════════════════════ */
-.progress-bar-outer {
-  position: sticky; top: 0; z-index: 100;
-  background: var(--bg-deep);
-  padding: 10px 0 8px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 28px;
-}
-.progress-meta {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 6px;
-  font-size: 12px; color: var(--text-secondary);
-  letter-spacing: 0.05em; text-transform: uppercase;
-}
-.progress-label { font-weight: 600; color: var(--teal); }
-.progress-track {
-  height: 6px; border-radius: 99px;
-  background: var(--bg-elevated);
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  border-radius: 99px;
-  background: linear-gradient(90deg, var(--teal), var(--lavender));
-  box-shadow: 0 0 10px var(--teal-glow);
-  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
-  width: 0%;
-}
+/* SCREENS */
+.screen{display:none;animation:fsIn .4s ease both;}
+.screen.active{display:block;}
+@keyframes fsIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 
-/* ═══════════════════════════════════════════
-   SCREENS (pages)
-═══════════════════════════════════════════ */
-.screen { display: none; animation: fadeSlideIn 0.45s ease both; }
-.screen.active { display: block; }
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* CARD */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:26px;box-shadow:var(--shadow);margin-bottom:16px;}
+.card.gt{box-shadow:var(--shadow),var(--glow-t);border-color:rgba(78,205,196,.28);}
+.card.gl{box-shadow:var(--shadow),var(--glow-l);border-color:rgba(167,139,250,.28);}
 
-/* ═══════════════════════════════════════════
-   CARD
-═══════════════════════════════════════════ */
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px 28px;
-  box-shadow: var(--shadow-card);
-  margin-bottom: 18px;
-}
-.card.glow-teal { box-shadow: var(--shadow-card), var(--shadow-glow-teal); border-color: rgba(78,205,196,0.3); }
-.card.glow-lav  { box-shadow: var(--shadow-card), var(--shadow-glow-lav);  border-color: rgba(167,139,250,0.3); }
+/* COVER */
+.logo-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.logo-icon{width:42px;height:42px;border-radius:11px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--teal),var(--lav));
+  display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--glow-t);}
+.logo-eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);font-weight:600;}
+.cover-title{font-size:clamp(22px,5vw,34px);font-weight:800;line-height:1.2;margin-bottom:5px;
+  background:linear-gradient(135deg,var(--teal),var(--lav));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cover-cap{font-size:14px;color:var(--text2);margin-bottom:22px;font-style:italic;}
+.cover-intro{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:22px;}
 
-/* ═══════════════════════════════════════════
-   COVER PAGE
-═══════════════════════════════════════════ */
-.cover-logo {
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 24px;
-}
-.cover-logo-icon {
-  width: 44px; height: 44px;
-  background: linear-gradient(135deg, var(--teal), var(--lavender));
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  box-shadow: var(--shadow-glow-teal);
-}
-.cover-logo-text {
-  font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--text-secondary); font-weight: 600;
-}
-.cover-title {
-  font-size: clamp(26px, 5vw, 38px);
-  font-weight: 800;
-  line-height: 1.2;
-  background: linear-gradient(135deg, var(--teal) 0%, var(--lavender) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 12px;
-}
-.cover-sub {
-  color: var(--text-secondary); font-size: 14px; line-height: 1.7;
-  margin-bottom: 28px;
-  max-width: 560px;
-}
+/* INFO PILLS */
+.pill-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px;}
+@media(max-width:480px){.pill-row{grid-template-columns:1fr;}}
+.pill{background:var(--bg-el);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:13px 14px;display:flex;align-items:flex-start;gap:9px;}
+.pill-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+.pill-body strong{display:block;font-size:12px;color:var(--teal);margin-bottom:2px;}
+.pill-body span{font-size:11px;color:var(--text2);}
 
-.info-row {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  margin-bottom: 24px;
-}
-@media (max-width: 520px) { .info-row { grid-template-columns: 1fr; } }
-.info-pill {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 14px 16px;
-  display: flex; align-items: flex-start; gap: 10px;
-}
-.info-pill-icon { font-size: 18px; margin-top: 1px; flex-shrink: 0; }
-.info-pill-text strong { display: block; font-size: 13px; color: var(--teal); margin-bottom: 2px; }
-.info-pill-text span { font-size: 12px; color: var(--text-secondary); }
+/* ROADMAP */
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;}
+@media(max-width:520px){.roadmap{grid-template-columns:repeat(2,1fr);}}
+.rm-item{background:var(--bg-el);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:13px 10px;text-align:center;}
+.rm-num{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:4px;}
+.rm-icon{font-size:20px;margin-bottom:5px;}
+.rm-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.rm-sub{font-size:10px;color:var(--text3);}
 
-/* Quest Log */
-.quest-log {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  margin-bottom: 28px;
-}
-.quest-log-header {
-  background: linear-gradient(90deg, rgba(78,205,196,0.15), rgba(167,139,250,0.1));
-  border-bottom: 1px solid var(--border);
-  padding: 12px 18px;
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--teal); font-weight: 700;
-}
-.quest-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 14px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  transition: background 0.2s;
-}
-.quest-item:last-child { border-bottom: none; }
-.quest-icon { font-size: 20px; flex-shrink: 0; }
-.quest-info { flex: 1; }
-.quest-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
-.quest-desc  { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-.quest-time  { font-size: 11px; color: var(--text-muted); background: var(--bg-card); border-radius: 99px; padding: 3px 10px; }
+/* CONSENT */
+.consent-box{display:flex;gap:12px;align-items:flex-start;
+  background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);
+  border-radius:var(--r-md);padding:15px;cursor:pointer;margin-bottom:18px;
+  transition:background .2s,border-color .2s;user-select:none;}
+.consent-box:hover{background:rgba(167,139,250,.14);}
+.c-check{width:22px;height:22px;flex-shrink:0;border-radius:6px;
+  border:2px solid var(--lav-dim);display:flex;align-items:center;justify-content:center;
+  transition:all .2s;margin-top:1px;}
+.c-check.on{background:var(--lav);border-color:var(--lav);}
+.c-check.on::after{content:'✓';color:#fff;font-size:13px;font-weight:800;}
+.consent-text{font-size:13px;color:var(--text2);line-height:1.6;}
+.consent-text strong{color:var(--lav);}
 
-/* ═══════════════════════════════════════════
-   CONSENT CHECKBOX
-═══════════════════════════════════════════ */
-.consent-box {
-  display: flex; gap: 12px; align-items: flex-start;
-  background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25);
-  border-radius: var(--radius-md); padding: 16px;
-  cursor: pointer; margin-bottom: 20px;
-  transition: background 0.2s, border-color 0.2s;
-}
-.consent-box:hover { background: rgba(167,139,250,0.14); }
-.consent-box input[type="checkbox"] { display: none; }
-.consent-check-visual {
-  width: 22px; height: 22px; flex-shrink: 0; border-radius: 6px;
-  border: 2px solid var(--lavender-dim);
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s; margin-top: 1px;
-  background: transparent;
-}
-.consent-check-visual.checked {
-  background: var(--lavender); border-color: var(--lavender);
-}
-.consent-check-visual.checked::after {
-  content: '✓'; color: #fff; font-size: 13px; font-weight: 800;
-}
-.consent-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
-.consent-text strong { color: var(--lavender); }
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:13px 26px;border-radius:var(--r-md);font-size:14px;font-weight:700;
+  letter-spacing:.04em;cursor:pointer;border:none;outline:none;
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);text-transform:uppercase;}
+.btn-p{background:linear-gradient(135deg,var(--teal),var(--teal-dim));color:#0b0f1a;
+  box-shadow:0 4px 16px var(--teal-glow);}
+.btn-p:hover:not(:disabled){transform:translateY(-2px) scale(1.03);box-shadow:0 6px 24px rgba(78,205,196,.45);}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.btn-s{background:var(--bg-el);color:var(--text2);border:1px solid var(--border);}
+.btn-s:hover{background:var(--bg-hover);color:var(--text);}
+.btn-w{width:100%;}
+.btn-row{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:22px;}
 
-/* ═══════════════════════════════════════════
-   BUTTONS
-═══════════════════════════════════════════ */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 13px 28px; border-radius: var(--radius-md);
-  font-size: 14px; font-weight: 700; letter-spacing: 0.04em;
-  cursor: pointer; border: none; outline: none;
-  transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1);
-  text-transform: uppercase;
-}
-.btn-primary {
-  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
-  color: #0d1117;
-  box-shadow: 0 4px 16px var(--teal-glow);
-}
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 6px 24px rgba(78,205,196,0.45);
-}
-.btn-primary:disabled {
-  opacity: 0.4; cursor: not-allowed; transform: none;
-}
-.btn-secondary {
-  background: var(--bg-elevated); color: var(--text-secondary);
-  border: 1px solid var(--border);
-}
-.btn-secondary:hover { background: var(--bg-hover); color: var(--text-primary); }
-.btn-full { width: 100%; }
-.btn-row { display: flex; gap: 12px; justify-content: space-between; align-items: center; margin-top: 24px; }
+/* SECTION BADGE */
+.badge{display:inline-block;background:linear-gradient(135deg,var(--teal-glow),var(--lav-glow));
+  border:1px solid rgba(78,205,196,.32);border-radius:99px;padding:4px 13px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:10px;}
+.sec-title{font-size:clamp(19px,4vw,25px);font-weight:800;color:var(--text);margin-bottom:5px;}
+.sec-title span{color:var(--teal);}
+.sec-sub{font-size:13px;color:var(--text2);margin-bottom:22px;}
 
-/* ═══════════════════════════════════════════
-   SECTION HEADERS
-═══════════════════════════════════════════ */
-.section-badge {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--teal-glow), var(--lavender-glow));
-  border: 1px solid rgba(78,205,196,0.35);
-  border-radius: 99px;
-  padding: 4px 14px;
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--teal); font-weight: 700;
-  margin-bottom: 12px;
-}
-.section-title {
-  font-size: clamp(20px, 4vw, 26px); font-weight: 800;
-  color: var(--text-primary); margin-bottom: 6px;
-}
-.section-title span { color: var(--teal); }
-.section-sub {
-  font-size: 13px; color: var(--text-secondary); margin-bottom: 24px;
-}
+/* FORM */
+.fg{margin-bottom:20px;}
+.flabel{display:block;font-size:12px;font-weight:700;color:var(--text2);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:9px;}
+.flabel .req{color:var(--lav);margin-left:3px;}
+.opt-list{display:flex;flex-direction:column;gap:7px;}
+.opt{display:flex;align-items:center;gap:11px;background:var(--bg-el);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:12px 15px;cursor:pointer;transition:all .18s;user-select:none;}
+.opt:hover{background:var(--bg-hover);border-color:var(--border-h);}
+.opt.sel{background:rgba(78,205,196,.1);border-color:var(--teal);box-shadow:0 0 12px var(--teal-glow);}
+.opt-dot{width:17px;height:17px;flex-shrink:0;border-radius:50%;border:2px solid var(--text3);
+  display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.opt.sel .opt-dot{background:var(--teal);border-color:var(--teal);}
+.opt.sel .opt-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#0b0f1a;}
+.opt-chk{width:17px;height:17px;flex-shrink:0;border-radius:5px;border:2px solid var(--text3);
+  display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.opt.sel .opt-chk{background:var(--teal);border-color:var(--teal);}
+.opt.sel .opt-chk::after{content:'✓';color:#0b0f1a;font-size:11px;font-weight:900;}
+.opt-text{font-size:14px;flex:1;line-height:1.4;}
+.opt-text small{display:block;font-size:11px;color:var(--text3);margin-top:1px;}
+.txt-in{width:100%;background:var(--bg-el);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:11px 15px;color:var(--text);font-family:inherit;font-size:14px;outline:none;
+  transition:border-color .2s,box-shadow .2s;}
+.txt-in:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow);}
+.txt-in::placeholder{color:var(--text3);}
+.err{color:#ff7070;font-size:12px;margin-top:5px;display:none;}
+.err.on{display:block;}
+.notice{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.22);
+  border-radius:var(--r-md);padding:11px 15px;font-size:13px;color:var(--text2);margin-bottom:16px;}
+.notice strong{color:var(--lav);}
+.hint{font-size:11px;color:var(--text3);margin-top:5px;font-style:italic;}
 
-/* ═══════════════════════════════════════════
-   FORM ELEMENTS
-═══════════════════════════════════════════ */
-.form-group { margin-bottom: 22px; }
-.form-label {
-  display: block; font-size: 13px; font-weight: 600;
-  color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
-  margin-bottom: 10px;
-}
-.form-label .required { color: var(--lavender); margin-left: 3px; }
+/* QUIZ */
+.q-header{display:flex;align-items:center;gap:13px;margin-bottom:22px;}
+.q-icon{width:46px;height:46px;flex-shrink:0;border-radius:var(--r-md);
+  background:linear-gradient(135deg,var(--teal-glow),var(--lav-glow));
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.q-cat{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700;}
+.q-title-h{font-size:17px;font-weight:700;color:var(--text);}
+.q-dots{display:flex;gap:6px;margin-bottom:18px;}
+.qdot{height:4px;flex:1;border-radius:99px;background:var(--bg-el);transition:background .3s;}
+.qdot.done{background:var(--teal);}
+.qdot.cur{background:var(--lav);box-shadow:0 0 8px var(--lav-glow);}
+.q-box{background:var(--bg-el);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:19px 18px;margin-bottom:16px;}
+.q-num{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lav);font-weight:700;margin-bottom:7px;}
+.q-text{font-size:15px;color:var(--text);line-height:1.65;font-weight:500;}
+.ans-grid{display:flex;flex-direction:column;gap:7px;}
+.ans{display:flex;align-items:center;gap:11px;background:var(--bg-el);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:12px 15px;cursor:pointer;transition:all .18s;user-select:none;}
+.ans:hover:not(.locked){background:var(--bg-hover);border-color:var(--border-h);}
+.ans.picked:not(.correct):not(.wrong){background:rgba(78,205,196,.1);border-color:var(--teal);}
+.ans.correct{background:rgba(110,231,183,.1);border-color:var(--mint);box-shadow:0 0 10px rgba(110,231,183,.18);}
+.ans.wrong{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.38);}
+.ans-key{width:28px;height:28px;flex-shrink:0;border-radius:7px;background:var(--bg-card);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--text3);transition:all .18s;}
+.ans.picked:not(.correct):not(.wrong) .ans-key{background:var(--teal);border-color:var(--teal);color:#0b0f1a;}
+.ans.correct .ans-key{background:var(--mint);border-color:var(--mint);color:#0b0f1a;}
+.ans.wrong .ans-key{background:rgba(239,68,68,.5);border-color:transparent;color:#fff;}
+.ans-text{font-size:14px;flex:1;}
+.fb-box{background:var(--bg-el);border-radius:var(--r-md);padding:13px 15px;margin-bottom:14px;
+  border-left:3px solid var(--teal);font-size:13px;color:var(--text2);display:none;}
+.fb-box.on{display:block;}
+.fb-box.bad{border-left-color:rgba(239,68,68,.6);}
 
-/* Radio / Checkbox Options */
-.options-list { display: flex; flex-direction: column; gap: 8px; }
-.option-item {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 12px 16px;
-  cursor: pointer; transition: all 0.2s; user-select: none;
-}
-.option-item:hover { background: var(--bg-hover); border-color: var(--border-hover); }
-.option-item.selected {
-  background: rgba(78,205,196,0.1);
-  border-color: var(--teal);
-  box-shadow: 0 0 12px var(--teal-glow);
-}
-.option-item input { display: none; }
-.option-dot {
-  width: 18px; height: 18px; flex-shrink: 0;
-  border-radius: 50%; border: 2px solid var(--text-muted);
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-}
-.option-item.selected .option-dot {
-  background: var(--teal); border-color: var(--teal);
-}
-.option-item.selected .option-dot::after {
-  content: ''; width: 6px; height: 6px;
-  border-radius: 50%; background: #0d1117;
-}
-.option-check {
-  width: 18px; height: 18px; flex-shrink: 0;
-  border-radius: 5px; border: 2px solid var(--text-muted);
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-}
-.option-item.selected .option-check {
-  background: var(--teal); border-color: var(--teal);
-}
-.option-item.selected .option-check::after {
-  content: '✓'; color: #0d1117; font-size: 11px; font-weight: 900;
-}
-.option-text { font-size: 14px; flex: 1; }
-.option-text small { display: block; font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+/* SIMON */
+.simon-wrap{text-align:center;}
+.simon-lv-cap{font-size:12px;color:var(--text2);margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase;}
+.simon-lv-num{font-size:42px;font-weight:800;line-height:1;margin-bottom:18px;
+  background:linear-gradient(135deg,var(--teal),var(--lav));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.simon-board{display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  width:250px;margin:0 auto 20px;}
+.crystal{width:115px;height:115px;border-radius:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+  border:2px solid rgba(255,255,255,.1);
+  transition:box-shadow .14s,filter .14s;user-select:none;}
+.crystal:hover:not(.inactive){filter:brightness(1.15);}
+.crystal:active:not(.inactive){filter:brightness(1.3);}
+.crystal.inactive{cursor:default;opacity:.82;}
+.crystal.flash{animation:cFlash .25s ease;}
+@keyframes cFlash{0%,100%{filter:brightness(1);}50%{filter:brightness(2.6) saturate(1.8);}}
+.c-pyro {background:radial-gradient(circle at 35% 35%,#ff9966,#bb2200);box-shadow:0 0 18px rgba(187,34,0,.55);}
+.c-cryo {background:radial-gradient(circle at 35% 35%,#aaddff,#0f88cc);box-shadow:0 0 18px rgba(15,136,204,.55);}
+.c-geo {background:radial-gradient(circle at 35% 35%,#ffe066,#bb7700);box-shadow:0 0 18px rgba(187,119,0,.55);}
+.c-electro{background:radial-gradient(circle at 35% 35%,#dd99ff,#7722bb);box-shadow:0 0 18px rgba(119,34,187,.55);}
+.c-pyro.glow {box-shadow:0 0 45px rgba(220,60,0,.9), 0 0 85px rgba(220,60,0,.35);}
+.c-cryo.glow {box-shadow:0 0 45px rgba(15,136,204,.9),0 0 85px rgba(15,136,204,.35);}
+.c-geo.glow {box-shadow:0 0 45px rgba(200,140,0,.9), 0 0 85px rgba(200,140,0,.35);}
+.c-electro.glow{box-shadow:0 0 45px rgba(140,40,210,.9),0 0 85px rgba(140,40,210,.35);}
+.simon-status{font-size:14px;color:var(--text2);min-height:20px;margin-bottom:14px;}
+.simon-status.watch{color:var(--lav);}
+.simon-status.go{color:var(--teal);}
+.simon-status.over{color:#ff7070;}
+.simon-status.win{color:var(--gold);}
+.simon-start-btn{background:linear-gradient(135deg,var(--teal),var(--teal-dim));color:#0b0f1a;
+  border:none;border-radius:var(--r-md);padding:13px 34px;font-size:14px;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 4px 16px var(--teal-glow);transition:all .22s;}
+.simon-start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(78,205,196,.45);}
+.simon-res-card{background:var(--bg-el);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:18px;margin-top:18px;display:none;}
+.simon-res-card.on{display:block;}
+.s-stat{display:flex;justify-content:space-between;padding:8px 0;
+  border-bottom:1px solid var(--border);font-size:14px;}
+.s-stat:last-child{border-bottom:none;}
+.s-stat-l{color:var(--text2);}
+.s-stat-v{font-weight:700;color:var(--teal);}
 
-/* Text Input */
-.text-input {
-  width: 100%; background: var(--bg-elevated);
-  border: 1px solid var(--border); border-radius: var(--radius-md);
-  padding: 12px 16px; color: var(--text-primary);
-  font-family: var(--font-body); font-size: 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  outline: none;
-}
-.text-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-glow); }
-.text-input::placeholder { color: var(--text-muted); }
+/* RESULTS */
+.persona-wrap{text-align:center;padding:24px 0 16px;}
+.persona-badge{display:inline-flex;flex-direction:column;align-items:center;gap:8px;
+  background:linear-gradient(135deg,rgba(78,205,196,.09),rgba(167,139,250,.09));
+  border:1px solid var(--border);border-radius:var(--r-xl);padding:26px 32px;margin-bottom:18px;}
+.p-icon{font-size:52px;}
+.p-type{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);}
+.p-name{font-size:26px;font-weight:800;
+  background:linear-gradient(135deg,var(--teal),var(--lav));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.p-desc{font-size:14px;color:var(--text2);max-width:460px;text-align:center;
+  line-height:1.75;margin:0 auto;}
+.scores-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:18px 0;}
+@media(max-width:460px){.scores-grid{grid-template-columns:1fr;}}
+.sc-card{background:var(--bg-el);border:1px solid var(--border);border-radius:var(--r-md);padding:17px;}
+.sc-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:7px;}
+.sc-val{font-size:30px;font-weight:800;color:var(--teal);line-height:1;margin-bottom:5px;}
+.sc-bar{height:4px;border-radius:99px;background:var(--bg-card);overflow:hidden;margin-bottom:4px;}
+.sc-fill{height:100%;border-radius:99px;
+  background:linear-gradient(90deg,var(--teal),var(--lav));
+  transition:width 1.1s cubic-bezier(.4,0,.2,1);width:0%;}
+.sc-sub{font-size:11px;color:var(--text3);}
+.thanks{text-align:center;padding:18px;font-size:14px;color:var(--text2);line-height:1.85;}
+.thanks strong{color:var(--teal);}
 
-/* ═══════════════════════════════════════════
-   QUIZ SECTION
-═══════════════════════════════════════════ */
-.quiz-header {
-  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
-}
-.quiz-icon {
-  width: 48px; height: 48px; flex-shrink: 0;
-  background: linear-gradient(135deg, var(--teal-glow), var(--lavender-glow));
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  display: flex; align-items: center; justify-content: center; font-size: 24px;
-}
-.quiz-meta { flex: 1; }
-.quiz-category { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); font-weight: 700; }
-.quiz-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+/* UPLOAD STATES */
+.saving-card{background:var(--bg-el);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:36px;text-align:center;margin-bottom:16px;}
+.spinner{width:38px;height:38px;margin:0 auto 16px;border:3px solid var(--bg-hover);
+  border-top-color:var(--lav);border-radius:50%;animation:spin .75s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.saving-text{color:var(--text2);font-size:14px;}
+.success-banner{background:rgba(110,231,183,.08);border:1px solid rgba(110,231,183,.3);
+  border-radius:var(--r-md);padding:14px 18px;margin-bottom:16px;
+  font-size:14px;color:var(--mint);font-weight:600;display:none;}
+.error-banner{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.35);
+  border-radius:var(--r-md);padding:18px;margin-bottom:16px;display:none;}
+.error-banner strong{color:#ff7070;display:block;margin-bottom:8px;}
+.error-banner p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px;}
 
-.question-counter {
-  display: flex; gap: 6px; margin-bottom: 20px;
-}
-.q-dot {
-  height: 4px; flex: 1; border-radius: 99px;
-  background: var(--bg-elevated); transition: background 0.3s;
-}
-.q-dot.done  { background: var(--teal); }
-.q-dot.current { background: var(--lavender); box-shadow: 0 0 8px var(--lavender-glow); }
-
-.question-box {
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 20px 20px;
-  margin-bottom: 18px;
-}
-.question-num {
-  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--lavender); font-weight: 700; margin-bottom: 8px;
-}
-.question-text { font-size: 15px; color: var(--text-primary); line-height: 1.6; font-weight: 500; }
-.question-note { font-size: 12px; color: var(--text-muted); margin-top: 8px; font-style: italic; }
-
-/* Quiz Answer Options */
-.answer-grid { display: flex; flex-direction: column; gap: 8px; }
-.answer-option {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 13px 16px;
-  cursor: pointer; transition: all 0.2s; user-select: none;
-}
-.answer-option:hover:not(.locked) { background: var(--bg-hover); border-color: var(--border-hover); }
-.answer-option.selected:not(.correct):not(.wrong) {
-  background: rgba(78,205,196,0.1); border-color: var(--teal);
-}
-.answer-option.correct {
-  background: rgba(110,231,183,0.12); border-color: var(--mint);
-  box-shadow: 0 0 12px rgba(110,231,183,0.2);
-}
-.answer-option.wrong {
-  background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.4);
-}
-.answer-key {
-  width: 30px; height: 30px; flex-shrink: 0;
-  border-radius: 8px; background: var(--bg-card);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; color: var(--text-muted);
-  transition: all 0.2s;
-}
-.answer-option.selected:not(.correct):not(.wrong) .answer-key { background: var(--teal); border-color: var(--teal); color: #0d1117; }
-.answer-option.correct .answer-key { background: var(--mint); border-color: var(--mint); color: #0d1117; }
-.answer-option.wrong .answer-key { background: rgba(239,68,68,0.5); border-color: transparent; color: #fff; }
-.answer-text { font-size: 14px; flex: 1; }
-
-.feedback-box {
-  background: var(--bg-elevated); border-radius: var(--radius-md);
-  padding: 14px 16px; margin-bottom: 16px;
-  border-left: 3px solid var(--teal);
-  font-size: 13px; color: var(--text-secondary);
-  display: none;
-}
-.feedback-box.show { display: block; }
-.feedback-box.wrong-fb { border-left-color: rgba(239,68,68,0.6); }
-
-/* Spatial Image Questions */
-.spatial-img-container {
-  background: var(--bg-deep);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 20px; margin: 12px 0;
-  display: flex; justify-content: center;
-}
-.spatial-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
-.spatial-option {
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 10px;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  cursor: pointer; transition: all 0.2s;
-}
-.spatial-option:hover:not(.locked) { border-color: var(--border-hover); }
-.spatial-option.selected { border-color: var(--teal); background: rgba(78,205,196,0.1); }
-.spatial-option.correct { border-color: var(--mint); background: rgba(110,231,183,0.1); }
-.spatial-option.wrong   { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.05); }
-.spatial-opt-label { font-size: 12px; font-weight: 700; color: var(--text-muted); }
-
-/* ═══════════════════════════════════════════
-   SIMON GAME
-═══════════════════════════════════════════ */
-.simon-container { text-align: center; }
-.simon-level-display {
-  font-size: 13px; color: var(--text-secondary); margin-bottom: 6px;
-}
-.simon-level-num {
-  font-size: 40px; font-weight: 800;
-  background: linear-gradient(135deg, var(--teal), var(--lavender));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  line-height: 1; margin-bottom: 20px;
-}
-.simon-board {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  width: 240px;
-  margin: 0 auto 24px;
-}
-.crystal {
-  width: 110px; height: 110px;
-  border-radius: 18px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px;
-  border: 2px solid rgba(255,255,255,0.12);
-  transition: box-shadow 0.15s, filter 0.15s;
-  user-select: none;
-}
-.crystal:hover:not(.inactive) { filter: brightness(1.15); }
-.crystal:active:not(.inactive) { filter: brightness(1.3); }
-.crystal.inactive { cursor: default; opacity: 0.85; }
-.crystal.flash { animation: crystalFlash 0.25s ease; }
-@keyframes crystalFlash {
-  0%,100% { filter: brightness(1); }
-  50% { filter: brightness(2.5) saturate(1.8); }
-}
-
-/* Crystal colours */
-.crystal-red    { background: radial-gradient(circle at 35% 35%, #ff9999, #cc2222); box-shadow: 0 0 20px rgba(220,50,50,0.5); }
-.crystal-blue   { background: radial-gradient(circle at 35% 35%, #99ccff, #1166cc); box-shadow: 0 0 20px rgba(50,120,220,0.5); }
-.crystal-yellow { background: radial-gradient(circle at 35% 35%, #fff099, #ccaa00); box-shadow: 0 0 20px rgba(220,180,0,0.5);  }
-.crystal-green  { background: radial-gradient(circle at 35% 35%, #99ffcc, #00aa66); box-shadow: 0 0 20px rgba(0,180,100,0.5);  }
-
-.crystal-red.glow    { box-shadow: 0 0 45px rgba(220,50,50,0.9),  0 0 80px rgba(220,50,50,0.4); }
-.crystal-blue.glow   { box-shadow: 0 0 45px rgba(50,120,220,0.9), 0 0 80px rgba(50,120,220,0.4); }
-.crystal-yellow.glow { box-shadow: 0 0 45px rgba(220,180,0,0.9),  0 0 80px rgba(220,180,0,0.4); }
-.crystal-green.glow  { box-shadow: 0 0 45px rgba(0,180,100,0.9),  0 0 80px rgba(0,180,100,0.4); }
-
-.simon-status {
-  font-size: 14px; color: var(--text-secondary);
-  min-height: 20px; margin-bottom: 16px;
-}
-.simon-status.watching { color: var(--lavender); }
-.simon-status.go       { color: var(--teal); }
-.simon-status.gameover { color: #ff7070; }
-
-.simon-start-btn {
-  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
-  color: #0d1117; border: none; border-radius: var(--radius-md);
-  padding: 13px 36px; font-size: 14px; font-weight: 700; letter-spacing: 0.05em;
-  text-transform: uppercase; cursor: pointer;
-  box-shadow: 0 4px 16px var(--teal-glow);
-  transition: all 0.22s; display: inline-block;
-}
-.simon-start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(78,205,196,0.45); }
-
-.simon-results-card {
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 20px;
-  margin-top: 20px; display: none;
-}
-.simon-results-card.show { display: block; }
-.simon-stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
-.simon-stat:last-child { border-bottom: none; }
-.simon-stat-label { color: var(--text-secondary); }
-.simon-stat-val { font-weight: 700; color: var(--teal); }
-
-/* ═══════════════════════════════════════════
-   RESULTS PAGE
-═══════════════════════════════════════════ */
-.results-hero {
-  text-align: center; padding: 30px 0 20px;
-}
-.persona-badge {
-  display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
-  background: linear-gradient(135deg, rgba(78,205,196,0.1), rgba(167,139,250,0.1));
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl); padding: 28px 36px;
-  margin-bottom: 20px;
-}
-.persona-icon { font-size: 56px; }
-.persona-type { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
-.persona-name {
-  font-size: 28px; font-weight: 800;
-  background: linear-gradient(135deg, var(--teal), var(--lavender));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.persona-desc { font-size: 14px; color: var(--text-secondary); max-width: 480px; text-align: center; line-height: 1.7; margin: 0 auto; }
-
-.scores-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-@media (max-width: 480px) { .scores-grid { grid-template-columns: 1fr; } }
-.score-card {
-  background: var(--bg-elevated); border: 1px solid var(--border);
-  border-radius: var(--radius-md); padding: 18px;
-}
-.score-card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; }
-.score-card-val { font-size: 30px; font-weight: 800; color: var(--teal); line-height: 1; margin-bottom: 6px; }
-.score-card-bar {
-  height: 4px; border-radius: 99px; background: var(--bg-card);
-  overflow: hidden; margin-bottom: 4px;
-}
-.score-card-fill {
-  height: 100%; border-radius: 99px;
-  background: linear-gradient(90deg, var(--teal), var(--lavender));
-  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
-}
-.score-card-sub { font-size: 11px; color: var(--text-muted); }
-
-.results-thanks {
-  text-align: center; padding: 20px;
-  font-size: 14px; color: var(--text-secondary); line-height: 1.8;
-}
-.results-thanks strong { color: var(--teal); }
-
-/* ═══════════════════════════════════════════
-   DIVIDER
-═══════════════════════════════════════════ */
-.divider {
-  height: 1px; background: var(--border); margin: 24px 0;
-}
-
-/* Utility */
-.text-teal { color: var(--teal); }
-.text-lav  { color: var(--lavender); }
-.mb-0 { margin-bottom: 0; }
-.mt-8 { margin-top: 8px; }
-.mt-16 { margin-top: 16px; }
-
-/* Upload spinner */
-.upload-spinner {
-  width: 40px; height: 40px; margin: 0 auto;
-  border: 3px solid var(--bg-elevated);
-  border-top-color: var(--lavender);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-  font-size: 11px; color: var(--text-muted);
-  margin-top: 6px; font-style: italic;
-}
-
-/* ═══════════════════════════════════════════
-   ALERT / NOTICE
-═══════════════════════════════════════════ */
-.notice {
-  background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.25);
-  border-radius: var(--radius-md); padding: 12px 16px;
-  font-size: 13px; color: var(--text-secondary);
-  margin-bottom: 18px;
-}
-.notice strong { color: var(--lavender); }
-
-/* Error */
-.error-msg {
-  color: #ff7070; font-size: 12px; margin-top: 6px;
-  display: none;
-}
-.error-msg.show { display: block; }
-
-/* ═══════════════════════════════════════════
-   SCROLLBAR
-═══════════════════════════════════════════ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-deep); }
-::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 99px; }
+/* COMPLETION SCREEN */
+.complete-screen{text-align:center;padding:40px 20px;}
+.complete-icon{font-size:56px;margin-bottom:14px;animation:pop .5s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes pop{from{transform:scale(.4);opacity:0;}to{transform:scale(1);opacity:1;}}
+.complete-title{font-size:22px;font-weight:800;color:var(--teal);margin-bottom:8px;}
+.complete-sub{font-size:14px;color:var(--text2);}
+.div{height:1px;background:var(--border);margin:20px 0;}
 </style>
 </head>
 <body>
-<div class="app-wrapper">
+<div class="wrap">
 
-  <!-- ═══ STICKY PROGRESS BAR ═══ -->
-  <div class="progress-bar-outer" id="progressBar">
-    <div class="progress-meta">
-      <span class="progress-label" id="progressLabel">Quest Log</span>
-      <span id="progressPercent">0% Complete</span>
+<!-- PROGRESS BAR -->
+<div class="prog-outer">
+  <div class="prog-meta">
+    <span class="prog-label" id="progLabel">Cover</span>
+    <span id="progPct">0% Complete</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+</div>
+
+<!-- ══════════════ SCREEN: COVER ══════════════ -->
+<div class="screen active" id="s-cover">
+  <div class="card gt">
+    <div class="logo-row">
+      <div class="logo-icon">🎮</div>
+      <div><div class="logo-eyebrow">Academic Research Study</div></div>
     </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
+    <h1 class="cover-title">GameSense: Gaming &amp; Cognitive Skills Study</h1>
+    <p class="cover-cap">Explore how gaming habits relate to logic, memory, and spatial reasoning.</p>
+    <p class="cover-intro" style="margin-bottom:0">
+      Hi there! Thanks for participating.<br/>
+      This study investigates whether different types of video games are associated with performance in skills
+      such as logic, memory, and spatial reasoning. This is not a school test — there are no grades involved.
+      Simply answer honestly and try your best on the short skill challenges.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="badge" style="margin-bottom:14px;">🔒 Privacy &amp; Ethics</div>
+    <div class="pill-row" style="margin-bottom:0">
+      <div class="pill">
+        <div class="pill-icon">🔒</div>
+        <div class="pill-body"><strong>Anonymous</strong><span>No names, emails or IP addresses collected</span></div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon">📊</div>
+        <div class="pill-body"><strong>Confidential</strong><span>Used only within a larger dataset</span></div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon">🕹️</div>
+        <div class="pill-body"><strong>Voluntary</strong><span>Stop at any time, no worries</span></div>
+      </div>
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════
-       SCREEN 0 — COVER
-  ════════════════════════════════════════ -->
-  <div class="screen active" id="screen-cover">
-    <div class="card glow-teal">
-      <div class="cover-logo">
-        <div class="cover-logo-icon">🎮</div>
-        <div class="cover-logo-text">Gaming Research Lab · Academic Study</div>
-      </div>
-      <h1 class="cover-title">Level Up Your Data:<br/>Gaming &amp; Cognitive Skills Study</h1>
-      <p class="cover-sub">
-        I'm researching how the games we love connect to how our brains handle logic, speed, and memory.
-        No grades, no stress — just your honest gaming habits and your best effort on the mini-challenges.
-      </p>
-
-      <div class="info-row">
-        <div class="info-pill">
-          <div class="info-pill-icon">🔒</div>
-          <div class="info-pill-text"><strong>Anonymous</strong><span>No name, email or IP collected</span></div>
-        </div>
-        <div class="info-pill">
-          <div class="info-pill-icon">🤫</div>
-          <div class="info-pill-text"><strong>Confidential</strong><span>Used only as part of a data set</span></div>
-        </div>
-        <div class="info-pill">
-          <div class="info-pill-icon">🚪</div>
-          <div class="info-pill-text"><strong>Voluntary</strong><span>Stop at any time, no worries</span></div>
-        </div>
-        <div class="info-pill">
-          <div class="info-pill-icon">⏱️</div>
-          <div class="info-pill-text"><strong>10–12 mins</strong><span>Four quick parts total</span></div>
-        </div>
-      </div>
-
-      <div class="quest-log">
-        <div class="quest-log-header">📜 Current Quest Log</div>
-        <div class="quest-item">
-          <div class="quest-icon">🌿</div>
-          <div class="quest-info">
-            <div class="quest-title">The Player Profile</div>
-            <div class="quest-desc">Tell us your gaming story</div>
-          </div>
-          <div class="quest-time">~3 min</div>
-        </div>
-        <div class="quest-item">
-          <div class="quest-icon">🧩</div>
-          <div class="quest-info">
-            <div class="quest-title">Logic &amp; Lore</div>
-            <div class="quest-desc">Solve the shopkeeper's puzzles</div>
-          </div>
-          <div class="quest-time">~3 min</div>
-        </div>
-        <div class="quest-item">
-          <div class="quest-icon">🗺️</div>
-          <div class="quest-info">
-            <div class="quest-title">The Map Room</div>
-            <div class="quest-desc">Navigate the verbal &amp; spatial challenges</div>
-          </div>
-          <div class="quest-time">~3 min</div>
-        </div>
-        <div class="quest-item">
-          <div class="quest-icon">💎</div>
-          <div class="quest-info">
-            <div class="quest-title">The Prism Pattern</div>
-            <div class="quest-desc">The ultimate memory finale</div>
-          </div>
-          <div class="quest-time">~2 min</div>
-        </div>
-      </div>
-
-      <div class="consent-box" id="consentBox" onclick="toggleConsent()">
-        <div class="consent-check-visual" id="consentVisual"></div>
-        <div class="consent-text">
-          I confirm that I am between the ages of <strong>13–18</strong> and have received
-          <strong>parental/guardian permission</strong> to participate in this academic study.
-        </div>
-      </div>
-      <div id="consentError" class="error-msg">Please confirm the above before continuing.</div>
-
-      <button class="btn btn-primary btn-full" id="beginBtn" onclick="startStudy()">
-        ⚔️ &nbsp; Begin Challenge
-      </button>
+  <div class="card">
+    <div class="badge" style="margin-bottom:14px;">📋 Session Roadmap</div>
+    <div class="roadmap" style="margin-bottom:0">
+      <div class="rm-item"><div class="rm-num">01</div><div class="rm-icon">🌿</div><div class="rm-title">Gaming Profile</div><div class="rm-sub">~3 mins</div></div>
+      <div class="rm-item"><div class="rm-num">02</div><div class="rm-icon">🧩</div><div class="rm-title">Skill Challenges</div><div class="rm-sub">~4 mins</div></div>
+      <div class="rm-item"><div class="rm-num">03</div><div class="rm-icon">💎</div><div class="rm-title">Memory Challenge</div><div class="rm-sub">~2 mins</div></div>
+      <div class="rm-item"><div class="rm-num">04</div><div class="rm-icon">✅</div><div class="rm-title">Submission</div><div class="rm-sub">Instant</div></div>
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════
-       SCREEN 1 — PART A: SURVEY
-  ════════════════════════════════════════ -->
-  <div class="screen" id="screen-survey">
-    <div class="section-badge">Part 01 · Player Profile</div>
-    <h2 class="section-title">🌿 The <span>Player Profile</span></h2>
-    <p class="section-sub">No right or wrong answers — just tell us about your gaming life.</p>
+  <div class="card">
+    <div class="consent-box" id="consentBox" onclick="toggleConsent()">
+      <div class="c-check" id="cVis"></div>
+      <div class="consent-text">I confirm I am between <strong>13–18 years old</strong> and have received <strong>parental/guardian permission</strong> to participate in this academic study.</div>
+    </div>
+    <div class="err" id="err-consent">Please confirm the above before continuing.</div>
+    <button class="btn btn-p btn-w" onclick="startStudy()">⚔️ &nbsp;Begin Challenge</button>
+  </div>
+</div>
 
-    <!-- Section 1: Eligibility -->
+<!-- ══════════════ SCREEN: PART A SURVEY ══════════════ -->
+<div class="screen" id="s-survey">
+  <div class="badge">Part 01 · Gaming Profile</div>
+  <h2 class="sec-title">🌿 Gaming <span>Profile</span></h2>
+  <p class="sec-sub">No right or wrong answers — tell us about your gaming life.</p>
+
+  <div class="card">
+    <div class="fg">
+      <div class="flabel">Which age group are you in? <span class="req">*</span></div>
+      <div class="opt-list" id="opt-age">
+        <div class="opt" onclick="selRad('age','13-14',this)"><div class="opt-dot"></div><div class="opt-text">13–14</div></div>
+        <div class="opt" onclick="selRad('age','15-16',this)"><div class="opt-dot"></div><div class="opt-text">15–16</div></div>
+        <div class="opt" onclick="selRad('age','17-18',this)"><div class="opt-dot"></div><div class="opt-text">17–18</div></div>
+        <div class="opt" onclick="selRad('age','18+',this)"><div class="opt-dot"></div><div class="opt-text">18+</div></div>
+      </div>
+      <div class="err" id="err-age">Please select your age group.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="fg">
+      <div class="flabel">Average weekly gaming hours? <span class="req">*</span></div>
+      <div class="opt-list" id="opt-playtime">
+        <div class="opt" onclick="selRad('playtime','lt5',this)"><div class="opt-dot"></div><div class="opt-text">Less than 5 hours</div></div>
+        <div class="opt" onclick="selRad('playtime','5-10',this)"><div class="opt-dot"></div><div class="opt-text">5–10 hours</div></div>
+        <div class="opt" onclick="selRad('playtime','11-20',this)"><div class="opt-dot"></div><div class="opt-text">11–20 hours</div></div>
+        <div class="opt" onclick="selRad('playtime','21-30',this)"><div class="opt-dot"></div><div class="opt-text">21–30 hours</div></div>
+        <div class="opt" onclick="selRad('playtime','30+',this)"><div class="opt-dot"></div><div class="opt-text">30+ hours</div></div>
+      </div>
+      <div class="err" id="err-playtime">Please select your playtime.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="fg">
+      <div class="flabel">Primary gaming device? <span class="req">*</span></div>
+      <div class="opt-list" id="opt-device">
+        <div class="opt" onclick="selRad('device','pc',this)"><div class="opt-dot"></div><div class="opt-text">PC</div></div>
+        <div class="opt" onclick="selRad('device','console',this)"><div class="opt-dot"></div><div class="opt-text">Console</div></div>
+        <div class="opt" onclick="selRad('device','mobile',this)"><div class="opt-dot"></div><div class="opt-text">Mobile</div></div>
+        <div class="opt" onclick="selRad('device','mixed',this)"><div class="opt-dot"></div><div class="opt-text">Mixed / No preference</div></div>
+      </div>
+      <div class="err" id="err-device">Please select your primary device.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="fg">
+      <div class="flabel">Which genre do you play MOST often? <span class="req">*</span></div>
+      <div class="opt-list" id="opt-genre">
+        <div class="opt" onclick="selRad('genre','sandbox',this)"><div class="opt-dot"></div><div class="opt-text">Sandbox / Casual <small>e.g., Minecraft, Roblox, Animal Crossing</small></div></div>
+        <div class="opt" onclick="selRad('genre','openworld',this)"><div class="opt-dot"></div><div class="opt-text">Open World / Action RPG <small>e.g., Genshin Impact, Elden Ring, Zelda</small></div></div>
+        <div class="opt" onclick="selRad('genre','tactical',this)"><div class="opt-dot"></div><div class="opt-text">Tactical / Turn-based RPG <small>e.g., Honkai: Star Rail, Persona, Fire Emblem</small></div></div>
+        <div class="opt" onclick="selRad('genre','shooter',this)"><div class="opt-dot"></div><div class="opt-text">Competitive Shooter <small>e.g., Valorant, Overwatch 2, Fortnite</small></div></div>
+        <div class="opt" onclick="selRad('genre','moba',this)"><div class="opt-dot"></div><div class="opt-text">MOBA <small>e.g., League of Legends, Wild Rift, Pokémon UNITE</small></div></div>
+        <div class="opt" onclick="selRad('genre','puzzle',this)"><div class="opt-dot"></div><div class="opt-text">Puzzle / Strategy <small>e.g., Portal 2, Teamfight Tactics, Clash Royale</small></div></div>
+        <div class="opt" onclick="selRad('genre','rhythm',this)"><div class="opt-dot"></div><div class="opt-text">Rhythm / Simulation <small>e.g., Project SEKAI, osu!, The Sims 4</small></div></div>
+        <div class="opt" onclick="selRad('genre','other',this)" id="opt-genre-other"><div class="opt-dot"></div><div class="opt-text">Other</div></div>
+      </div>
+      <div id="genre-other-wrap" style="display:none;margin-top:9px;">
+        <input class="txt-in" type="text" id="genre-other-txt" placeholder="Tell us what you play…" oninput="survey.genre_other=this.value"/>
+      </div>
+      <div class="err" id="err-genre">Please select your primary genre.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="badge" style="margin-bottom:10px;">Optional</div>
+    <div class="flabel" style="margin-top:0">What is your all-time favourite game?</div>
+    <p class="hint" style="margin-bottom:10px;">Just for curiosity — no judgement!</p>
+    <input class="txt-in" type="text" id="fav-game" placeholder="e.g. Genshin Impact" oninput="survey.fav_game=this.value"/>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-s" onclick="goTo('s-cover')">← Back</button>
+    <button class="btn btn-p" onclick="submitSurvey()">Next: Skill Challenges →</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN: LOGIC ══════════════ -->
+<div class="screen" id="s-logic">
+  <div class="badge">Part 02 · Skill Challenge 1 / 3</div>
+  <div class="q-header">
+    <div class="q-icon">🧩</div>
+    <div><div class="q-cat">Logic &amp; Quantitative</div><div class="q-title-h">Reasoning Challenge</div></div>
+  </div>
+  <div class="notice">⚡ <strong>Tip:</strong> Work through each puzzle at your own pace.</div>
+  <div id="logic-qs"></div>
+  <div class="btn-row">
+    <button class="btn btn-s" onclick="goTo('s-survey')">← Back</button>
+    <button class="btn btn-p" onclick="submitSection('logic')">Next: Verbal →</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN: VERBAL ══════════════ -->
+<div class="screen" id="s-verbal">
+  <div class="badge">Part 02 · Skill Challenge 2 / 3</div>
+  <div class="q-header">
+    <div class="q-icon">📖</div>
+    <div><div class="q-cat">Verbal Inference</div><div class="q-title-h">Reading &amp; Reasoning</div></div>
+  </div>
+  <div class="notice">📖 <strong>Read carefully</strong> — clues are hidden in the text.</div>
+  <div id="verbal-qs"></div>
+  <div class="btn-row">
+    <button class="btn btn-s" onclick="goTo('s-logic')">← Back</button>
+    <button class="btn btn-p" onclick="submitSection('verbal')">Next: Spatial →</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN: SPATIAL ══════════════ -->
+<div class="screen" id="s-spatial">
+  <div class="badge">Part 02 · Skill Challenge 3 / 3</div>
+  <div class="q-header">
+    <div class="q-icon">🗺️</div>
+    <div><div class="q-cat">Spatial Reasoning</div><div class="q-title-h">Reflection &amp; Navigation</div></div>
+  </div>
+  <div class="notice">🧭 <strong>Visualise it!</strong> Close your eyes and picture the reflection if it helps.</div>
+  <div id="spatial-qs"></div>
+  <div class="btn-row">
+    <button class="btn btn-s" onclick="goTo('s-verbal')">← Back</button>
+    <button class="btn btn-p" onclick="submitSection('spatial')">Next: Memory Game →</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN: SIMON ══════════════ -->
+<div class="screen" id="s-simon">
+  <div class="badge">Part 03 · Memory Challenge</div>
+  <h2 class="sec-title">💎 The <span>Prism Pattern</span></h2>
+  <p class="sec-sub">Watch the crystals light up, then repeat the sequence. Each round adds one more step.</p>
+
+  <div class="card gl">
+    <div class="simon-wrap">
+      <div class="simon-lv-cap">Current Level</div>
+      <div class="simon-lv-num" id="simonLvNum">—</div>
+
+      <div class="simon-board">
+        <div class="crystal c-pyro" id="c-pyro" onclick="simonClick('pyro')">
+          <svg viewBox="0 0 60 60" width="50" height="50" fill="none"><path d="M30 5C22 13 14 22 16 35C18 46 26 55 30 55C34 55 42 46 44 35C46 22 38 13 30 5Z" fill="rgba(255,100,20,.32)" stroke="#ff6010" stroke-width="2.2"/><path d="M30 22C26 28 24 34 26 41C27.5 45.5 29 48 30 48C31 45.5 33 42 35 38C37 32 35 26 30 22Z" fill="#ff7830" opacity=".8"/><path d="M30 5C32 11 36 16 34 22" stroke="#ffbb55" stroke-width="1.8"/></svg>
+        </div>
+        <div class="crystal c-cryo" id="c-cryo" onclick="simonClick('cryo')">
+          <svg viewBox="0 0 60 60" width="50" height="50" fill="none"><path d="M30,8 L35.5,20.5 L49,19 L41,30 L49,41 L35.5,39.5 L30,52 L24.5,39.5 L11,41 L19,30 L11,19 L24.5,20.5 Z" fill="rgba(100,190,255,.28)" stroke="#55bbff" stroke-width="2"/><circle cx="30" cy="30" r="4.5" fill="#88ccff" opacity=".85"/></svg>
+        </div>
+        <div class="crystal c-geo" id="c-geo" onclick="simonClick('geo')">
+          <svg viewBox="0 0 60 60" width="50" height="50" fill="none"><path d="M30,4 L56,30 L30,56 L4,30 Z" fill="rgba(255,185,0,.2)" stroke="#ffb800" stroke-width="2.2"/><path d="M30,16 L44,30 L30,44 L16,30 Z" fill="rgba(255,185,0,.15)" stroke="#ffb800" stroke-width="1.8"/><line x1="30" y1="4" x2="30" y2="16" stroke="#ffb800" stroke-width="2"/><line x1="56" y1="30" x2="44" y2="30" stroke="#ffb800" stroke-width="2"/><line x1="30" y1="56" x2="30" y2="44" stroke="#ffb800" stroke-width="2"/><line x1="4" y1="30" x2="16" y2="30" stroke="#ffb800" stroke-width="2"/><circle cx="30" cy="30" r="3" fill="#ffb800"/></svg>
+        </div>
+        <div class="crystal c-electro" id="c-electro" onclick="simonClick('electro')">
+          <svg viewBox="0 0 60 60" width="50" height="50" fill="none"><path d="M30,30 C28,18 30,8 35,6 C41,4 45,13 40,21 C37,25 33,28 30,30Z" fill="#c084fc" opacity=".88"/><path d="M30,30 C28,18 30,8 35,6 C41,4 45,13 40,21 C37,25 33,28 30,30Z" fill="#c084fc" opacity=".88" transform="rotate(120,30,30)"/><path d="M30,30 C28,18 30,8 35,6 C41,4 45,13 40,21 C37,25 33,28 30,30Z" fill="#c084fc" opacity=".88" transform="rotate(240,30,30)"/><circle cx="30" cy="30" r="3.5" fill="#ede9fe"/></svg>
+        </div>
+      </div>
+
+      <div class="simon-status" id="simonStatus">Press Start to begin your run!</div>
+      <button class="simon-start-btn" id="simonStartBtn" onclick="startSimon()">▶ Start the Prism</button>
+
+      <div class="simon-res-card" id="simonResCard">
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;">✨ Sequence Complete — Great Focus!</div>
+        <div class="s-stat"><span class="s-stat-l">🏆 Highest Level</span><span class="s-stat-v" id="r-lvl">—</span></div>
+        <div class="s-stat"><span class="s-stat-l">✅ Total Correct Clicks</span><span class="s-stat-v" id="r-clicks">—</span></div>
+        <div class="s-stat"><span class="s-stat-l">⚡ Avg. Response Time</span><span class="s-stat-v" id="r-rt">—</span></div>
+        <div class="s-stat"><span class="s-stat-l">❌ Mistake on</span><span class="s-stat-v" id="r-miss">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-s" onclick="goTo('s-spatial')">← Back</button>
+    <button class="btn btn-p" id="simonNextBtn" style="display:none" onclick="finishSimon()">Submit Results →</button>
+  </div>
+</div>
+
+<!-- ══════════════ SCREEN: RESULTS ══════════════ -->
+<div class="screen" id="s-results">
+  <div class="badge">Part 04 · Submission</div>
+
+  <div id="saving-state" style="display:none;">
+    <div class="saving-card"><div class="spinner"></div><div class="saving-text">Saving your quest data to the lab…</div></div>
+  </div>
+  <div class="success-banner" id="success-banner">✅ &nbsp;Results successfully saved to the research database!</div>
+  <div class="error-banner" id="error-banner">
+    <strong>⚠️ Upload didn't reach the lab</strong>
+    <p>No worries! Download your results file and email it to <strong style="color:#ff9999;">elianachan09@gmail.com</strong> — it only takes a second.</p>
+    <button class="btn btn-p btn-w" onclick="downloadResults()">⬇️ &nbsp;Download Results &amp; Email to elianachan09@gmail.com</button>
+  </div>
+
+  <div id="results-content" style="display:none;">
+    <div class="persona-wrap">
+      <div class="persona-badge">
+        <div class="p-icon" id="pIcon">🎮</div>
+        <div class="p-type">Your Gaming Persona</div>
+        <div class="p-name" id="pName">…</div>
+      </div>
+      <p class="p-desc" id="pDesc">…</p>
+    </div>
     <div class="card">
-      <div class="form-group">
-        <div class="form-label">Age Group <span class="required">*</span></div>
-        <div class="options-list" id="ageOptions">
-          <div class="option-item" onclick="selectRadio('age','13-15',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">13–15</div>
-          </div>
-          <div class="option-item" onclick="selectRadio('age','16-17',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">16–17</div>
-          </div>
-          <div class="option-item" onclick="selectRadio('age','18+',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">18+</div>
-          </div>
-        </div>
-        <div class="error-msg" id="err-age">Please select your age group.</div>
-      </div>
+      <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:13px;">📊 Your Skill Profile</div>
+      <div class="scores-grid" id="scoresGrid"></div>
     </div>
-
-    <!-- Section 2: General Gaming Profile -->
     <div class="card">
-      <div class="form-group">
-        <div class="form-label">Average Weekly Playtime <span class="required">*</span></div>
-        <div class="options-list" id="playtimeOptions">
-          <div class="option-item" onclick="selectRadio('playtime','lt5',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">Less than 5 hours</div>
-          </div>
-          <div class="option-item" onclick="selectRadio('playtime','5-10',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">5–10 hours</div>
-          </div>
-          <div class="option-item" onclick="selectRadio('playtime','11-20',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">11–20 hours</div>
-          </div>
-          <div class="option-item" onclick="selectRadio('playtime','21-30',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">21–30 hours</div>
-          </div>
-          <div class="option-item" onclick="selectRadio('playtime','30+',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">30+ hours</div>
-          </div>
-        </div>
-        <div class="error-msg" id="err-playtime">Please select your playtime.</div>
-      </div>
-
-      <div class="form-group">
-        <div class="form-label">Primary Device(s) <span class="required">*</span><br/><span style="font-size:11px;font-weight:400;color:var(--text-muted);text-transform:none;letter-spacing:0">Select all that apply</span></div>
-        <div class="options-list" id="deviceOptions">
-          <div class="option-item" onclick="toggleCheck('device','pc',this)">
-            <div class="option-check"></div>
-            <div class="option-text">PC</div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('device','mobile',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Mobile (Smartphone / Tablet)</div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('device','console',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Console (PlayStation / Xbox / Switch)</div>
-          </div>
-        </div>
-        <div class="error-msg" id="err-device">Please select at least one device.</div>
-      </div>
-
-      <div class="form-group mb-0">
-        <div class="form-label">What difficulty of games do you prefer? <span class="required">*</span></div>
-        <div class="options-list" id="skillOptions">
-          <div class="option-item" onclick="selectRadio('skilllevel','beginner',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">Beginner <small>I play for the story / relaxation</small></div>
-          </div>
-          <div class="option-item" onclick="selectRadio('skilllevel','casual',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">Casual <small>I understand mechanics but play for fun</small></div>
-          </div>
-          <div class="option-item" onclick="selectRadio('skilllevel','intermediate',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">Intermediate <small>I follow the "meta" and seek challenges</small></div>
-          </div>
-          <div class="option-item" onclick="selectRadio('skilllevel','advanced',this)">
-            <div class="option-dot"></div>
-            <div class="option-text">Advanced <small>I play competitively or at high difficulty</small></div>
-          </div>
-        </div>
-        <div class="error-msg" id="err-skilllevel">Please select your skill level.</div>
+      <div class="thanks">
+        <strong>🙏 Thank you for participating!</strong><br/>
+        Your response contributes to research on gaming habits and cognitive performance.<br/><br/>
+        <em style="color:var(--text3);">This is an academic research project. All data is anonymous and used for research purposes only.</em>
       </div>
     </div>
-
-    <!-- Section 3: Genre Preferences -->
-    <div class="card">
-      <div class="form-group">
-        <div class="form-label">Genres You Regularly Play <span class="required">*</span><br/><span style="font-size:11px;font-weight:400;color:var(--text-muted);text-transform:none;letter-spacing:0">Select all that apply</span></div>
-        <div class="options-list" id="genreOptions">
-          <div class="option-item" onclick="toggleCheck('genre','sandbox',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Sandbox / Casual <small>e.g., Minecraft, Roblox, Animal Crossing</small></div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('genre','openworld',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Open World / Action RPG <small>e.g., Genshin Impact, Elden Ring, Zelda</small></div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('genre','tactical',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Tactical / Turn-based RPG <small>e.g., Honkai: Star Rail, Persona, Fire Emblem</small></div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('genre','shooter',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Competitive Shooter <small>e.g., Valorant, Overwatch 2, Fortnite</small></div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('genre','moba',this)">
-            <div class="option-check"></div>
-            <div class="option-text">MOBA <small>e.g., League of Legends, Wild Rift, Pokémon UNITE</small></div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('genre','puzzle',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Puzzle / Strategy <small>e.g., Portal 2, Teamfight Tactics, Clash Royale</small></div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('genre','rhythm',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Rhythm / Simulation <small>e.g., Project SEKAI, osu!, The Sims 4</small></div>
-          </div>
-          <div class="option-item" onclick="toggleCheck('genre','other',this)">
-            <div class="option-check"></div>
-            <div class="option-text">Other <small>Tell us what you play!</small></div>
-          </div>
-        </div>
-        <div id="genreOtherWrap" style="display:none; margin-top:10px;">
-          <input type="text" class="text-input" id="genreOther"
-            placeholder="e.g. Visual Novels, Fighting Games, Sports Sims…"
-            oninput="state.survey.genreOtherText=this.value"/>
-        </div>
-        <div class="error-msg" id="err-genre">Please select at least one genre.</div>
-      </div>
-
-      <div class="form-group mb-0">
-        <div class="form-label">Primary (Most Played) Genre <span class="required">*</span></div>
-        <div class="options-list" id="primaryGenreOptions">
-          <div style="color:var(--text-muted);font-size:13px;padding:10px 0">
-            ← Select genres above to see options here
-          </div>
-        </div>
-        <div class="error-msg" id="err-primarygenre">Please select your primary genre.</div>
-      </div>
-    </div>
-
-    <!-- Section 4: Personal Favourites -->
-    <div class="card">
-      <div class="section-badge">Optional</div>
-      <div class="form-label" style="margin-top:8px">🏆 Top 3 All-Time Favourite Games</div>
-      <p class="hint" style="margin-bottom:12px">The ones you'd put in a time capsule. No judgement!</p>
-      <div style="display:flex;flex-direction:column;gap:10px; margin-bottom:22px;">
-        <input type="text" class="text-input" id="fav1" placeholder="1. e.g. Genshin Impact"/>
-        <input type="text" class="text-input" id="fav2" placeholder="2. e.g. Minecraft"/>
-        <input type="text" class="text-input" id="fav3" placeholder="3. e.g. Valorant"/>
-      </div>
-      <div class="form-label">🎮 Current Rotation</div>
-      <p class="hint" style="margin-bottom:12px">What are you actively playing right now?</p>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <input type="text" class="text-input" id="cur1" placeholder="1. e.g. Wuthering Waves"/>
-        <input type="text" class="text-input" id="cur2" placeholder="2. e.g. Honkai: Star Rail"/>
-        <input type="text" class="text-input" id="cur3" placeholder="3. e.g. Stardew Valley"/>
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goTo('screen-cover')">← Back</button>
-      <button class="btn btn-primary" onclick="submitSurvey()">Next: Skill Challenges →</button>
-    </div>
+    <div style="margin-top:6px;"><button class="btn btn-s btn-w" onclick="downloadResults()" style="font-size:12px;">⬇️ &nbsp;Download My Results</button></div>
   </div>
+</div>
 
-  <!-- ════════════════════════════════════════
-       SCREEN 2 — PART B1: QUANTITATIVE
-  ════════════════════════════════════════ -->
-  <div class="screen" id="screen-quant">
-    <div class="section-badge">Part 02 · Skill Challenge 1 / 3</div>
-    <div class="quiz-header">
-      <div class="quiz-icon">🧩</div>
-      <div class="quiz-meta">
-        <div class="quiz-category">Logic &amp; Lore</div>
-        <div class="quiz-title">Quantitative Reasoning</div>
-      </div>
-    </div>
-    <div class="notice">⏱️ <strong>Tip:</strong> Work through each puzzle at your own pace. Answer each question before moving on.</div>
-    <div id="quant-questions"></div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goTo('screen-survey')">← Back</button>
-      <button class="btn btn-primary" onclick="submitSection('quant')">Next: Verbal →</button>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════
-       SCREEN 3 — PART B2: VERBAL
-  ════════════════════════════════════════ -->
-  <div class="screen" id="screen-verbal">
-    <div class="section-badge">Part 02 · Skill Challenge 2 / 3</div>
-    <div class="quiz-header">
-      <div class="quiz-icon">📖</div>
-      <div class="quiz-meta">
-        <div class="quiz-category">Words &amp; Lore</div>
-        <div class="quiz-title">Verbal Processing</div>
-      </div>
-    </div>
-    <div class="notice">📖 <strong>Read carefully!</strong> Clues are hidden in the text. Trust your instincts.</div>
-    <div id="verbal-questions"></div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goTo('screen-quant')">← Back</button>
-      <button class="btn btn-primary" onclick="submitSection('verbal')">Next: Spatial →</button>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════
-       SCREEN 4 — PART B3: SPATIAL
-  ════════════════════════════════════════ -->
-  <div class="screen" id="screen-spatial">
-    <div class="section-badge">Part 02 · Skill Challenge 3 / 3</div>
-    <div class="quiz-header">
-      <div class="quiz-icon">🗺️</div>
-      <div class="quiz-meta">
-        <div class="quiz-category">The Map Room</div>
-        <div class="quiz-title">Spatial Awareness</div>
-      </div>
-    </div>
-    <div class="notice">🧭 <strong>Visualise it!</strong> Close your eyes and picture the movements if it helps.</div>
-    <div id="spatial-questions"></div>
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goTo('screen-verbal')">← Back</button>
-      <button class="btn btn-primary" onclick="submitSection('spatial')">Next: Memory Game →</button>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════
-       SCREEN 5 — SIMON GAME
-  ════════════════════════════════════════ -->
-  <div class="screen" id="screen-simon">
-    <div class="section-badge">Part 03 · The Final Boss</div>
-    <h2 class="section-title">💎 The <span>Prism Pattern</span></h2>
-    <p class="section-sub">Watch the crystals light up, then repeat the sequence. Each round adds one more. How far can you go?</p>
-
-    <div class="card glow-lav">
-      <div class="simon-container">
-        <div class="simon-level-display">Current Level</div>
-        <div class="simon-level-num" id="simonLevelNum">—</div>
-
-        <div class="simon-board" id="simonBoard">
-          <div class="crystal crystal-red"    id="c-red"    onclick="simonClick('red')">🔴</div>
-          <div class="crystal crystal-blue"   id="c-blue"   onclick="simonClick('blue')">🔵</div>
-          <div class="crystal crystal-yellow" id="c-yellow" onclick="simonClick('yellow')">🟡</div>
-          <div class="crystal crystal-green"  id="c-green"  onclick="simonClick('green')">🟢</div>
-        </div>
-
-        <div class="simon-status" id="simonStatus">Press Start to begin your run!</div>
-
-        <button class="simon-start-btn" id="simonStartBtn" onclick="startSimon()">▶ Start the Prism</button>
-
-        <div class="simon-results-card" id="simonResultsCard">
-          <div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:12px">✨ Sequence Complete!</div>
-          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">Your focus is impressive — here's how you did:</div>
-          <div class="simon-stat"><span class="simon-stat-label">🏆 Highest Level</span><span class="simon-stat-val" id="res-level">—</span></div>
-          <div class="simon-stat"><span class="simon-stat-label">✅ Total Correct Clicks</span><span class="simon-stat-val" id="res-clicks">—</span></div>
-          <div class="simon-stat"><span class="simon-stat-label">⚡ Avg. Response Time</span><span class="simon-stat-val" id="res-rt">—</span></div>
-          <div class="simon-stat"><span class="simon-stat-label">❌ Mistake Made On</span><span class="simon-stat-val" id="res-mistake">—</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="goTo('screen-spatial')">← Back</button>
-      <button class="btn btn-primary" id="simonNextBtn" onclick="submitSimon()" style="display:none">See My Results →</button>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════
-       SCREEN 6 — RESULTS
-  ════════════════════════════════════════ -->
-  <div class="screen" id="screen-results">
-    <div class="section-badge">Part 04 · Your Results</div>
-
-    <!-- SAVING STATE (shown while fetch is in progress) -->
-    <div id="saving-state" style="display:none">
-      <div class="card glow-lav" style="text-align:center; padding: 48px 28px;">
-        <div style="font-size:48px; margin-bottom:16px;">🔮</div>
-        <div style="font-size:18px; font-weight:700; color:var(--text-primary); margin-bottom:8px;">Saving your quest data to the lab…</div>
-        <div style="font-size:13px; color:var(--text-secondary); margin-bottom:28px;">Transmitting results to the research database. Please don't close the tab.</div>
-        <div class="upload-spinner"></div>
-      </div>
-    </div>
-
-    <!-- UPLOAD ERROR STATE -->
-    <div id="upload-error-state" style="display:none">
-      <div class="card" style="border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.06); margin-bottom:18px;">
-        <div style="font-size:20px; margin-bottom:10px;">⚠️ <span style="font-size:15px; font-weight:700; color:#ff7070;">Upload didn't reach the lab</span></div>
-        <div style="font-size:13px; color:var(--text-secondary); line-height:1.7; margin-bottom:16px;">
-          No worries! Download your results file below and email it to <strong style="color:#ff9999;">elianachan09@gmail.com</strong> — it only takes a second!
-        </div>
-        <button class="btn btn-primary btn-full" onclick="downloadResults()">
-          ⬇️ &nbsp;Download Results &amp; Email to elianachan09@gmail.com
-        </button>
-      </div>
-    </div>
-
-    <!-- RESULTS CONTENT (hidden until submission resolves) -->
-    <div id="results-content" style="display:none">
-
-      <div class="results-hero">
-        <div class="persona-badge" id="personaBadge">
-          <div class="persona-icon" id="personaIcon">🎮</div>
-          <div class="persona-type">Your Gaming Persona</div>
-          <div class="persona-name" id="personaName">Loading…</div>
-        </div>
-        <p class="persona-desc" id="personaDesc">…</p>
-      </div>
-
-      <div class="card">
-        <div style="font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px">📊 Your Skill Profile</div>
-        <div class="scores-grid" id="scoresGrid"></div>
-      </div>
-
-      <!-- Upload success badge -->
-      <div id="upload-success-badge" style="display:none; margin-bottom:18px;">
-        <div class="card" style="border-color:rgba(110,231,183,0.4); background:rgba(110,231,183,0.06); text-align:center; padding:14px 20px;">
-          <span style="font-size:13px; color:var(--mint);">✅ &nbsp;Results successfully saved to the research database!</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="results-thanks">
-          <strong>🙏 Thank you so much for participating!</strong><br/>
-          Your response has been recorded and will contribute to research on the connection between gaming habits and cognitive performance.<br/><br/>
-          <em style="color:var(--text-muted)">This study is being conducted as part of an academic research project. All data is anonymous and used for research purposes only.</em>
-        </div>
-
-        <div class="divider"></div>
-
-        <div style="font-size:12px; color:var(--text-muted); margin-bottom:14px; text-align:center;">
-          Want a copy of your results for your own records?
-        </div>
-        <button class="btn btn-secondary btn-full" onclick="downloadResults()" style="font-size:12px;">
-          ⬇️ &nbsp;Download My Results
-        </button>
-      </div>
-
-    </div><!-- /results-content -->
-  </div>
-
-</div><!-- /app-wrapper -->
+</div><!-- /wrap -->
 
 <script>
-// ═══════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════
-const state = {
-  consent: false,
-  survey: {},
-  scores: { quant: 0, verbal: 0, spatial: 0, simon: 0 },
-  answers: { quant: {}, verbal: {}, spatial: {} },
-  simonData: null,
-  totalSections: 6, // screens 0–5
-  currentScreen: 0,
-};
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const survey = { age:'', playtime:'', device:'', genre:'', genre_other:'', fav_game:'' };
+const scores = { logic:0, verbal:0, spatial:0, simon:0 };
+const answers = { logic:{}, verbal:{}, spatial:{} };
+let simonData = null;
+let consent = false;
 
-// ═══════════════════════════════════════════════════
-//  QUESTION DATA
-// ═══════════════════════════════════════════════════
-const QUANT_QUESTIONS = [
-  {
-    id: 'q1',
-    text: 'To craft 1 Mega-Potion, you need 3 Herbs and 2 Mushrooms. You have 14 Herbs and 7 Mushrooms. How many Mega-Potions can you craft?',
-    options: ['3','4','5','7'],
-    correct: 0,
-    feedback: 'Mushrooms are the limiting factor: 7 ÷ 2 = 3.5, so only 3 complete potions. (Herbs: 14 ÷ 3 = 4.6, also confirms 3)'
-  },
-  {
-    id: 'q2',
-    text: 'A shop sells 10 arrows for 50 gold. A bundle of 50 arrows costs 200 gold. How much gold do you save per arrow by buying the bundle?',
-    options: ['1 gold','2 gold','5 gold','10 gold'],
-    correct: 0,
-    feedback: 'Individual: 50 ÷ 10 = 5g each. Bundle: 200 ÷ 50 = 4g each. Saving = 5 – 4 = 1 gold per arrow.'
-  },
-  {
-    id: 'q3',
-    text: '1 Gold Coin = 12 Silver. 1 Silver = 5 Copper. How many Copper coins is 2 Gold Coins worth?',
-    options: ['60','100','120','130'],
-    correct: 2,
-    feedback: '2 Gold × 12 Silver/Gold = 24 Silver. 24 Silver × 5 Copper/Silver = 120 Copper.'
-  },
-  {
-    id: 'q4',
-    text: 'A boss respawns every 45 minutes. It last spawned at 2:15 PM. What time will it next appear?',
-    options: ['2:45 PM','3:00 PM','3:15 PM','3:30 PM'],
-    correct: 1,
-    feedback: '2:15 PM + 45 min = 3:00 PM.'
-  },
-  {
-    id: 'q5',
-    text: 'A loot box has a 10% chance for a Rare item. If you open exactly 2 boxes, what is the mathematical probability of getting zero Rare items?',
-    options: ['80%','81%','90%','99%'],
-    correct: 1,
-    feedback: 'P(no rare in one box) = 0.9. P(no rare in two boxes) = 0.9 × 0.9 = 0.81 = 81%.'
-  }
-];
+// ═══════════════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════════════
+const SCREENS = ['s-cover','s-survey','s-logic','s-verbal','s-spatial','s-simon','s-results'];
+const LABELS = ['Cover','Gaming Profile','Logic','Verbal','Spatial','Memory','Results'];
+const PCTS = [0, 15, 35, 55, 75, 90, 100];
 
-const VERBAL_QUESTIONS = [
-  {
-    id: 'v1',
-    text: '"The North gate is closed for repairs. The South gate is guarded by a dragon that only sleeps at night. It is currently noon."\n\nWhere can you enter?',
-    options: ['North Gate','South Gate','Neither','Both'],
-    correct: 2,
-    feedback: 'North gate is closed. South gate\'s dragon is awake at noon. You cannot enter through either gate.'
-  },
-  {
-    id: 'v2',
-    text: 'Character A says: "I\'d love to help with the quest, but my sword is… at the blacksmith\'s."\n\nWhat is the most likely subtext?',
-    options: ['They are excited','They are making an excuse','They are a blacksmith','They are unarmed'],
-    correct: 1,
-    feedback: 'The hesitation ("…") and convenient reason strongly suggest Character A is making an excuse to avoid the quest.'
-  },
-  {
-    id: 'v3',
-    text: 'Recipe: "Boil the water. Add the petal. Before adding the salt, add the crushed berry. Finally, stir twice."\n\nWhat is the third step?',
-    options: ['Add Salt','Stir Twice','Add Berry','Boil Water'],
-    correct: 2,
-    feedback: 'Step order: 1. Boil water → 2. Add petal → 3. Add crushed berry (must happen before salt) → 4. Add salt → 5. Stir twice. Third step = Add Berry.'
-  },
-  {
-    id: 'v4',
-    text: '"The traveler felt very glip-glop after walking through the desert for three days without water."\n\nWhat does glip-glop most likely mean?',
-    options: ['Energetic','Dehydrated','Freezing','Angry'],
-    correct: 1,
-    feedback: 'Context clues: three days in a desert without water strongly implies the traveller is dehydrated.'
-  },
-  {
-    id: 'v5',
-    text: '"I told you we should have turned left at the statue!" cried Ren. "The map was upside down!" Kai replied.\n\nWho was holding the map?',
-    options: ['Ren','Kai','Both','Unclear'],
-    correct: 1,
-    feedback: 'Kai\'s defence ("The map was upside down!") implies Kai was the one reading/holding the map.'
-  }
-];
-
-const SPATIAL_QUESTIONS = [
-  {
-    id: 's1',
-    text: 'You are facing North. You turn 90° right, then 180° left. Which direction are you facing now?',
-    options: ['East','West','South','North'],
-    correct: 1,
-    feedback: 'Start: North → Turn 90° right: East → Turn 180° left: West. Final direction = West.'
-  },
-  {
-    id: 's2',
-    text: 'A character is at (0, 0) on a grid. They move 3 steps Up, 2 steps Right, and 1 step Down. What is their final coordinate?\n(x = Right/Left, y = Up/Down)',
-    options: ['(2, 2)','(3, 2)','(2, 3)','(1, 2)'],
-    correct: 0,
-    feedback: 'x: +2 Right → x = 2. y: +3 Up, –1 Down → y = 2. Final: (2, 2).'
-  },
-  {
-    id: 's3',
-    text: 'A character is looking at a Mirror on the West wall of a room. What is directly behind the character?',
-    options: ['North Wall','East Wall','South Wall','The Mirror'],
-    correct: 1,
-    feedback: 'If the character faces West (toward the mirror), their back is to the East Wall.'
-  },
-  {
-    id: 's4',
-    text: 'If a clock shows exactly 3:00, what is the angle between the hour and minute hand?',
-    options: ['45°','60°','90°','120°'],
-    correct: 2,
-    feedback: 'At 3:00, the hour hand points to 3 (90° from 12) and the minute hand points to 12 (0°). The angle between them is 90°.'
-  },
-  {
-    id: 's5',
-    text: 'You enter a dungeon and take these turns: Left, Right, Right, Left, Left. Compared to when you entered, you are now facing:',
-    options: ['Same direction as entry','Opposite direction','Turned 90° left','Turned 90° right'],
-    correct: 0,
-    feedback: 'L, R, R, L, L → net turns: L+R cancel, R+L cancel, one L remains × 2 extra Ls... counting: –1+1+1–1–1 = –1. Actually each turn = 90°. Net = –1×90° = 90° left from entry. Correct answer is "Turned 90° left". (Tip: draw it out!)'
-  }
-];
-
-// Fix Q5 spatial
-SPATIAL_QUESTIONS[4].correct = 2;
-SPATIAL_QUESTIONS[4].feedback = 'Track each 90° turn: Entry=0°. L(−90°)=−90°. R(+90°)=0°. R(+90°)=+90°. L(−90°)=0°. L(−90°)=−90°. A net of −90° from entry = facing 90° left of your entry direction.';
-
-// ═══════════════════════════════════════════════════
-//  PROGRESS
-// ═══════════════════════════════════════════════════
-const SCREEN_ORDER = ['screen-cover','screen-survey','screen-quant','screen-verbal','screen-spatial','screen-simon','screen-results'];
-const SCREEN_LABELS = ['Quest Log','Player Profile','Logic & Lore','Verbal Processing','Spatial Awareness','Prism Pattern','Results'];
-
-function updateProgress(screenIdx) {
-  const pct = Math.round((screenIdx / (SCREEN_ORDER.length - 1)) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressPercent').textContent = pct + '% Complete';
-  document.getElementById('progressLabel').textContent = SCREEN_LABELS[screenIdx] || 'Quest Log';
+function setProgress(idx) {
+  document.getElementById('progFill').style.width = PCTS[idx] + '%';
+  document.getElementById('progPct').textContent = PCTS[idx] + '% Complete';
+  document.getElementById('progLabel').textContent = LABELS[idx];
 }
 
-// ═══════════════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════════════
-function goTo(screenId) {
+function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const target = document.getElementById(screenId);
-  if (target) {
-    target.classList.add('active');
-    const idx = SCREEN_ORDER.indexOf(screenId);
-    updateProgress(idx);
-    
-    // The "Triple-Threat" Scroll Fix
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0; 
-    document.body.scrollTop = 0;
-  }
+  document.getElementById(id).classList.add('active');
+  setProgress(SCREENS.indexOf(id));
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-// ═══════════════════════════════════════════════════
-//  CONSENT
-// ═══════════════════════════════════════════════════
-function toggleConsent() {
-  state.consent = !state.consent;
-  const vis = document.getElementById('consentVisual');
-  if (state.consent) vis.classList.add('checked');
-  else vis.classList.remove('checked');
-}
-
-// ═══════════════════════════════════════════════════
-//  COVER — START
-// ═══════════════════════════════════════════════════
-function startStudy() {
-  if (!state.consent) {
-    document.getElementById('consentError').classList.add('show');
-    return;
-  }
-  document.getElementById('consentError').classList.remove('show');
-  goTo('screen-survey');
-}
-
-// ═══════════════════════════════════════════════════
-//  FORM HELPERS
-// ═══════════════════════════════════════════════════
-function selectRadio(name, value, el) {
-  // Deselect all siblings in the same options-list
-  el.closest('.options-list').querySelectorAll('.option-item').forEach(item => {
-    item.classList.remove('selected');
-  });
-  el.classList.add('selected');
-  state.survey[name] = value;
-  hideError('err-' + name);
-}
-
-function toggleCheck(name, value, el) {
-  el.classList.toggle('selected');
-  if (!state.survey[name]) state.survey[name] = [];
-  const idx = state.survey[name].indexOf(value);
-  if (idx === -1) state.survey[name].push(value);
-  else state.survey[name].splice(idx, 1);
-  hideError('err-' + name);
-
+// ═══════════════════════════════════════════════
+// FORM HELPERS
+// ═══════════════════════════════════════════════
+function selRad(name, val, el) {
+  el.closest('.opt-list').querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  survey[name] = val;
+  hideErr('err-' + name);
   if (name === 'genre') {
-    updatePrimaryGenreOptions();
-    const otherChecked = state.survey.genre.includes('other');
-    document.getElementById('genreOtherWrap').style.display = otherChecked ? 'block' : 'none';
-    if (!otherChecked) { state.survey.genreOtherText = ''; document.getElementById('genreOther').value = ''; }
+    const isOther = val === 'other';
+    document.getElementById('genre-other-wrap').style.display = isOther ? 'block' : 'none';
+    if (!isOther) { survey.genre_other = ''; document.getElementById('genre-other-txt').value = ''; }
   }
 }
+function showErr(id) { const e = document.getElementById(id); if(e) e.classList.add('on'); }
+function hideErr(id) { const e = document.getElementById(id); if(e) e.classList.remove('on'); }
 
-const GENRE_LABELS = {
-  sandbox: 'Sandbox / Casual',
-  openworld: 'Open World / Action RPG',
-  tactical: 'Tactical / Turn-based RPG',
-  shooter: 'Competitive Shooter',
-  moba: 'MOBA',
-  puzzle: 'Puzzle / Strategy',
-  rhythm: 'Rhythm / Simulation',
-  other: 'Other'
-};
-
-function updatePrimaryGenreOptions() {
-  const selected = state.survey.genre || [];
-  const container = document.getElementById('primaryGenreOptions');
-  if (selected.length === 0) {
-    container.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:10px 0">← Select genres above to see options here</div>';
-    delete state.survey.primarygenre;
-    return;
-  }
-  container.innerHTML = selected.map(g => `
-    <div class="option-item" onclick="selectRadio('primarygenre','${g}',this)">
-      <div class="option-dot"></div>
-      <div class="option-text">${GENRE_LABELS[g] || g}</div>
-    </div>
-  `).join('');
-  // Re-select if previously chosen and still valid
-  if (state.survey.primarygenre && !selected.includes(state.survey.primarygenre)) {
-    delete state.survey.primarygenre;
-  }
-  if (state.survey.primarygenre) {
-    const items = container.querySelectorAll('.option-item');
-    items.forEach(item => {
-      if (item.getAttribute('onclick').includes(`'${state.survey.primarygenre}'`)) {
-        item.classList.add('selected');
-      }
-    });
-  }
+// ═══════════════════════════════════════════════
+// CONSENT
+// ═══════════════════════════════════════════════
+function toggleConsent() {
+  consent = !consent;
+  const v = document.getElementById('cVis');
+  consent ? v.classList.add('on') : v.classList.remove('on');
 }
 
-function showError(id) { const el = document.getElementById(id); if(el) el.classList.add('show'); }
-function hideError(id) { const el = document.getElementById(id); if(el) el.classList.remove('show'); }
-
-// ═══════════════════════════════════════════════════
-//  SURVEY VALIDATION
-// ═══════════════════════════════════════════════════
-function submitSurvey() {
-  let valid = true;
-  if (!state.survey.age)         { showError('err-age');         valid = false; }
-  if (!state.survey.playtime)    { showError('err-playtime');    valid = false; }
-  if (!state.survey.device || state.survey.device.length === 0) { showError('err-device'); valid = false; }
-  if (!state.survey.skilllevel)  { showError('err-skilllevel');  valid = false; }
-  if (!state.survey.genre || state.survey.genre.length === 0)   { showError('err-genre');  valid = false; }
-  if (!state.survey.primarygenre){ showError('err-primarygenre'); valid = false; }
-  if (!valid) {
-    document.querySelector('.screen.active').scrollIntoView({behavior:'smooth'});
-    return;
-  }
+// ═══════════════════════════════════════════════
+// COVER → START
+// ═══════════════════════════════════════════════
+function startStudy() {
+  if (!consent) { showErr('err-consent'); return; }
+  hideErr('err-consent');
   buildQuizScreens();
-  goTo('screen-quant');
+  goTo('s-survey');
 }
 
-// ═══════════════════════════════════════════════════
-//  BUILD QUIZ HTML
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// SURVEY SUBMIT
+// ═══════════════════════════════════════════════
+function submitSurvey() {
+  let ok = true;
+  if (!survey.age) { showErr('err-age'); ok = false; }
+  if (!survey.playtime) { showErr('err-playtime'); ok = false; }
+  if (!survey.device) { showErr('err-device'); ok = false; }
+  if (!survey.genre) { showErr('err-genre'); ok = false; }
+  if (!ok) return;
+  goTo('s-logic');
+}
+
+// ═══════════════════════════════════════════════
+// QUESTIONS DATA
+// ═══════════════════════════════════════════════
+const LOGIC_QS = [
+  { id:'l1', text:'To craft 1 Mega-Potion, you need 3 Herbs and 2 Mushrooms. You have 14 Herbs and 7 Mushrooms. How many Mega-Potions can you craft?', opts:['3','4','5','7'], correct:0, fb:'Mushrooms are the limiting factor: 7 ÷ 2 = 3.5, so only 3 complete potions.' },
+  { id:'l2', text:'A loot box has a 10% chance of containing a Rare item. If you open exactly 2 boxes, what is the probability of getting zero Rare items?', opts:['80%','81%','90%','99%'], correct:1, fb:'P(no rare) = 0.9 per box. Two boxes: 0.9 × 0.9 = 0.81 = 81%.' },
+  { id:'l3', text:'1 Gold Coin = 12 Silver. 1 Silver = 5 Copper. How many Copper coins is 2 Gold Coins worth?', opts:['60','100','120','130'], correct:2, fb:'2 Gold × 12 Silver = 24 Silver. 24 Silver × 5 Copper = 120 Copper.' }
+];
+
+const VERBAL_QS = [
+  { id:'v1', text:'"The North gate is closed for repairs. The South gate is guarded by a dragon that only sleeps at night. It is currently noon."\n\nWhere can you enter?', opts:['North Gate','South Gate','Neither','Both'], correct:2, fb:'North is closed for repairs. South dragon is awake at noon. Neither gate can be used.' },
+  { id:'v2', text:'Character A says: "I\'d love to help with the quest, but my sword is… at the blacksmith\'s."\n\nWhat is the most likely meaning?', opts:['They are excited','They are making an excuse','They are a blacksmith','They are unarmed'], correct:1, fb:'The hesitation ("…") and convenient excuse strongly suggest they are avoiding the quest.' },
+  { id:'v3', text:'Recipe instructions:\n"Boil the water. Add the petal. Stir twice. Before adding the salt, add the crushed berry."\n\nWhat should be done immediately before adding the salt?', opts:['Stir twice','Add the crushed berry','Boil the water','Add the petal'], correct:1, fb:'The instruction says "before adding the salt, add the crushed berry" — so the crushed berry comes immediately before the salt.' }
+];
+
+const SPATIAL_QS = [
+  { id:'s1', text:'You are facing North. You turn 90° right, then 180° left. Which direction are you facing now?', opts:['East','West','South','North'], correct:1, fb:'Start: North → 90° right = East → 180° left = West. Final direction: West.' },
+  { id:'s2', text:'Imagine a square that has a small star in its top-left corner. If you reflect the square over a vertical line that goes through its center, where will the star appear after reflection?', opts:['Top-left corner','Top-right corner','Bottom-left corner','Bottom-right corner'], correct:1, fb:'Reflecting over a vertical line swaps left and right. The top-left becomes top-right.' },
+  { id:'s3', text:'A character starts at coordinate (0, 0). They move 3 steps Up, 2 steps Right, and 1 step Down. What is the final coordinate?\n(x = Right/Left, y = Up/Down)', opts:['(2, 2)','(3, 2)','(2, 3)','(1, 2)'], correct:0, fb:'x: +2 Right → x=2. y: +3 Up −1 Down → y=2. Final: (2, 2).' }
+];
+
+// ═══════════════════════════════════════════════
+// BUILD QUIZ SCREENS
+// ═══════════════════════════════════════════════
 function buildQuizScreens() {
-  buildQuiz('quant-questions', QUANT_QUESTIONS, 'quant');
-  buildQuiz('verbal-questions', VERBAL_QUESTIONS, 'verbal');
-  buildQuiz('spatial-questions', SPATIAL_QUESTIONS, 'spatial');
+  buildSection('logic-qs', LOGIC_QS, 'logic');
+  buildSection('verbal-qs', VERBAL_QS, 'verbal');
+  buildSection('spatial-qs', SPATIAL_QS, 'spatial');
 }
 
-function shuffleWithCorrect(options, correctIdx) {
-  // Create array of [label, optionText, isCorrect]
-  const lettered = options.map((o, i) => ({ text: o, isCorrect: i === correctIdx }));
-  // Fisher-Yates shuffle
-  for (let i = lettered.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [lettered[i], lettered[j]] = [lettered[j], lettered[i]];
+function shuffle(arr, correctIdx) {
+  const items = arr.map((t,i) => ({ text:t, isCorrect: i === correctIdx }));
+  for (let i = items.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [items[i],items[j]] = [items[j],items[i]];
   }
-  return lettered;
+  return items;
 }
 
-function buildQuiz(containerId, questions, section) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  const dots = questions.map((_, i) =>
-    `<div class="q-dot" id="${section}-dot-${i}"></div>`
-  ).join('');
-
-  let html = `<div class="question-counter">${dots}</div>`;
-
-  questions.forEach((q, qi) => {
-    const shuffled = shuffleWithCorrect(q.options, q.correct);
-    // Store shuffled answer mapping
-    if (!state.answers[section]) state.answers[section] = {};
-    state.answers[section][q.id + '_map'] = shuffled;
-
-    const optionsHtml = shuffled.map((opt, oi) => {
-      const letter = String.fromCharCode(65 + oi);
-      return `
-        <div class="answer-option" id="${section}-${q.id}-opt-${oi}"
-             onclick="selectAnswer('${section}','${q.id}',${oi},${opt.isCorrect ? 'true' : 'false'})">
-          <div class="answer-key">${letter}</div>
-          <div class="answer-text">${opt.text}</div>
-        </div>`;
+function buildSection(containerId, qs, sec) {
+  const el = document.getElementById(containerId);
+  const dots = qs.map((_,i) => `<div class="qdot" id="${sec}-dot-${i}"></div>`).join('');
+  let html = `<div class="q-dots">${dots}</div>`;
+  qs.forEach((q, qi) => {
+    const shuffled = shuffle(q.opts, q.correct);
+    answers[sec][q.id + '_map'] = shuffled;
+    const optsHtml = shuffled.map((opt, oi) => {
+      const letter = String.fromCharCode(65+oi);
+      return `<div class="ans" id="${sec}-${q.id}-${oi}" onclick="pickAnswer('${sec}','${q.id}',${oi},${opt.isCorrect})">
+        <div class="ans-key">${letter}</div><div class="ans-text">${opt.text}</div>
+      </div>`;
     }).join('');
-
-    // Format question text (handle newlines)
-    const formattedText = q.text.replace(/\n/g, '<br/>');
-
     html += `
-      <div class="card" id="${section}-q-card-${qi}">
-        <div class="question-box">
-          <div class="question-num">Question ${qi+1} of ${questions.length}</div>
-          <div class="question-text">${formattedText}</div>
-        </div>
-        <div class="answer-grid" id="${section}-${q.id}-grid">${optionsHtml}</div>
-        <div class="feedback-box" id="${section}-${q.id}-feedback"></div>
+      <div class="card" id="${sec}-card-${qi}">
+        <div class="q-box"><div class="q-num">Question ${qi+1} of ${qs.length}</div>
+        <div class="q-text">${q.text.replace(/\n/g,'<br/>')}</div></div>
+        <div class="ans-grid" id="${sec}-${q.id}-grid">${optsHtml}</div>
+        <div class="fb-box" id="${sec}-${q.id}-fb"></div>
       </div>`;
   });
-
-  container.innerHTML = html;
-  updateDots(section, questions);
+  el.innerHTML = html;
+  refreshDots(sec, qs);
 }
 
-function updateDots(section, questions) {
-  questions.forEach((q, i) => {
-    const dot = document.getElementById(`${section}-dot-${i}`);
+// ═══════════════════════════════════════════════
+// ANSWER SELECTION
+// ═══════════════════════════════════════════════
+function pickAnswer(sec, qId, optIdx, isCorrect) {
+  const grid = document.getElementById(`${sec}-${qId}-grid`);
+  if (!grid || grid.classList.contains('locked')) return;
+  grid.classList.add('locked');
+  grid.querySelectorAll('.ans').forEach(a => a.classList.add('locked'));
+  document.getElementById(`${sec}-${qId}-${optIdx}`).classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    const map = answers[sec][qId + '_map'];
+    grid.querySelectorAll('.ans').forEach((a,i) => { if (map[i]?.isCorrect) a.classList.add('correct'); });
+  }
+  answers[sec][qId] = isCorrect;
+  showFeedback(sec, qId, isCorrect);
+  const qs = sec==='logic'?LOGIC_QS:sec==='verbal'?VERBAL_QS:SPATIAL_QS;
+  refreshDots(sec, qs);
+}
+
+function showFeedback(sec, qId, isCorrect) {
+  const qs = sec==='logic'?LOGIC_QS:sec==='verbal'?VERBAL_QS:SPATIAL_QS;
+  const q = qs.find(q => q.id === qId);
+  const fb = document.getElementById(`${sec}-${qId}-fb`);
+  if (!fb || !q) return;
+  fb.textContent = isCorrect ? '✅ Correct!' : '❌ Incorrect!';
+  fb.classList.add('on');
+  if (!isCorrect) fb.classList.add('bad');
+}
+
+function refreshDots(sec, qs) {
+  qs.forEach((q,i) => {
+    const dot = document.getElementById(`${sec}-dot-${i}`);
     if (!dot) return;
-    const ans = state.answers[section][q.id];
-    if (ans !== undefined) dot.classList.add('done'), dot.classList.remove('current');
-    else if (i === 0 || state.answers[section][questions[i-1]?.id] !== undefined) dot.classList.add('current');
+    dot.classList.remove('done','cur');
+    if (answers[sec][q.id] !== undefined) dot.classList.add('done');
+    else if (i === 0 || answers[sec][qs[i-1]?.id] !== undefined) dot.classList.add('cur');
   });
 }
 
-function selectAnswer(section, qId, optIdx, isCorrect) {
-  const grid = document.getElementById(`${section}-${qId}-grid`);
-  if (!grid || grid.classList.contains('locked')) return;
-  grid.classList.add('locked');
-
-  const options = grid.querySelectorAll('.answer-option');
-  options.forEach(o => o.classList.add('locked'));
-
-  const chosen = document.getElementById(`${section}-${qId}-opt-${optIdx}`);
-  chosen.classList.add(isCorrect ? 'correct' : 'wrong');
-
-  if (!isCorrect) {
-    // Highlight correct
-    options.forEach((o, i) => {
-      const map = state.answers[section][qId + '_map'];
-      if (map && map[i] && map[i].isCorrect) o.classList.add('correct');
-    });
-  }
-
-  // Record answer
-  state.answers[section][qId] = isCorrect;
-
-  // Show feedback
-  const questions = section === 'quant' ? QUANT_QUESTIONS : section === 'verbal' ? VERBAL_QUESTIONS : SPATIAL_QUESTIONS;
-  const qData = questions.find(q => q.id === qId);
-  const fb = document.getElementById(`${section}-${qId}-feedback`);
-  if (fb && qData) {
-    fb.textContent = (isCorrect ? '✅ Correct! ' : '❌ Not quite. ') + qData.feedback;
-    fb.classList.add('show');
-    if (!isCorrect) fb.classList.add('wrong-fb');
-  }
-
-  updateDots(section, questions);
-}
-
-// ═══════════════════════════════════════════════════
-//  SECTION SUBMISSION
-// ═══════════════════════════════════════════════════
-function submitSection(section) {
-  const questions = section === 'quant' ? QUANT_QUESTIONS : section === 'verbal' ? VERBAL_QUESTIONS : SPATIAL_QUESTIONS;
-  const unanswered = questions.filter(q => state.answers[section][q.id] === undefined);
-
-  if (unanswered.length > 0) {
-    // Find first unanswered card and highlight
-    const firstQ = unanswered[0];
-    const qIdx = questions.findIndex(q => q.id === firstQ.id);
-    const card = document.getElementById(`${section}-q-card-${qIdx}`);
+// ═══════════════════════════════════════════════
+// SECTION SUBMIT
+// ═══════════════════════════════════════════════
+function submitSection(sec) {
+  const qs = sec==='logic'?LOGIC_QS:sec==='verbal'?VERBAL_QS:SPATIAL_QS;
+  const unanswered = qs.filter(q => answers[sec][q.id] === undefined);
+  if (unanswered.length) {
+    const qi = qs.findIndex(q => q.id === unanswered[0].id);
+    const card = document.getElementById(`${sec}-card-${qi}`);
     if (card) {
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      card.style.borderColor = 'rgba(239,68,68,0.5)';
+      card.scrollIntoView({behavior:'smooth',block:'center'});
+      card.style.borderColor = 'rgba(239,68,68,.5)';
       setTimeout(() => { card.style.borderColor = ''; }, 2500);
     }
     return;
   }
-
-  // Tally score
-  state.scores[section] = questions.filter(q => state.answers[section][q.id] === true).length;
-
-  const next = { quant: 'screen-verbal', verbal: 'screen-spatial', spatial: 'screen-simon' };
-  goTo(next[section]);
+  scores[sec] = qs.filter(q => answers[sec][q.id] === true).length;
+  const next = { logic:'s-verbal', verbal:'s-spatial', spatial:'s-simon' };
+  goTo(next[sec]);
 }
 
-// ═══════════════════════════════════════════════════
-//  SIMON / PRISM PATTERN
-// ═══════════════════════════════════════════════════
-let simon = {
-  sequence: [],
-  playerIdx: 0,
-  level: 0,
-  active: false,
-  clickTimes: [],
-  totalCorrect: 0,
-  gameOver: false,
-  started: false
-};
-
-const CRYSTALS = ['red','blue','green','yellow'];
-const CRYSTAL_SOUNDS = { red: 261.63, blue: 329.63, green: 392.00, yellow: 523.25 };
-
+// ═══════════════════════════════════════════════
+// SIMON GAME (unchanged)
+// ═══════════════════════════════════════════════
+const CRYSTALS = ['pyro','cryo','geo','electro'];
+const TONES = { pyro:261.63, cryo:329.63, geo:523.25, electro:392.00 };
+let simon = { seq:[], idx:0, level:0, active:false, clicks:[], correct:0, over:false, started:false };
 let audioCtx = null;
-function getAudioCtx() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
   return audioCtx;
 }
-function playTone(freq, dur = 0.18) {
+function playTone(freq, dur=0.18) {
   try {
-    const ctx = getAudioCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+    const ctx = getAudio(), osc = ctx.createOscillator(), gain = ctx.createGain();
     osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = freq;
-    osc.type = 'sine';
+    osc.frequency.value = freq; osc.type = 'sine';
     gain.gain.setValueAtTime(0.18, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + dur);
-  } catch(e) {}
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur);
+  } catch(e){}
 }
-function playErrorTone() {
+function playError() {
   try {
-    const ctx = getAudioCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+    const ctx = getAudio(), osc = ctx.createOscillator(), gain = ctx.createGain();
     osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = 150;
-    osc.type = 'sawtooth';
+    osc.frequency.value = 150; osc.type = 'sawtooth';
     gain.gain.setValueAtTime(0.1, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.4);
-  } catch(e) {}
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.4);
+  } catch(e){}
 }
 
-function flashCrystal(color, duration) {
-  return new Promise(resolve => {
+function flashCrystal(color, ms) {
+  return new Promise(res => {
     const el = document.getElementById('c-' + color);
-    el.classList.add('glow', 'flash');
-    playTone(CRYSTAL_SOUNDS[color], duration / 1000);
-    setTimeout(() => {
-      el.classList.remove('glow', 'flash');
-      resolve();
-    }, duration);
+    el.classList.add('glow','flash');
+    playTone(TONES[color], ms/1000);
+    setTimeout(() => { el.classList.remove('glow','flash'); res(); }, ms);
   });
 }
-
-function getFlashDuration() {
-  if (simon.level <= 5) return 800;
-  if (simon.level <= 10) return 500;
-  return 300;
-}
-
-function setAllInactive(inactive) {
-  CRYSTALS.forEach(c => {
-    const el = document.getElementById('c-' + c);
-    if (inactive) el.classList.add('inactive');
-    else el.classList.remove('inactive');
-  });
-}
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function setInactive(v) { CRYSTALS.forEach(c => { const el = document.getElementById('c-'+c); v ? el.classList.add('inactive') : el.classList.remove('inactive'); }); }
 
 function startSimon() {
-  simon = { sequence:[], playerIdx:0, level:0, active:false, clickTimes:[], totalCorrect:0, gameOver:false, started:true };
+  simon = { seq:[], idx:0, level:0, active:false, clicks:[], correct:0, over:false, started:true };
   document.getElementById('simonStartBtn').style.display = 'none';
-  document.getElementById('simonResultsCard').classList.remove('show');
+  document.getElementById('simonResCard').classList.remove('on');
   document.getElementById('simonNextBtn').style.display = 'none';
-  nextSimonRound();
+  nextRound();
 }
 
-async function nextSimonRound() {
+async function nextRound() {
   simon.level++;
-  document.getElementById('simonLevelNum').textContent = simon.level;
-  simon.sequence.push(CRYSTALS[Math.floor(Math.random() * 4)]);
-  simon.active = false;
-  setAllInactive(true);
-
-  document.getElementById('simonStatus').className = 'simon-status watching';
-  document.getElementById('simonStatus').textContent = '👁️ Watch the pattern…';
-
-  const dur = getFlashDuration();
-  const gap = 200;
-
-  for (let i = 0; i < simon.sequence.length; i++) {
-    await flashCrystal(simon.sequence[i], dur);
-    await sleep(gap);
+  if (simon.level > 20) {
+    document.getElementById('simonLvNum').textContent = '20';
+    setInactive(true);
+    document.getElementById('simonStatus').className = 'simon-status win';
+    document.getElementById('simonStatus').textContent = '🏆 Perfect Sequence Mastery Achieved!';
+    endSimon(null);
+    return;
   }
-
-  // 1 second buffer
+  document.getElementById('simonLvNum').textContent = simon.level;
+  if (simon.level === 1) {
+    simon.seq = [CRYSTALS[Math.floor(Math.random()*4)], CRYSTALS[Math.floor(Math.random()*4)], CRYSTALS[Math.floor(Math.random()*4)]];
+  } else {
+    simon.seq.push(CRYSTALS[Math.floor(Math.random()*4)]);
+  }
+  simon.active = false;
+  setInactive(true);
+  document.getElementById('simonStatus').className = 'simon-status watch';
+  document.getElementById('simonStatus').textContent = '👁️ Watch carefully…';
+  for (let i = 0; i < simon.seq.length; i++) {
+    await flashCrystal(simon.seq[i], 700);
+    await sleep(300);
+  }
   await sleep(1000);
-
-  simon.active = true;
-  simon.playerIdx = 0;
-  setAllInactive(false);
+  simon.active = true; simon.idx = 0;
+  setInactive(false);
   document.getElementById('simonStatus').className = 'simon-status go';
-  document.getElementById('simonStatus').textContent = `🎯 Your turn! Repeat ${simon.sequence.length} crystal${simon.sequence.length>1?'s':''}`;
+  document.getElementById('simonStatus').textContent = `🎯 Your turn! Repeat ${simon.seq.length} crystal${simon.seq.length>1?'s':''}`;
 }
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function simonClick(color) {
-  if (!simon.active || simon.gameOver) return;
-  simon.clickTimes.push(Date.now());
-
-  const expected = simon.sequence[simon.playerIdx];
+  if (!simon.active || simon.over) return;
+  simon.clicks.push(Date.now());
+  const expected = simon.seq[simon.idx];
   const el = document.getElementById('c-' + color);
-
   if (color === expected) {
-    el.classList.add('glow');
-    playTone(CRYSTAL_SOUNDS[color], 0.15);
+    el.classList.add('glow'); playTone(TONES[color], 0.15);
     setTimeout(() => el.classList.remove('glow'), 200);
-    simon.totalCorrect++;
-    simon.playerIdx++;
-
-    if (simon.playerIdx === simon.sequence.length) {
-      // Completed the round
+    simon.correct++;
+    simon.idx++;
+    if (simon.idx === simon.seq.length) {
       simon.active = false;
-      setAllInactive(true);
+      setInactive(true);
       document.getElementById('simonStatus').className = 'simon-status';
-      document.getElementById('simonStatus').textContent = '✨ Perfect! Get ready for the next round…';
+      document.getElementById('simonStatus').textContent = '✨ Perfect! Next round…';
       await sleep(1200);
-      nextSimonRound();
+      nextRound();
     }
   } else {
-    // Wrong!
     simon.active = false;
-    simon.gameOver = true;
-    setAllInactive(true);
-    playErrorTone();
+    simon.over = true;
+    setInactive(true);
+    playError();
     el.style.filter = 'brightness(0.4)';
     setTimeout(() => { el.style.filter = ''; }, 500);
-
-    document.getElementById('simonStatus').className = 'simon-status gameover';
+    document.getElementById('simonStatus').className = 'simon-status over';
     document.getElementById('simonStatus').textContent = `💎 Sequence complete! Highest level: ${simon.level}`;
-
-    // Calculate avg response time as raw float (seconds)
-    let avgRt = null;
-    if (simon.clickTimes.length > 1) {
-      const diffs = [];
-      for (let i = 1; i < simon.clickTimes.length; i++) diffs.push(simon.clickTimes[i] - simon.clickTimes[i-1]);
-      const avg = diffs.reduce((a,b) => a+b, 0) / diffs.length;
-      avgRt = parseFloat((avg / 1000).toFixed(3));
-    }
-
-    const colorName = color.charAt(0).toUpperCase() + color.slice(1);
-    state.simonData = {
-      highestLevel: simon.level,
-      totalCorrectClicks: simon.totalCorrect,
-      averageResponseTime_s: avgRt,
-      mistakeMadeOn: colorName + ' Crystal'
-    };
-    state.scores.simon = Math.min(5, Math.floor(simon.level / 2));
-
-    document.getElementById('res-level').textContent   = simon.level;
-    document.getElementById('res-clicks').textContent  = simon.totalCorrect;
-    document.getElementById('res-rt').textContent      = avgRt !== null ? avgRt + 's' : '—';
-    document.getElementById('res-mistake').textContent = colorName + ' Crystal';
-
-    document.getElementById('simonResultsCard').classList.add('show');
-    document.getElementById('simonNextBtn').style.display = 'inline-block';
-    document.getElementById('simonLevelNum').textContent = simon.level;
+    endSimon(color);
   }
 }
 
-function submitSimon() {
-  if (!state.simonData) {
-    state.simonData = { highestLevel:0, totalCorrectClicks:0, averageResponseTime:'—', mistakeMadeOn:'—' };
+function endSimon(wrongColor) {
+  let avgRt = null;
+  if (simon.clicks.length > 1) {
+    const diffs = [];
+    for (let i=1; i<simon.clicks.length; i++) diffs.push(simon.clicks[i]-simon.clicks[i-1]);
+    avgRt = parseFloat((diffs.reduce((a,b)=>a+b,0)/diffs.length/1000).toFixed(3));
   }
+  const colorName = wrongColor ? wrongColor.charAt(0).toUpperCase()+wrongColor.slice(1)+' Crystal' : '—';
+  simonData = { highestLevel:simon.level, totalCorrectClicks:simon.correct, averageResponseTime_s:avgRt, incorrectCrystal:colorName };
+  scores.simon = Math.min(5, Math.floor(simon.level/2));
+
+  document.getElementById('r-lvl').textContent = simon.level;
+  document.getElementById('r-clicks').textContent = simon.correct;
+  document.getElementById('r-rt').textContent = avgRt !== null ? avgRt+'s' : '—';
+  document.getElementById('r-miss').textContent = colorName;
+  document.getElementById('simonResCard').classList.add('on');
+  document.getElementById('simonNextBtn').style.display = 'inline-block';
+  document.getElementById('simonLvNum').textContent = simon.level;
+}
+
+function finishSimon() {
+  if (!simonData) simonData = { highestLevel:0, totalCorrectClicks:0, averageResponseTime_s:null, incorrectCrystal:'—' };
   buildResults();
-  goTo('screen-results');
-  submitToSheets();
+  goTo('s-results');
+  uploadToSheets();
 }
 
-// ═══════════════════════════════════════════════════
-//  BUILD PARTICIPANT DATA OBJECT
-// ═══════════════════════════════════════════════════
-function buildParticipantData() {
-  const timestamp = new Date().toISOString();
-  const { quant, verbal, spatial, simon: simonScore } = state.scores;
-
-  // Per-question answer log
-  const answerLog = {};
-  ['quant','verbal','spatial'].forEach(section => {
-    const questions = section === 'quant' ? QUANT_QUESTIONS : section === 'verbal' ? VERBAL_QUESTIONS : SPATIAL_QUESTIONS;
-    answerLog[section] = questions.map(q => ({
-      id: q.id,
-      correct: state.answers[section][q.id] === true
-    }));
+// ═══════════════════════════════════════════════
+// BUILD PARTICIPANT DATA
+// ═══════════════════════════════════════════════
+function buildData() {
+  const ansLog = {};
+  ['logic','verbal','spatial'].forEach(sec => {
+    const qs = sec==='logic'?LOGIC_QS:sec==='verbal'?VERBAL_QS:SPATIAL_QS;
+    ansLog[sec] = qs.map(q => ({ id:q.id, correct: answers[sec][q.id]===true }));
   });
-
   return {
-    timestamp,
-    researchQuestion: 'To what extent are video game genres associated with players\' objectively measured performance in logic, spatial, and memory skills?',
-    survey: {
-      ageGroup:       state.survey.age        || '—',
-      weeklyPlaytime: state.survey.playtime   || '—',
-      devices:        (state.survey.device    || []).join(', '),
-      skillLevel:     state.survey.skilllevel || '—',
-      genres:         (state.survey.genre     || []).join(', '),
-      genreOther:     state.survey.genreOtherText || '',
-      primaryGenre:   state.survey.primarygenre   || '—',
-      favouriteGames: [
-        document.getElementById('fav1')?.value || '',
-        document.getElementById('fav2')?.value || '',
-        document.getElementById('fav3')?.value || ''
-      ].filter(Boolean).join(' | '),
-      currentRotation: [
-        document.getElementById('cur1')?.value || '',
-        document.getElementById('cur2')?.value || '',
-        document.getElementById('cur3')?.value || ''
-      ].filter(Boolean).join(' | ')
-    },
-    scores: {
-      quantitative: `${quant}/5`,
-      verbal:       `${verbal}/5`,
-      spatial:      `${spatial}/5`,
-      simonHighestLevel: state.simonData.highestLevel,
-      simonAvgResponseTime_s: state.simonData.averageResponseTime_s,
-      simonTotalCorrectClicks: state.simonData.totalCorrectClicks
-    },
-    simonDetails: state.simonData,
-    answerLog
+    timestamp: new Date().toISOString(),
+    age_group: survey.age,
+    playtime: survey.playtime,
+    primary_device: survey.device,
+    primary_genre: survey.genre,
+    genre_other: survey.genre_other || '',
+    fav_game: survey.fav_game || '',
+    logic_score: scores.logic,
+    verbal_score: scores.verbal,
+    spatial_score:scores.spatial,
+    simon_highest_level: simonData?.highestLevel ?? 0,
+    simon_total_correct: simonData?.totalCorrectClicks ?? 0,
+    average_reaction_time: simonData?.averageResponseTime_s ?? null,
+    simon_incorrect_crystal:simonData?.incorrectCrystal ?? '—',
+    answerLog: ansLog
   };
 }
 
-// ═══════════════════════════════════════════════════
-//  GOOGLE SHEETS SUBMISSION
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// GOOGLE SHEETS UPLOAD (unchanged)
+// ═══════════════════════════════════════════════
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwwUq0RIw3wsRVOucrTlXRchlJmZUc9LHMOJ7x3lIPvJOZKrXUdbZCe_b5RCWRcUIE9fQ/exec';
 
-async function submitToSheets() {
-  const savingEl      = document.getElementById('saving-state');
-  const errorEl       = document.getElementById('upload-error-state');
-  const contentEl     = document.getElementById('results-content');
-  const successBadge  = document.getElementById('upload-success-badge');
-
-  // Show loading, hide everything else
-  savingEl.style.display  = 'block';
-  errorEl.style.display   = 'none';
-  contentEl.style.display = 'none';
-
-  const participantData = buildParticipantData();
-
+async function uploadToSheets() {
+  document.getElementById('saving-state').style.display = 'block';
+  document.getElementById('results-content').style.display = 'none';
+  document.getElementById('success-banner').style.display = 'none';
+  document.getElementById('error-banner').style.display = 'none';
   try {
-    const response = await fetch(SHEETS_URL, {
-      method: 'POST',
-      mode: 'no-cors', // Google Apps Script requires no-cors
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(participantData)
+    await fetch(SHEETS_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(buildData())
     });
-
-    // no-cors means we can't read the response body, but if we got here without throwing it's a success
-    savingEl.style.display  = 'none';
-    contentEl.style.display = 'block';
-    successBadge.style.display = 'block';
-
-  } catch (err) {
-    console.error('Upload failed:', err);
-    savingEl.style.display = 'none';
-    errorEl.style.display  = 'block';
-    contentEl.style.display = 'block';
+    document.getElementById('saving-state').style.display = 'none';
+    document.getElementById('success-banner').style.display = 'block';
+    document.getElementById('results-content').style.display = 'block';
+  } catch(e) {
+    document.getElementById('saving-state').style.display = 'none';
+    document.getElementById('error-banner').style.display = 'block';
+    document.getElementById('results-content').style.display = 'block';
   }
 }
 
-// ═══════════════════════════════════════════════════
-//  DOWNLOAD & CLIPBOARD HELPERS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// DOWNLOAD
+// ═══════════════════════════════════════════════
 function downloadResults() {
-  const data = buildParticipantData();
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href     = url;
+  const json = JSON.stringify(buildData(), null, 2);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([json],{type:'application/json'}));
   a.download = 'gaming_study_results.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
-function copyToClipboard(btnId) {
-  const data = buildParticipantData();
-  const json = JSON.stringify(data, null, 2);
-  navigator.clipboard.writeText(json).then(() => {
-    const btn = document.getElementById(btnId);
-    if (!btn) return;
-    const original = btn.innerHTML;
-    btn.innerHTML = '✅ &nbsp;Copied!';
-    btn.style.borderColor = 'var(--teal)';
-    btn.style.color = 'var(--teal)';
-    setTimeout(() => {
-      btn.innerHTML = original;
-      btn.style.borderColor = '';
-      btn.style.color = '';
-    }, 2500);
-  }).catch(() => {
-    // Fallback for browsers that block clipboard API
-    const ta = document.createElement('textarea');
-    ta.value = json;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    const btn = document.getElementById(btnId);
-    if (btn) { btn.innerHTML = '✅ &nbsp;Copied!'; setTimeout(() => { btn.innerHTML = '📋 &nbsp;Copy Data to Clipboard'; }, 2500); }
-  });
-}
-
-// ═══════════════════════════════════════════════════
-//  RESULTS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// BUILD RESULTS PAGE
+// ═══════════════════════════════════════════════
 function buildResults() {
-  const { quant, verbal, spatial, simon: simonScore } = state.scores;
-
-  const scoreMap = { quant, verbal, spatial, simon: simonScore };
-  const maxKey = Object.keys(scoreMap).reduce((a,b) => scoreMap[a] >= scoreMap[b] ? a : b);
-
+  const { logic, verbal, spatial, simon:si } = scores;
+  const map = { logic, verbal, spatial, simon:si };
+  const top = Object.keys(map).reduce((a,b) => map[a]>=map[b]?a:b);
   const personas = {
-    quant:   { icon: '🧮', name: 'The Strategist',   desc: 'You see the math behind the magic. Numbers bend to your will — whether it\'s calculating DPS, optimising loadouts, or planning 5 steps ahead, you are always one calculation away from victory.' },
-    verbal:  { icon: '📜', name: 'The Lore-Seeker',  desc: 'No dialogue hint gets past you. You absorb context, read between the lines, and understand characters in ways others miss. Your greatest weapon is comprehension.' },
-    spatial: { icon: '🧭', name: 'The Wayfinder',    desc: 'You could navigate a dungeon blindfolded. Maps, rotations, and 3D movement come naturally to you — a rare talent that makes you shine in open worlds and tactical shooters alike.' },
-    simon:   { icon: '⚡', name: 'The Tactician',    desc: 'You remember every cooldown and combo. Your visual working memory is exceptional — sequencing, pattern recognition, and rapid recall are your superpowers.' }
+    logic: { icon:'🧮', name:'The Strategist', desc:'You see the math behind the magic. Numbers bend to your will — whether calculating DPS, optimising loadouts, or planning five steps ahead.' },
+    verbal: { icon:'📜', name:'The Lore-Seeker', desc:'No dialogue hint gets past you. You absorb context, read between the lines, and understand characters in ways others miss.' },
+    spatial: { icon:'🧭', name:'The Wayfinder', desc:'You could navigate a dungeon blindfolded. Maps, rotations, and 3D movement come naturally to you.' },
+    simon: { icon:'⚡', name:'The Tactician', desc:'You remember every cooldown and combo. Your visual working memory is exceptional — sequencing and rapid recall are your superpowers.' }
   };
+  const p = personas[top];
+  document.getElementById('pIcon').textContent = p.icon;
+  document.getElementById('pName').textContent = p.name;
+  document.getElementById('pDesc').textContent = p.desc;
 
-  const p = personas[maxKey];
-  document.getElementById('personaIcon').textContent = p.icon;
-  document.getElementById('personaName').textContent = p.name;
-  document.getElementById('personaDesc').textContent = p.desc;
-
-  const grid = document.getElementById('scoresGrid');
   const cards = [
-    { label: '🧩 Logic & Arithmetic', val: quant,      max: 5 },
-    { label: '📖 Verbal Processing',  val: verbal,     max: 5 },
-    { label: '🗺️ Spatial Awareness',  val: spatial,    max: 5 },
-    { label: '💎 Prism Pattern',       val: simonScore, max: 5, sub: `Level ${state.simonData?.highestLevel || 0} reached` }
+    { label:'🧩 Logic & Reasoning', val:logic, max:3 },
+    { label:'📖 Verbal Inference', val:verbal, max:3 },
+    { label:'🗺️ Spatial Reasoning', val:spatial, max:3 },
+    { label:'💎 Prism Pattern', val:si, max:5, sub:`Level ${simonData?.highestLevel||0} reached` }
   ];
-
-  grid.innerHTML = cards.map(c => {
-    const pct = Math.round((c.val / c.max) * 100);
-    return `
-      <div class="score-card">
-        <div class="score-card-label">${c.label}</div>
-        <div class="score-card-val">${c.val}<span style="font-size:16px;font-weight:400;color:var(--text-muted)"> / ${c.max}</span></div>
-        <div class="score-card-bar"><div class="score-card-fill" style="width:0%"></div></div>
-        <div class="score-card-sub">${c.sub || pct + '% accuracy'}</div>
-      </div>`;
+  document.getElementById('scoresGrid').innerHTML = cards.map(c => {
+    const pct = Math.round((c.val/c.max)*100);
+    return `<div class="sc-card">
+      <div class="sc-lbl">${c.label}</div>
+      <div class="sc-val">${c.val}<span style="font-size:15px;font-weight:400;color:var(--text3)"> / ${c.max}</span></div>
+      <div class="sc-bar"><div class="sc-fill" style="width:0%"></div></div>
+      <div class="sc-sub">${c.sub||pct+'% accuracy'}</div>
+    </div>`;
   }).join('');
-
-  // Animate bars in after a frame
   requestAnimationFrame(() => {
-    grid.querySelectorAll('.score-card-fill').forEach((el, i) => {
-      const pct = Math.round((cards[i].val / cards[i].max) * 100);
-      setTimeout(() => { el.style.width = pct + '%'; }, i * 120);
+    document.querySelectorAll('.sc-fill').forEach((el,i) => {
+      const pct = Math.round((cards[i].val/cards[i].max)*100);
+      setTimeout(() => { el.style.width = pct+'%'; }, i*120);
     });
   });
 }
