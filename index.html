@@ -276,10 +276,27 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .complete-title{font-size:22px;font-weight:800;color:var(--teal);margin-bottom:8px;}
 .complete-sub{font-size:14px;color:var(--text2);}
 .div{height:1px;background:var(--border);margin:20px 0;}
+
+/* ALREADY COMPLETED BEFORE */
+.locked-screen{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#0f1020;}
+
+.locked-card{
+  background:#1a1d35;
+  padding:40px;
+  border-radius:20px;
+  text-align:center;
+  color:white;
+  max-width:500px;} 
+  
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap"> 
 
 <!-- PROGRESS BAR -->
 <div class="prog-outer">
