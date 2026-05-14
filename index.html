@@ -283,15 +283,50 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#0f1020;}
+  background:
+    radial-gradient(circle at top, rgba(120,120,255,0.18), transparent 35%),
+    linear-gradient(180deg, #0f1020 0%, #17192e 100%);
+  padding:24px;
+}
 
 .locked-card{
-  background:#1a1d35;
-  padding:40px;
-  border-radius:20px;
+  width:100%;
+  max-width:520px;
+  background:rgba(24,27,48,0.92);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:28px;
+  padding:42px;
   text-align:center;
-  color:white;
-  max-width:500px;} 
+  color:#f3f4ff;
+  backdrop-filter:blur(14px);
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.35),
+    0 0 30px rgba(120,120,255,0.08);
+}
+
+.locked-icon{
+  font-size:64px;
+  margin-bottom:12px;
+}
+
+.locked-title{
+  font-size:2rem;
+  font-weight:700;
+  margin-bottom:10px;
+  letter-spacing:-0.02em;
+}
+
+.locked-text{
+  opacity:0.88;
+  line-height:1.6;
+  font-size:1rem;
+}
+
+.locked-sub{
+  margin-top:18px;
+  font-size:0.92rem;
+  opacity:0.6;
+} 
   
 </style>
 </head>
@@ -581,15 +616,23 @@ if (ADMIN_BYPASS) {
 
 if (localStorage.getItem(COMPLETED_KEY) === "true" && !ADMIN_BYPASS) {
   document.body.innerHTML = `
-    <div class="locked-screen">
-      <div class="locked-card">
-        <h1>🎮 Quest Already Completed</h1>
-        <p>You’ve already submitted your results for this study.</p>
-        <p style="opacity:.7;font-size:.9rem;">
-          Thanks for participating!
-        </p>
+  <div class="locked-screen">
+    <div class="locked-card">
+      <div class="locked-icon">🎮</div>
+
+      <div class="locked-title">
+        Quest Already Completed
+      </div>
+
+      <div class="locked-text">
+        You’ve already submitted your results for this study on this device.
+      </div>
+
+      <div class="locked-sub">
+        Thanks for participating!
       </div>
     </div>
+  </div>
 `;
 }
 
