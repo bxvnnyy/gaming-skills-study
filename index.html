@@ -151,6 +151,22 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 .notice strong{color:var(--lav);}
 .hint{font-size:11px;color:var(--text3);margin-top:5px;font-style:italic;}
 
+/* TIMER */
+.challenge-timer{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:999;
+  background:rgba(20,24,44,0.92);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:10px 16px;
+  border-radius:14px;
+  color:#fff;
+  font-weight:600;
+  backdrop-filter:blur(10px);
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);
+}
+
 /* QUIZ */
 .q-header{display:flex;align-items:center;gap:13px;margin-bottom:22px;}
 .q-icon{width:46px;height:46px;flex-shrink:0;border-radius:var(--r-md);
@@ -473,6 +489,10 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
 </div>
 
 <!-- ══════════════ SCREEN: LOGIC ══════════════ -->
+<div id="challenge-timer" class="challenge-timer" style="display:none;">
+  ⏱ 00:00
+</div>
+  
 <div class="screen" id="s-logic">
   <div class="badge">Part 02 · Skill Challenge 1 / 3</div>
   <div class="q-header">
@@ -644,6 +664,9 @@ const scores = { logic:0, verbal:0, spatial:0, simon:0 };
 const answers = { logic:{}, verbal:{}, spatial:{} };
 let simonData = null;
 let consent = false;
+let challengeStartTime = null;
+let challengeElapsedSeconds = 0;
+let timerInterval = null;
 
 // ═══════════════════════════════════════════════
 // PROGRESS
@@ -664,7 +687,7 @@ function goTo(id) {
   setProgress(SCREENS.indexOf(id));
   window.scrollTo({ top:0, behavior:'smooth' });
 }
-
+  
 // ═══════════════════════════════════════════════
 // FORM HELPERS
 // ═══════════════════════════════════════════════
@@ -695,7 +718,40 @@ function toggleConsent() {
   const v = document.getElementById('cVis');
   consent ? v.classList.add('on') : v.classList.remove('on');
 }
+  
+// ═══════════════════════════════════════════════
+// TIMER
+// ═══════════════════════════════════════════════
+function startChallengeTimer() {
 
+  document.getElementById('challenge-timer').style.display = 'block';
+
+  challengeStartTime = Date.now();
+
+  timerInterval = setInterval(() => {
+
+    challengeElapsedSeconds =
+      Math.floor((Date.now() - challengeStartTime) / 1000);
+
+    const mins =
+      String(Math.floor(challengeElapsedSeconds / 60)).padStart(2, '0');
+
+    const secs =
+      String(challengeElapsedSeconds % 60).padStart(2, '0');
+
+    document.getElementById('challenge-timer').innerText =
+      `⏱ ${mins}:${secs}`;
+
+  }, 1000);
+}
+  
+function stopChallengeTimer() {
+
+  clearInterval(timerInterval);
+
+  document.getElementById('challenge-timer').style.display = 'none';
+}
+  
 // ═══════════════════════════════════════════════
 // COVER → START
 // ═══════════════════════════════════════════════
@@ -711,11 +767,16 @@ function startStudy() {
 // ═══════════════════════════════════════════════
 function submitSurvey() {
   let ok = true;
+
   if (!survey.age) { showErr('err-age'); ok = false; }
   if (!survey.playtime) { showErr('err-playtime'); ok = false; }
   if (!survey.device) { showErr('err-device'); ok = false; }
   if (!survey.genre) { showErr('err-genre'); ok = false; }
+
   if (!ok) return;
+
+  startChallengeTimer();
+
   goTo('s-logic');
 }
 
@@ -978,9 +1039,21 @@ function endSimon(wrongColor) {
 }
 
 function finishSimon() {
-  if (!simonData) simonData = { highestLevel:0, totalCorrectClicks:0, averageResponseTime_s:null, incorrectCrystal:'—' };
+
+  stopChallengeTimer();
+
+  if (!simonData)
+    simonData = {
+      highestLevel:0,
+      totalCorrectClicks:0,
+      averageResponseTime_s:null,
+      incorrectCrystal:'—'
+    };
+
   buildResults();
+
   goTo('s-results');
+
   uploadToSheets();
 }
 
@@ -1051,6 +1124,8 @@ function buildData() {
     average_reaction_time: simonData?.averageResponseTime_s ?? '',
     simon_incorrect_crystal: simonData?.incorrectCrystal ?? '',
 
+    challenge_duration_seconds: challengeElapsedSeconds,
+    
     gaming_persona: persona
   };
 }
